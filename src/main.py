@@ -6,48 +6,75 @@ app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
 
+
 # Main endpoint
 @app.route('/', methods=['POST'])
 def main():
     data = request.json
     event_type = data.get('eventType')
-    instance_name = data.get('instanceName', 'Desconocido')
-    title = data.get('movie', {}).get('title', 'Desconocido')
-    release_title = data.get('release', {}).get('releaseTitle', 'Desconocido')
-    indexer = data.get('release', {}).get('indexer', 'Desconocido')
+    instance_name = data.get('instanceName', 'Unknown')
+    title = data.get('movie', {}).get('title', 'Unknown')
+    release_title = data.get('release', {}).get('releaseTitle',
+                                                'Unknown')
+    indexer = data.get('release', {}).get('indexer', 'Unknown')
 
-    # Eliminar "SPANiSH" al final de release_title (ignorar mayúsculas/minúsculas)
-    clean_release_title = re.sub(r'\s*\[?\bSPANiSH\b\]?\s*$', '', release_title, flags=re.IGNORECASE)
+    # Remove [SPANiSH] from release title
+    clean_release_title = re.sub(
+        r'\s*\[?\bSPANiSH\b\]?\s*$',
+        '', release_title, flags=re.IGNORECASE)
 
-    # Definir funciones para cada caso de evento
+    # Define functions for each event case
     def handle_test():
-        app.logger.info(f"Conexión de prueba desde {instance_name}")
-        return jsonify({"status": "success", "message": f"Conexión de prueba desde {instance_name} exitosa"}), 200
+        app.logger.info(f"Test connection from {instance_name}")
+        return jsonify({
+            "status": "success",
+            "message": (f"Connection test from {instance_name} "
+                        "received successfully.")
+        }), 200
 
     def handle_grab():
-        app.logger.info(f"Release title: {clean_release_title}")
-        return jsonify({"status": "success", "message": f"Se ha obtenido una URL para {title} desde {indexer}"}), 200
+        app.logger.info(f"Grabbing '{clean_release_title}' "
+                        f"from {indexer}.")
+        return jsonify({
+            "status": "success",
+            "message": (f"Title '{title}' "
+                        f"from {indexer} grabbed successfully.")
+        }), 200
 
-    # Diccionario que actúa como switch
+    def handle_download():
+        app.logger.info(f"Downloading '{clean_release_title}' from {indexer}.")
+        return jsonify({
+            "status": "success",
+            "message": (f"Downloading '{title}' "
+                        f"from {indexer} successfully.")
+        }), 200
+
+    # Dictionary that acts as a switch
     event_handlers = {
         "Test": handle_test,
         "Grab": handle_grab,
+        "Download": handle_download,
     }
 
-    # Ejecutar la función correspondiente al evento, si existe
+    # Run the corresponding function for the event, if it exists
     handler = event_handlers.get(event_type)
 
     if handler:
         return handler()
     else:
-        app.logger.warning(f"Evento no soportado: {event_type}")
+        app.logger.warning(f"Event type not supported: {event_type}")
         app.logger.info(data)
-        return jsonify({"status": "error", "message": "Evento no soportado"}), 400
+        return jsonify({
+            "status": "error",
+            "message": "Event type not supported"
+        }), 400
+
 
 # Status healthcheck endpoint
 @app.route('/status', methods=['GET'])
 def status():
     return jsonify({"status": "OK"}), 200
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

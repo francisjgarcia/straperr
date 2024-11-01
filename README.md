@@ -129,25 +129,28 @@ You can use Docker and Docker Compose to run the project in a container. Ensure 
 1. Navigate to the docker directory, rename the `.env.example` file to `.env`, and adjust the environment variables as needed.
 
 ```bash
-# Environment variables for Docker Compose
+# Compose environment variables
 COMPOSE_PROJECT_NAME=straperr
+COMPOSE_FILE=compose.yml
+
+# Network configuration
+STRAPERR_PORT=5000
+DNS1=8.8.8.8
+DNS2=8.8.4.4
 
 # General environment variables
 PUID=1000
 PGID=1000
 TZ=Europe/Madrid
-
-# DNS configuration
-DNS1=8.8.8.8
-DNS2=8.8.4.4
 ```
 - **COMPOSE_PROJECT_NAME**: Name of the Docker Compose project.
 - **COMPOSE_FILE**: Docker Compose configuration file.
+- **STRAPERR_PORT**: Port to expose the application.
+- **DNS1**: Primary DNS server for the container.
+- **DNS2**: Secondary DNS server for the container.
 - **PUID**: User ID for the container.
 - **PGID**: Group ID for the container.
 - **TZ**: Timezone for the container.
-- **DNS1**: Primary DNS server for the container.
-- **DNS2**: Secondary DNS server for the container.
 
 1. Build and run the services with Docker Compose:
 
