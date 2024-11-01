@@ -1,10 +1,10 @@
-# Python Template Repository
+# Straperr
 
-This repository serves as a base template for Python projects, providing an organized folder structure, integration with Docker, Ansible, Terraform, Helm, and a fully configured CI/CD pipeline using GitHub Actions.
+This is a python flask project to interact between a *arr aplicattions (such as Sonarr, Radarr, Lidarr, etc) and a tracker website.
 
 ## Table of Contents
 
-- [Python Template Repository](#python-template-repository)
+- [Straperr](#straperr)
   - [Table of Contents](#table-of-contents)
   - [Project Structure](#project-structure)
   - [Prerequisites](#prerequisites)
@@ -24,25 +24,6 @@ This repository serves as a base template for Python projects, providing an orga
   - [Documentation](#documentation)
   - [Source Code](#source-code)
   - [Tests](#tests)
-  - [Issue Templates](#issue-templates)
-  - [File details](#file-details)
-    - [.dockerignore](#dockerignore)
-    - [.editorconfig](#editorconfig)
-    - [.gitignore](#gitignore)
-    - [AUTHORS](#authors)
-    - [CHANGELOG.md (\*)](#changelogmd-)
-    - [CODE\_OF\_CONDUCT.md](#code_of_conductmd)
-    - [CONTRIBUTING.md](#contributingmd)
-    - [GOVERNANCE.md](#governancemd)
-    - [LICENSE](#license)
-    - [README.md](#readmemd)
-    - [SECURITY.md](#securitymd)
-    - [SUPPORT.md](#supportmd)
-    - [.github/dependabot.yml](#githubdependabotyml)
-    - [.github/pull\_request\_template.md](#githubpull_request_templatemd)
-    - [.github/release.yml](#githubreleaseyml)
-  - [Additional Information](#additional-information)
-    - [Hardcoded Values](#hardcoded-values)
 ---
 
 ## Project Structure
@@ -151,18 +132,24 @@ You can use Docker and Docker Compose to run the project in a container. Ensure 
 # Environment variables for Docker Compose
 COMPOSE_PROJECT_NAME=straperr
 
-# Port on which the application will be accessible
-APP_PORT=5000
+# General environment variables
+PUID=1000
+PGID=1000
+TZ=Europe/Madrid
 
-# Environment variables for the application
-MY_VAR1=Hello, World!
+# DNS configuration
+DNS1=8.8.8.8
+DNS2=8.8.4.4
 ```
 - **COMPOSE_PROJECT_NAME**: Name of the Docker Compose project.
 - **COMPOSE_FILE**: Docker Compose configuration file.
-- **APP_PORT**: Port on which the application will be accessible.
-- **MY_VAR1**: Environment variable for the application.
+- **PUID**: User ID for the container.
+- **PGID**: Group ID for the container.
+- **TZ**: Timezone for the container.
+- **DNS1**: Primary DNS server for the container.
+- **DNS2**: Secondary DNS server for the container.
 
-2. Build and run the services with Docker Compose:
+1. Build and run the services with Docker Compose:
 
 ```bash
 compose up -d --build
@@ -250,9 +237,13 @@ The `docs` directory contains additional documentation for the project:
 
 **STYLEGUIDE.md**: Contains guidelines for code style and formatting, including best practices for writing clean, readable code.
 
+**VARIABLES.md**: Describes the variables needed for integration and deployment, including environment variables for the application and Docker service.
+
 ## Source Code
 
 The `src` directory contains the project's source code:
+
+**.env.example**: Example environment variables file for Docker. This file should be renamed to `.env` and adjusted with the necessary variables for the project.
 
 **main.py**: The main script that runs the application. This is where the project's entry point is located.
 
@@ -266,102 +257,7 @@ The `tests` directory contains the project's test scripts. These tests can be ru
 pytest src/tests/
 ```
 
+> [!NOTE]
+> Actually there are no tests but they will be added in the future.
+
 The tests are automatically run as part of the CI/CD pipeline to ensure the project's functionality is maintained.
-
-## Issue Templates
-
-The `.github/ISSUE_TEMPLATE` directory contains templates for creating new issues in the repository. These templates provide a structured format for submitting bug reports, feature requests, and other types of issues. The templates help ensure that important information is included in each issue, making it easier for contributors to understand and address the problem.
-
-- **0_bug_report.yml**: Template for reporting bugs or issues in the project.
-- **1_feature_request.yml**: Template for requesting new features or enhancements.
-- **2_improvement_request.yml**: Template for suggesting improvements or optimizations.
-- **3_performance_issue.yml**: Template for reporting performance-related issues.
-- **4_refactor_request.yml**: Template for requesting code refactoring or cleanup.
-- **5_documentation_update.yml**: Template for suggesting updates or improvements to the documentation.
-- **6_security_vulnerability.yml**: Template for reporting security vulnerabilities.
-- **7_tests_requests.yml**: Template for requesting new tests or test coverage.
-- **8_question.yml**: Template for asking questions or seeking clarification.
-- **config.yml**: Configuration file for issue templates.
-
-These templates help streamline the issue creation process and ensure that important details are included in each issue.
-
-## File details
-
-### [.dockerignore](.dockerignore)
-Specifies files and directories to exclude from the Docker build context. This prevents unnecessary files from being copied into the Docker container, reducing image size and improving build efficiency.
-
-### [.editorconfig](.editorconfig)
-Configures code formatting rules for compatible editors. Defines standards such as indentation size, use of spaces versus tabs, and other style guidelines to ensure consistency throughout the project.
-
-### [.gitignore](.gitignore)
-Lists files and directories to be ignored by Git. Includes configurations to exclude automatically generated files, environment dependencies, and other content that should not be tracked in the repository.
-
-### [AUTHORS](AUTHORS)
-Lists the authors and contributors to the project. Provides credit to individuals who have contributed to the codebase and helps maintain a record of project contributors.
-
-### [CHANGELOG.md](CHANGELOG.md) (*)
-Records the project's change history and version updates. Documents all significant changes and modifications made over time. This file is created after the first main deploy.
-
-### [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-Defines the code of conduct for project contributors. It sets expectations for behavior and communication within the community, fostering an inclusive and respectful environment for all participants.
-
-### [CONTRIBUTING.md](CONTRIBUTING.md)
-Guidelines for contributing to the project. Outlines the process for submitting issues, feature requests, and code changes, as well as the project's coding standards and best practices.
-
-### [GOVERNANCE.md](GOVERNANCE.md)
-Describes the project's governance model and decision-making process. Outlines how decisions are made, who has authority over the project, and how the community can participate in project governance.
-
-### [LICENSE](LICENSE)
-Outlines the licensing terms for the project. Specifies the conditions under which users can use, modify, and distribute the source code. It’s important to review and understand the terms provided in this file.
-
-### [README.md](README.md)
-Offers an overview of the project, including development and usage instructions, configuration details, and information about the CI/CD pipeline. Serves as the main reference document for anyone working with the repository.
-
-### [SECURITY.md](SECURITY.md)
-Provides guidelines for maintaining project security. Includes information on reporting security vulnerabilities, best practices for code security, and procedures for handling security issues. Ensures contributors and users understand how to address and report security concerns.
-
-### [SUPPORT.md](UPPORT.md)
-Contains information on how to get support for the project. Includes details on where to find help, how to report issues, and how to contact the project maintainers. Helps users and contributors access the resources they need to resolve problems and get assistance.
-
-### [.github/dependabot.yml](.github/dependabot.yml)
-Configures Dependabot for the repository. Dependabot automatically creates pull requests to update library and tool versions, helping to keep the project secure and up-to-date with the latest dependencies.
-
-### [.github/pull_request_template.md](.github/pull_request_template.md)
-Provides a template for creating pull requests in the repository. The template includes sections for describing the changes, marking the type of change, and checking off a list of items to ensure the pull request meets the project's guidelines.
-
-### [.github/release.yml](.github/release.yml)
-Automatically generates a new release on GitHub when changes are merged into the `main` branch. The release includes a changelog of the changes made since the last release, providing a summary of new features, bug fixes or improvements.
-
-## Additional Information
-
-### Hardcoded Values
-
-This repository template contains several hardcoded values that should be updated when cloning the repository for a new project. Please review the following sections and modify accordingly:
-1. **Author Information**:
-    - Located in:
-      - `AUTHORS`: Update the author's name.
-      - `LICENSE`: Change the author's name to reflect the new project.
-
-2. **Email Address**:
-    - Located in:
-      - `AUTHORS`: Update the author's email address.
-      - `CODE_OF_CONDUCT.md`: Replace the email address in the enforcement section.
-      - `SECURITY.md`: Update the contact email for reporting vulnerabilities.
-      - `SUPPORT.md`: Modify the email address in the contact section.
-
-3. **GitHub Repository name**:
-    - Found in:
-      - `SUPPORT.md`: Update the link to point to the new repository.
-      - `CONTRIBUTING.md`: Modify the URL to reflect the new repository.
-      - `docker/compose.yml`: Change the docker service name, container name and image build.
-
-4. **Username**:
-    - Found in:
-      - `GOVERNANCE.md`: Change the username as needed.
-      - `.github/ISSUE_TEMPLATE/*.yml`: Change the username on all yaml templates.
-
-5. **Date**:
-    - Located in:
-      - `LICENSE`: Updates the year to current date.
-
-Make sure to search for these instances throughout the repository to ensure proper configuration.
