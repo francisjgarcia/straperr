@@ -20,6 +20,7 @@ This repository serves as a base template for Python projects, providing an orga
     - [Deploy to server](#deploy-to-server)
     - [Remove deploy from server](#remove-deploy-from-server)
   - [Secrets Configuration](#secrets-configuration)
+  - [Variables Configuration](#variables-configuration)
   - [Documentation](#documentation)
   - [Source Code](#source-code)
   - [Tests](#tests)
@@ -71,6 +72,7 @@ This repository serves as a base template for Python projects, providing an orga
 │   ├── Dockerfile.local                    # Dockerfile to run the project locally
 │   └── compose.yml                         # Docker Compose file to define services and networks
 ├── docs/
+│   ├── VARIABLES.md                        # Documentation about variables needed for integration and deployment
 │   ├── SECRETS.md                          # Documentation about secrets needed for deployment
 │   └── STYLEGUIDE.md                       # Guidelines for code style and formatting
 ├── src/
@@ -147,8 +149,7 @@ You can use Docker and Docker Compose to run the project in a container. Ensure 
 
 ```bash
 # Environment variables for Docker Compose
-COMPOSE_PROJECT_NAME=template
-COMPOSE_FILE=compose.yml
+COMPOSE_PROJECT_NAME=straperr
 
 # Port on which the application will be accessible
 APP_PORT=5000
@@ -194,7 +195,6 @@ This repository includes a fully automated CI/CD pipeline using `cicd.yml` GitHu
 6. **Release**: Automatically generates the changelog and creates a new release on GitHub if deploying to `main`.
 7. **Merge**: Merges changes from `main` into the `development` branch if a direct push to `main` occurs.
 8. **Deploy**: Deploys the application to remote servers using SSH if deploying to `main`.
-9. **Register**: Register DNS record in Cloudflare.
 
 ### Deploy to server
 
@@ -202,7 +202,6 @@ To deploy an specific version of the application to a remote server. You can use
 
 1. **Setup**: Generates the necessary variables for use in the subsequent tasks.
 2. **Deploy**: Deploys the application to remote servers using SSH.
-3. **Register**: Register DNS record in Cloudflare.
 
 ### Remove deploy from server
 
@@ -210,14 +209,11 @@ To remove the application from the remote server, you can use the `remove-deploy
 
 1. **Setup**: Generates the necessary variables for use in the subsequent tasks.
 2. **Remove deploy**: Removes the application from remote servers using SSH.
-3. **Remove record**: Removes DNS record in Cloudflare.
 
 ## Secrets Configuration
 
 To properly enable the pipeline and deployment, you need to configure the following secrets in GitHub:
 
-- **CLOUDFLARE_API_TOKEN**: API token used to authenticate requests to the Cloudflare API.
-- **DEPLOY_SERVER**: Address of the server where the application will be deployed.
 - **SSH_PRIVATE_HOST**: Hostname or IP address of the private SSH server.
 - **SSH_PRIVATE_KEY**: Private key for SSH authentication on remote servers.
 - **SSH_PRIVATE_PORT**: SSH connection port.
@@ -227,6 +223,24 @@ To properly enable the pipeline and deployment, you need to configure the follow
 - **SSH_PROXY_USER**: Proxy user.
 
 More details about these secrets can be found in the [SECRETS.md](docs/SECRETS.md) file.
+
+## Variables Configuration
+
+To properly configure the application, you need to set the following variables in the `.env.example` file:
+
+- **FLASK_ENV**: Flask environment configuration for the application (development, production, testing).
+- **FLASK_DEBUG**: Flask debug configuration for the application. Set to `1` for debugging or `0` for production mode.
+
+Also, you need to set the environment variables for the Docker service:
+
+- **DOCKER_DNS1**: DNS server for the Docker service.
+- **DOCKER_DNS2**: Secondary DNS server for the Docker service.
+- **DOCKER_NETWORK**: Docker network name for the service.
+- **DOCKER_HEALTHCHECK_URL**: Healthcheck URL for the service application.
+- **DOCKER_MEMORY_LIMIT**: Memory limit for the Docker service.
+- **DOCKER_MEMORY_RESERVATION**: Memory reservation for the Docker service.
+
+More details about these variables can be found in the [VARIABLES.md](docs/VARIABLES.md) file.
 
 ## Documentation
 

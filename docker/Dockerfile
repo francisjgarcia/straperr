@@ -8,6 +8,10 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100
 
+# Install the required system packages
+RUN apk add --no-cache \
+    curl
+
 # Create a non-privileged user to run the application
 RUN adduser -D -s /bin/sh python
 
