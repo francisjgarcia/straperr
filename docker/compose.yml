@@ -1,18 +1,32 @@
 services:
-  template:
-    container_name: template
-    image: ghcr.io/francisjgarcia/template:local
+  straperr:
+    container_name: straperr
+    hostname: straperr
+    image: ghcr.io/francisjgarcia/straperr:local
     build:
       context: ..
       dockerfile: ./docker/Dockerfile.local
     ports:
-      - '${APP_PORT:-5000}:5000'
-    env_file:
-      - .env
+      - ${STRAPERR_PORT:-5000}:5000
+    dns:
+      - ${DNS1:-8.8.8.8}
+      - ${DNS2:-8.8.4.4}
     volumes:
       - ../src:/app
       - ../tests:/app/tests
-    user: root
-    tty: true
-    command: /bin/sh
-    restart: on-failure
+    env_file:
+      - .env
+      - ../src/.env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/status"]
+      start_period: 30s
+      interval: 1h
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+        reservations:
+          memory: 6M
+    restart: always

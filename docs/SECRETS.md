@@ -4,13 +4,7 @@ This file contains sensitive configurations necessary for the integration and de
 
 ## Github Actions
 
-- **`CLOUDFLARE_API_TOKEN`**:
-  - **Description**: The API token used to authenticate requests to the Cloudflare API.
-  - **Example**: `your-cloudflare-api-token`
-
-- **`DEPLOY_SERVER`**:
-  - **Description**: The address of the server where the application will be deployed.
-  - **Example**: `deploy.example.com`
+### Workflow Secrets
 
 - **`SSH_PRIVATE_HOST`**:
   - **Description**: The hostname or IP address of the private SSH server you need to connect to.
