@@ -29,4 +29,7 @@ services:
           memory: 50M
         reservations:
           memory: 6M
-    restart: always
+    user: root
+    tty: true
+    command: /bin/sh
+    restart: on-failure
