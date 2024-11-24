@@ -507,11 +507,14 @@ jobs:
           username: ${{ env.REPOSITORY_OWNER }}
           password: ${{ env.GITHUB_TOKEN }}
 
-      - name: Pull docker image
+      - name: Pull docker application image
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
           TAG_VERSION: ${{ needs.setup.outputs.tag_version }}
         run: docker pull ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ env.TAG_VERSION }}
+
+      - name: Pull docker selenium image
+        run: docker pull selenium/standalone-chrome:latest
 
       - name: Create straperr docker network if not exists
         env:
@@ -556,7 +559,6 @@ jobs:
           REPO_NAME: ${{ needs.setup.outputs.repo_name }}
           TAG_VERSION: ${{ needs.setup.outputs.tag_version }}
           DOCKER_NETWORK: ${{ vars.DOCKER_NETWORK }}
-          DOCKER_NETWORK_STRAPERR: ${{ vars.DOCKER_NETWORK_STRAPERR }}
           DOCKER_HEALTHCHECK_URL: ${{ vars.DOCKER_HEALTHCHECK_URL }}
           DOCKER_MEMORY_LIMIT: ${{ vars.DOCKER_MEMORY_LIMIT }}
           DOCKER_MEMORY_RESERVATION: ${{ vars.DOCKER_MEMORY_RESERVATION }}
@@ -572,7 +574,6 @@ jobs:
             --name ${{ env.REPO_NAME }} \
             --hostname ${{ env.REPO_NAME }} \
             --network ${{ env.DOCKER_NETWORK }} \
-            --network ${{ env.DOCKER_NETWORK_STRAPERR }} \
             -e PUID=1000 \
             -e PGID=1000 \
             -e TZ=Europe/Madrid \
@@ -589,6 +590,12 @@ jobs:
             --memory-reservation="${{ env.DOCKER_MEMORY_RESERVATION }}" \
             --restart always \
           ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ env.TAG_VERSION }}
+
+      - name: Connect docker container application to straperr network
+        env:
+          REPO_NAME: ${{ needs.setup.outputs.repo_name }}
+          DOCKER_NETWORK_STRAPERR: ${{ vars.DOCKER_NETWORK_STRAPERR }}
+        run: docker network connect ${{ env.DOCKER_NETWORK_STRAPERR }} ${{ env.REPO_NAME }}
 
       - name: Remove old docker images
         env:
