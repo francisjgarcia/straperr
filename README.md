@@ -57,6 +57,7 @@ This is a python flask project to interact between a *arr aplicattions (such as 
 │   ├── SECRETS.md                          # Documentation about secrets needed for deployment
 │   └── STYLEGUIDE.md                       # Guidelines for code style and formatting
 ├── src/
+│   ├── .env.example                        # Example environment variables file for the application
 │   ├── main.py                             # Main script of the project
 │   └── requirements.txt                    # Python dependencies file
 ├── .dockerignore                           # File to exclude files from Docker context
@@ -211,6 +212,8 @@ To properly enable the pipeline and deployment, you need to configure the follow
 - **SSH_PROXY_HOST**: Hostname or IP address of the proxy server.
 - **SSH_PROXY_PORT**: Proxy port.
 - **SSH_PROXY_USER**: Proxy user.
+- **HDOLIMPO_USERNAME**: Username for the HDOLimpo account.
+- **HDOLIMPO_PASSWORD**: Password for the HDOLimpo account.
 
 More details about these secrets can be found in the [SECRETS.md](docs/SECRETS.md) file.
 
@@ -229,6 +232,9 @@ Also, you need to set the environment variables for the Docker service:
 - **DOCKER_HEALTHCHECK_URL**: Healthcheck URL for the service application.
 - **DOCKER_MEMORY_LIMIT**: Memory limit for the Docker service.
 - **DOCKER_MEMORY_RESERVATION**: Memory reservation for the Docker service.
+- **DOCKER_MEMORY_LIMIT_SELENIUM**: Memory limit for the Docker service running Selenium.
+- **DOCKER_MEMORY_RESERVATION_SELENIUM**: Memory reservation for the Docker service running Selenium.
+- **DOCKER_SHM_SIZE_SELENIUM**: Shared memory size for the Docker service running Selenium.
 
 More details about these variables can be found in the [VARIABLES.md](docs/VARIABLES.md) file.
 

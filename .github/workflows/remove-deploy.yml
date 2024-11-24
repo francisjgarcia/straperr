@@ -101,12 +101,26 @@ jobs:
           docker context create proxy --docker host=ssh://proxy
           docker context use proxy
 
+      - name: Remove selenium container from server
+        run: |
+          if [ "$(docker ps -a -q -f name=straperr-selenium)" ]; then
+            docker rm -f straperr-selenium
+          fi
+
       - name: Remove application from server
         env:
           REPO_NAME: ${{ needs.setup.outputs.repo_name }}
         run: |
           if [ "$(docker ps -a -q -f name=${{ env.REPO_NAME }})" ]; then
             docker rm -f ${{ env.REPO_NAME }}
+          fi
+
+      - name: Remove straperr docker network
+        env:
+          DOCKER_NETWORK_STRAPERR: ${{ secrets.DOCKER_NETWORK_STRAPERR }}
+        run: |
+          if [ "$(docker network ls -q -f name=${{ env.DOCKER_NETWORK_STRAPERR }})" ]; then
+            docker network rm ${{ env.DOCKER_NETWORK_STRAPERR }}
           fi
 
       - name: Remove old docker images

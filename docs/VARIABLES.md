@@ -39,3 +39,15 @@ This file contains the necessary configurations for the integration and deployme
 - **`DOCKER_MEMORY_RESERVATION`**:
   - **Description**: The memory reservation for the Docker container.
   - **Example**: `10M`
+
+- **`DOCKER_MEMORY_LIMIT_SELENIUM`**:
+  - **Description**: The memory limit for the Docker container running Selenium.
+  - **Example**: `200M`
+
+- **`DOCKER_MEMORY_RESERVATION_SELENIUM`**:
+  - **Description**: The memory reservation for the Docker container running Selenium.
+  - **Example**: `100M`
+
+- **`DOCKER_SHM_SIZE_SELENIUM`**:
+  - **Description**: The shared memory size for the Docker container running Selenium.
+  - **Example**: `2G`
