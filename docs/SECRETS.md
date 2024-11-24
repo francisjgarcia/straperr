@@ -33,3 +33,13 @@ This file contains sensitive configurations necessary for the integration and de
 - **`SSH_PROXY_USER`**:
   - **Description**: The username for authentication on the proxy server.
   - **Example**: `proxyuser`
+
+### Application Configuration Variables
+
+- **`HDOLIMPO_USERNAME`**:
+  - **Description**: The username for the HDOLimpo account.
+  - **Example**: `myuser`
+
+- **`HDOLIMPO_PASSWORD`**:
+  - **Description**: The password for the HDOLimpo account.
+  - **Example**: `mypassword`

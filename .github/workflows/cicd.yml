@@ -513,7 +513,44 @@ jobs:
           TAG_VERSION: ${{ needs.setup.outputs.tag_version }}
         run: docker pull ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ env.TAG_VERSION }}
 
-      - name: Deploy to server
+      - name: Create straperr docker network if not exists
+        env:
+          DOCKER_NETWORK_STRAPERR: ${{ secrets.DOCKER_NETWORK_STRAPERR }}
+        run: |
+          if [ ! "$(docker network ls --format '{{.Name}}' | grep ${{ env.DOCKER_NETWORK_STRAPERR }})" ]; then
+            docker network create ${{ env.DOCKER_NETWORK_STRAPERR }}
+          fi
+
+      - name: Deploy selenium container to server
+        env:
+          DOCKER_NETWORK_STRAPERR: ${{ secrets.DOCKER_NETWORK_STRAPERR }}
+          DOCKER_DNS1: ${{ secrets.DOCKER_DNS1 }}
+          DOCKER_DNS2: ${{ secrets.DOCKER_DNS2 }}
+          DOCKER_SHM_SIZE_SELENIUM: ${{ secrets.DOCKER_SHM_SIZE_SELENIUM }}
+          DOCKER_MEMORY_LIMIT_SELENIUM: ${{ secrets.DOCKER_MEMORY_LIMIT_SELENIUM }}
+          DOCKER_MEMORY_RESERVATION_SELENIUM: ${{ secrets.DOCKER_MEMORY_RESERVATION_SELENIUM }}
+        run: |
+          if [ "$(docker ps -a -q -f name=straperr-selenium)" ]; then
+            docker rm -f straperr-selenium
+          fi
+          docker run -d \
+            --name straperr-selenium \
+            --hostname straperr-selenium \
+            --network ${{ env.DOCKER_NETWORK_STRAPERR }} \
+            --dns=${{ env.DOCKER_DNS1 }} \
+            --dns=${{ env.DOCKER_DNS2 }} \
+            --health-cmd="curl -f http://localhost:4444/wd/hub/status || exit 1" \
+            --health-start-period=30s \
+            --health-interval=1m \
+            --health-timeout=10s \
+            --health-retries=3 \
+            --shm-size=${{ secrets.DOCKER_SHM_SIZE_SELENIUM }} \
+            --memory=${{ secrets.DOCKER_MEMORY_LIMIT_SELENIUM }} \
+            --memory-reservation=${{ secrets.DOCKER_MEMORY_RESERVATION_SELENIUM }} \
+            --restart always \
+          selenium/standalone-chrome:latest
+
+      - name: Deploy application to server
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
           REPO_NAME: ${{ needs.setup.outputs.repo_name }}
@@ -521,11 +558,14 @@ jobs:
           DOCKER_DNS1: ${{ vars.DOCKER_DNS1 }}
           DOCKER_DNS2: ${{ vars.DOCKER_DNS2 }}
           DOCKER_NETWORK: ${{ vars.DOCKER_NETWORK }}
+          DOCKER_NETWORK_STRAPERR: ${{ vars.DOCKER_NETWORK_STRAPERR }}
           DOCKER_HEALTHCHECK_URL: ${{ vars.DOCKER_HEALTHCHECK_URL }}
           DOCKER_MEMORY_LIMIT: ${{ vars.DOCKER_MEMORY_LIMIT }}
           DOCKER_MEMORY_RESERVATION: ${{ vars.DOCKER_MEMORY_RESERVATION }}
           FLASK_ENV: ${{ vars.FLASK_ENV }}
           FLASK_DEBUG: ${{ vars.FLASK_DEBUG }}
+          HDOLIMPO_USERNAME: ${{ secrets.HDOLIMPO_USERNAME }}
+          HDOLIMPO_PASSWORD: ${{ secrets.HDOLIMPO_PASSWORD }}
         run: |
           if [ "$(docker ps -a -q -f name=${{ env.REPO_NAME }})" ]; then
             docker rm -f ${{ env.REPO_NAME }}
@@ -534,13 +574,14 @@ jobs:
             --name ${{ env.REPO_NAME }} \
             --hostname ${{ env.REPO_NAME }} \
             --network ${{ env.DOCKER_NETWORK }} \
-            --dns=${{ env.DOCKER_DNS1 }} \
-            --dns=${{ env.DOCKER_DNS2 }} \
+            --network ${{ env.DOCKER_NETWORK_STRAPERR }} \
             -e PUID=1000 \
             -e PGID=1000 \
             -e TZ=Europe/Madrid \
             -e FLASK_ENV=${{ env.FLASK_ENV }} \
             -e FLASK_DEBUG=${{ env.FLASK_DEBUG }} \
+            -e HDOLIMPO_USERNAME=${{ secrets.HDOLIMPO_USERNAME }} \
+            -e HDOLIMPO_PASSWORD=${{ secrets.HDOLIMPO_PASSWORD }} \
             --health-cmd="curl -f ${{ env.DOCKER_HEALTHCHECK_URL }} || exit 1" \
             --health-start-period=30s \
             --health-interval=1h \
@@ -548,6 +589,7 @@ jobs:
             --health-retries=3 \
             --memory="${{ env.DOCKER_MEMORY_LIMIT }}" \
             --memory-reservation="${{ env.DOCKER_MEMORY_RESERVATION }}" \
+            --depends-on straperr-selenium \
             --restart always \
           ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ env.TAG_VERSION }}
 

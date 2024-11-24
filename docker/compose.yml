@@ -8,9 +8,8 @@ services:
       dockerfile: ./docker/Dockerfile.local
     ports:
       - ${STRAPERR_PORT:-5000}:5000
-    dns:
-      - ${DNS1:-8.8.8.8}
-      - ${DNS2:-8.8.4.4}
+    networks:
+      - straperr_network
     volumes:
       - ../src:/app
       - ../tests:/app/tests
@@ -29,7 +28,37 @@ services:
           memory: 50M
         reservations:
           memory: 6M
+    depends_on:
+      - straperr-selenium
     user: root
     tty: true
     command: /bin/sh
     restart: on-failure
+
+  straperr-selenium:
+    container_name: straperr-selenium
+    hostname: straperr-selenium
+    image: selenium/standalone-chrome:latest
+    networks:
+      - straperr_network
+    dns:
+      - ${DNS1:-8.8.8.8}
+      - ${DNS2:-8.8.4.4}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4444/wd/hub/status"]
+      start_period: 30s
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 500M
+    shm_size: 2G
+    restart: on-failure
+
+networks:
+  straperr_network:
+    external: true
