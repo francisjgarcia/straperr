@@ -542,6 +542,7 @@ jobs:
             --network ${{ env.DOCKER_NETWORK_STRAPERR }} \
             --dns=${{ env.DOCKER_DNS1 }} \
             --dns=${{ env.DOCKER_DNS2 }} \
+            -e SE_ENABLE_TRACING=false \
             --health-cmd="curl -f http://localhost:4444/wd/hub/status || exit 1" \
             --health-start-period=30s \
             --health-interval=1m \

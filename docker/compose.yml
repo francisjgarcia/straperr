@@ -44,6 +44,8 @@ services:
     dns:
       - ${DNS1:-8.8.8.8}
       - ${DNS2:-8.8.4.4}
+    environment:
+      SE_ENABLE_TRACING: false
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:4444/wd/hub/status"]
       start_period: 30s
