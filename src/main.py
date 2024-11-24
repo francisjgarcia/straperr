@@ -156,9 +156,9 @@ def main():
                                                 'Unknown')
     indexer = data.get('release', {}).get('indexer', 'Unknown')
 
-    # Remove [SPANiSH] from release title
+    # Remove [SPANiSH] or [MULTi SPANiSH ENGLiSH] from the release title
     clean_release_title = re.sub(
-        r'\s*\[?\bSPANiSH\b\]?\s*$',
+        r'\s*\[?\b(MULTi\s+SPANiSH\s+ENGLiSH|SPANiSH)\b\]?\s*$',
         '', release_title, flags=re.IGNORECASE)
 
     # Define functions for each event case
