@@ -1,5 +1,11 @@
 # Changelog
 
+## [v1.2.0](https://github.com/francisjgarcia/straperr/releases/v1.2.0) (2024-11-24)
+* Merge pull request #8 from francisjgarcia/development @francisjgarcia ([#f74c737](https://github.com/francisjgarcia/straperr/commit/f74c737c21017ec11bb53bb0ae6131c5af6e7b25))
+* feat(language): Filter multilanguage @francisjgarcia ([#1be0703](https://github.com/francisjgarcia/straperr/commit/1be0703a9dc89621ff5c97422e82d5854fd9bf34))
+* ci(selenium): Disable selenium tracing @francisjgarcia ([#ec80237](https://github.com/francisjgarcia/straperr/commit/ec8023716f008e5a96b717d9eb42621ce58f7ccf))
+
+
 ## [v1.1.3](https://github.com/francisjgarcia/straperr/releases/v1.1.3) (2024-11-24)
 * [patch] Merge pull request #7 from francisjgarcia/development @francisjgarcia ([#d7f0b96](https://github.com/francisjgarcia/straperr/commit/d7f0b96e1034ea25ab2546ed7cacb7a1f0c713ee))
 * ci(docker): Docker pull selenium image after run and connect straperr network after run @francisjgarcia ([#612c307](https://github.com/francisjgarcia/straperr/commit/612c3070e2594a3bbd7400fd98426138d0664460))
