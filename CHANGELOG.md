@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.1.1](https://github.com/francisjgarcia/straperr/releases/v1.1.1) (2024-11-24)
+* [patch] Merge pull request #5 from francisjgarcia/development @francisjgarcia ([#241c5ba](https://github.com/francisjgarcia/straperr/commit/241c5bab9b53055c6c8b732b8b8393e53bdc4905))
+* ci(environments): Fix environment and secrets variable types @francisjgarcia ([#6027da4](https://github.com/francisjgarcia/straperr/commit/6027da4184102db118821b06b0eed205a34f56b5))
+
+
 ## [v1.1.0](https://github.com/francisjgarcia/straperr/releases/v1.1.0) (2024-11-24)
 * Merge pull request #4 from francisjgarcia/development @francisjgarcia ([#d4abf4b](https://github.com/francisjgarcia/straperr/commit/d4abf4b386ab2ef0d8a95b727098a02534ac3dd3))
 * breaking(selenium): Add all selenium scraper to push thanks button @francisjgarcia ([#1378aeb](https://github.com/francisjgarcia/straperr/commit/1378aebd20f6f00cd871c3d03dcdf38e9bdb6ea9))
