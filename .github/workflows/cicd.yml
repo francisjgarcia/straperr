@@ -579,7 +579,7 @@ jobs:
             -e FLASK_ENV=${{ env.FLASK_ENV }} \
             -e FLASK_DEBUG=${{ env.FLASK_DEBUG }} \
             -e HDOLIMPO_USERNAME=${{ env.HDOLIMPO_USERNAME }} \
-            -e HDOLIMPO_PASSWORD=${{ env.HDOLIMPO_PASSWORD }} \
+            -e HDOLIMPO_PASSWORD='${{ env.HDOLIMPO_PASSWORD }}' \
             --health-cmd="curl -f ${{ env.DOCKER_HEALTHCHECK_URL }} || exit 1" \
             --health-start-period=30s \
             --health-interval=1h \
@@ -587,7 +587,6 @@ jobs:
             --health-retries=3 \
             --memory="${{ env.DOCKER_MEMORY_LIMIT }}" \
             --memory-reservation="${{ env.DOCKER_MEMORY_RESERVATION }}" \
-            --depends-on straperr-selenium \
             --restart always \
           ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ env.TAG_VERSION }}
 
