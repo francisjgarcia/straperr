@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.1.2](https://github.com/francisjgarcia/straperr/releases/v1.1.2) (2024-11-24)
+* [patch] Merge pull request #6 from francisjgarcia/development @francisjgarcia ([#515079e](https://github.com/francisjgarcia/straperr/commit/515079e8be3b0410953040a7184fe8a717e3c55e))
+* ci(docker): Remove 'depends on' on docker run application command @francisjgarcia ([#108be9a](https://github.com/francisjgarcia/straperr/commit/108be9ace90ae7492e51c10679f875d1acc7066e))
+
+
 ## [v1.1.1](https://github.com/francisjgarcia/straperr/releases/v1.1.1) (2024-11-24)
 * [patch] Merge pull request #5 from francisjgarcia/development @francisjgarcia ([#241c5ba](https://github.com/francisjgarcia/straperr/commit/241c5bab9b53055c6c8b732b8b8393e53bdc4905))
 * ci(environments): Fix environment and secrets variable types @francisjgarcia ([#6027da4](https://github.com/francisjgarcia/straperr/commit/6027da4184102db118821b06b0eed205a34f56b5))
