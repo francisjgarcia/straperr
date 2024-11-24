@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.1.3](https://github.com/francisjgarcia/straperr/releases/v1.1.3) (2024-11-24)
+* [patch] Merge pull request #7 from francisjgarcia/development @francisjgarcia ([#d7f0b96](https://github.com/francisjgarcia/straperr/commit/d7f0b96e1034ea25ab2546ed7cacb7a1f0c713ee))
+* ci(docker): Docker pull selenium image after run and connect straperr network after run @francisjgarcia ([#612c307](https://github.com/francisjgarcia/straperr/commit/612c3070e2594a3bbd7400fd98426138d0664460))
+
+
 ## [v1.1.2](https://github.com/francisjgarcia/straperr/releases/v1.1.2) (2024-11-24)
 * [patch] Merge pull request #6 from francisjgarcia/development @francisjgarcia ([#515079e](https://github.com/francisjgarcia/straperr/commit/515079e8be3b0410953040a7184fe8a717e3c55e))
 * ci(docker): Remove 'depends on' on docker run application command @francisjgarcia ([#108be9a](https://github.com/francisjgarcia/straperr/commit/108be9ace90ae7492e51c10679f875d1acc7066e))
