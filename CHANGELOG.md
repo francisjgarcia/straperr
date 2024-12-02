@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.4.0](https://github.com/francisjgarcia/straperr/releases/v1.4.0) (2024-12-02)
+* Merge pull request #10 from francisjgarcia/dependabot/pip/src/selenium-4.27.1 @francisjgarcia ([#5d2820d](https://github.com/francisjgarcia/straperr/commit/5d2820d42b66219d1fd134d98cd5e0860ba7163d))
+* chore(deps): bump selenium from 4.27.0 to 4.27.1 in /src @francisjgarcia ([#12d1635](https://github.com/francisjgarcia/straperr/commit/12d1635c7cfcf2f7985fe495f943bd2468d08a17))
+
+
 ## [v1.3.0](https://github.com/francisjgarcia/straperr/releases/v1.3.0) (2024-11-28)
 * Merge pull request #9 from francisjgarcia/dependabot/pip/src/selenium-4.27.0 @francisjgarcia ([#a1edc7d](https://github.com/francisjgarcia/straperr/commit/a1edc7d2e7bde58a8a3d0cfe9bb9a9ec19542a2a))
 * chore(deps): bump selenium from 4.26.1 to 4.27.0 in /src @francisjgarcia ([#3fb2be7](https://github.com/francisjgarcia/straperr/commit/3fb2be794fad01a88e642e626aa0ecd56abc114f))
