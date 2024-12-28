@@ -9,11 +9,11 @@ test_data = {
     "eventType": "Grab",
     "instanceName": "TestInstance",
     "release": {
-        "releaseTitle": "Series Title [SPANiSH]",
+        "releaseTitle": "Movie Title [SPANiSH]",
         "indexer": "HD-Olimpo"
     },
     "movie": {
-        "title": "Series Title"
+        "title": "Movie Title"
     }
 }
 

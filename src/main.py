@@ -188,7 +188,7 @@ def hdolimpo_thanks(username, password, search_query):
                 app.logger.info(f"URL of the first matching result: {result_url}")
                 break
         else:
-            app.logger.warning("No matching result found.")
+            app.logger.warning(f"No matching result found for the search query '{search_query}'.")
             driver.quit()
             return
 
@@ -223,6 +223,18 @@ def hdolimpo_thanks(username, password, search_query):
     driver.quit()
 
 
+# Function to clean the release title
+def clean_release_title(title):
+    patron = r'\b(MULTi|SPANiSH)\b\s*|\bENGLiSH\b'
+
+    def reemplazo(match):
+        if match.group(0).lower() == 'english':
+            return 'Eng'
+        return ''
+
+    return re.sub(patron, reemplazo, title, flags=re.IGNORECASE).strip()
+
+
 # Main endpoint
 @app.route('/', methods=['POST'])
 def main():
@@ -234,11 +246,6 @@ def main():
                                                 'Unknown')
     indexer = data.get('release', {}).get('indexer', 'Unknown')
 
-    # Remove [SPANiSH] or [MULTi SPANiSH ENGLiSH] from the release title
-    clean_release_title = re.sub(
-        r'\s*\[?\b(MULTi\s+SPANiSH\s+ENGLiSH|SPANiSH)\b\]?\s*$',
-        '', release_title, flags=re.IGNORECASE)
-
     # Define functions for each event case
     def handle_test():
         app.logger.info(f"Test connection from {instance_name}")
@@ -249,7 +256,7 @@ def main():
         }), 200
 
     def handle_grab():
-        app.logger.info(f"Grabbing '{clean_release_title}' "
+        app.logger.info(f"Grabbing '{clean_release_title(release_title)}' "
                         f"from {indexer}.")
         return jsonify({
             "status": "success",
@@ -258,9 +265,11 @@ def main():
         }), 200
 
     def handle_download():
-        app.logger.info(f"Downloading '{clean_release_title}' from {indexer}.")
+        app.logger.info(f"Downloading '{clean_release_title(release_title)}' from {indexer}.")
+
         hdolimpo_thanks(HDOLIMPO_USERNAME, HDOLIMPO_PASSWORD,
-                        f'{clean_release_title}')
+                        f'{clean_release_title(release_title)}')
+
         return jsonify({
             "status": "success",
             "message": (f"Downloading '{title}' "
