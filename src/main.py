@@ -1,21 +1,100 @@
-
 import os
 import time
 import re
 import logging
+import requests
+import json
 from flask import Flask, request, jsonify
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 
+# HD-Olimpo credentials
 HDOLIMPO_USERNAME = os.environ.get('HDOLIMPO_USERNAME')
 HDOLIMPO_PASSWORD = os.environ.get('HDOLIMPO_PASSWORD')
+
+# Sonarr credentials
+SONARR_API_URL = os.environ.get('SONARR_API_URL')
+SONARR_API_KEY = os.environ.get('SONARR_API_KEY')
 
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
 
 
+# Function to get the manual import data from Sonarr using downloadId
+def get_manual_import(download_id):
+    headers = {
+        'X-Api-Key': SONARR_API_KEY
+    }
+    url = f"{SONARR_API_URL}/manualimport?downloadId={download_id}&filterExistingFiles=false"
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        return response.json()  # Return the JSON response containing the episode data
+    else:
+        app.logger.error(f"Error in GET: {response.status_code} - {response.text}")
+        return None
+
+
+# New function to get languages from the new endpoint using downloadId
+def get_languages_for_download(download_id):
+    headers = {
+        'X-Api-Key': SONARR_API_KEY
+    }
+    url = f"{SONARR_API_URL}/manualimport?downloadId={download_id}&filterExistingFiles=false"
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        if data and len(data) > 0 and "languages" in data[0]:
+            return data[0]["languages"]
+        else:
+            app.logger.warning("No languages found in response.")
+            return []
+    else:
+        app.logger.error(f"Error fetching languages: {response.status_code}")
+        return []
+
+
+# Function to perform the POST with the data from the GET
+def post_manual_import(data, languages):
+    headers = {
+        'X-Api-Key': SONARR_API_KEY,
+        'Content-Type': 'application/json'
+    }
+
+    post_data = {
+        "name": "ManualImport",
+        "files": [
+            {
+                "path": data["path"],  # Get the outputPath from the manualimport response
+                "seriesId": data["episodes"][0]["seriesId"],
+                "episodeIds": [data["episodes"][0]["id"]],
+                "quality": data["quality"],
+                "languages": languages,
+                "indexerFlags": 0,
+                "releaseType": "singleEpisode",
+                "downloadId": data["downloadId"]
+            }
+        ],
+        "importMode": "auto"
+    }
+
+    app.logger.info(f"POST data: {post_data}")
+
+    response = requests.post(f"{SONARR_API_URL}/command",
+                             headers=headers, data=json.dumps(post_data))
+
+    if response.status_code == 201:
+        app.logger.info(f"Successfully posted for {data['name']}")
+    else:
+        app.logger.error(f"Error in POST for {data['name']}: {response.status_code}")
+        app.logger.error(response.text)
+
+
+# Function to perform the POST with the data from the GET
 def hdolimpo_thanks(username, password, search_query):
     """
     Logs in to the website, searches for the specified torrent,
@@ -57,7 +136,7 @@ def hdolimpo_thanks(username, password, search_query):
         password_field.submit()
 
     except Exception as e:
-        print(f"Error filling out login fields: {str(e)}")
+        app.logger.error(f"Error filling out the login fields: {str(e)}")
         driver.quit()
         return
 
@@ -67,15 +146,15 @@ def hdolimpo_thanks(username, password, search_query):
     # Check if login was successful
     try:
         if "Iniciar sesión" in driver.page_source:
-            print("Login failed. Could not find the success text.")
-            print("Login page content:")
-            print(driver.page_source)  # Print the HTML content for debugging
+            app.logger.error("Login failed. Could not find the success text.")
+            app.logger.info("Login page content:")
+            app.logger.info(driver.page_source)  # Print the HTML content for debugging
             driver.quit()
             return
         else:
-            print("Login successful!")
+            app.logger.info("Login successful at HD-Olimpo. User authenticated.")
     except Exception as e:
-        print(f"Error checking login status: {str(e)}")
+        app.logger.error(f"Error checking login status: {str(e)}")
         driver.quit()
         return
 
@@ -90,7 +169,7 @@ def hdolimpo_thanks(username, password, search_query):
         search_field.send_keys(search_query)
         time.sleep(2)  # Wait for results to load
     except Exception as e:
-        print(f"Error searching for the title: {str(e)}")
+        app.logger.error(f"Error searching for the title: {str(e)}")
         driver.quit()
         return
 
@@ -106,15 +185,15 @@ def hdolimpo_thanks(username, password, search_query):
             if link.text == search_query:
                 # If the link text matches, get the URL of the torrent
                 result_url = link.get_attribute("href")
-                print(f"URL of the first matching result: {result_url}")
+                app.logger.info(f"URL of the first matching result: {result_url}")
                 break
         else:
-            print("No matching result found.")
+            app.logger.warning(f"No matching result found for the search query '{search_query}'.")
             driver.quit()
             return
 
     except Exception as e:
-        print(f"Error getting the result: {str(e)}")
+        app.logger.error(f"Error getting the result: {str(e)}")
         driver.quit()
         return
 
@@ -130,19 +209,30 @@ def hdolimpo_thanks(username, password, search_query):
 
         # Check if the button has the 'disabled' attribute
         if thanks_button.get_attribute("disabled") == "true":
-            print(
-                "You have already thanked for this torrent. "
-                "No action taken.")
+            app.logger.info(
+                "You have already thanked for this torrent. No action taken.")
         else:
             # If the button is not disabled, click the 'Thank You' button
             thanks_button.click()
-            print("Thanked successfully!")
+            app.logger.info("Successfully thanked!")
 
     except Exception as e:
-        print(f"Error interacting with the 'Thank You' button: {str(e)}")
+        app.logger.error(f"Error interacting with the 'Thank You' button: {str(e)}")
 
     # Close the browser session
     driver.quit()
+
+
+# Function to clean the release title
+def clean_release_title(title):
+    patron = r'\b(MULTi|SPANiSH)\b\s*|\bENGLiSH\b'
+
+    def reemplazo(match):
+        if match.group(0).lower() == 'english':
+            return 'Eng'
+        return ''
+
+    return re.sub(patron, reemplazo, title, flags=re.IGNORECASE).strip()
 
 
 # Main endpoint
@@ -156,11 +246,6 @@ def main():
                                                 'Unknown')
     indexer = data.get('release', {}).get('indexer', 'Unknown')
 
-    # Remove [SPANiSH] or [MULTi SPANiSH ENGLiSH] from the release title
-    clean_release_title = re.sub(
-        r'\s*\[?\b(MULTi\s+SPANiSH\s+ENGLiSH|SPANiSH)\b\]?\s*$',
-        '', release_title, flags=re.IGNORECASE)
-
     # Define functions for each event case
     def handle_test():
         app.logger.info(f"Test connection from {instance_name}")
@@ -171,7 +256,7 @@ def main():
         }), 200
 
     def handle_grab():
-        app.logger.info(f"Grabbing '{clean_release_title}' "
+        app.logger.info(f"Grabbing '{clean_release_title(release_title)}' "
                         f"from {indexer}.")
         return jsonify({
             "status": "success",
@@ -180,20 +265,55 @@ def main():
         }), 200
 
     def handle_download():
-        app.logger.info(f"Downloading '{clean_release_title}' from {indexer}.")
+        app.logger.info(f"Downloading '{clean_release_title(release_title)}' from {indexer}.")
+
         hdolimpo_thanks(HDOLIMPO_USERNAME, HDOLIMPO_PASSWORD,
-                        f'{clean_release_title}')
+                        f'{clean_release_title(release_title)}')
+
         return jsonify({
             "status": "success",
             "message": (f"Downloading '{title}' "
                         f"from {indexer} successfully.")
         }), 200
 
+    def handle_manual_interaction_required():
+        app.logger.info(
+            f"Starting manual import process to '{instance_name}'.")
+
+        download_id = data.get('downloadId', {})
+
+        if not download_id:
+            app.logger.error("No downloadId provided in the request.")
+            return jsonify({
+                "status": "error",
+                "message": "downloadId is required to continue."
+            }), 400
+
+        languages = get_languages_for_download(data["downloadId"])
+
+        if not languages:
+            languages = [{"id": 3, "name": "Spanish"}]
+
+        manual_import_data = get_manual_import(download_id)
+
+        if manual_import_data:
+            for record in manual_import_data:
+                app.logger.info(f"Processing: {record['name']}")
+                post_manual_import(record, languages)
+        else:
+            app.logger.warning("No records found or error in manual import.")
+
+        return jsonify({
+            "status": "success",
+            "message": "Manual import process completed."
+        }), 200
+
     # Dictionary that acts as a switch
     event_handlers = {
-        "Test": handle_test,
-        "Grab": handle_grab,
-        "Download": handle_download,
+        'Test': handle_test,
+        'Grab': handle_grab,
+        'Download': handle_download,
+        'ManualInteractionRequired': handle_manual_interaction_required,
     }
 
     # Run the corresponding function for the event, if it exists
@@ -202,11 +322,10 @@ def main():
     if handler:
         return handler()
     else:
-        app.logger.warning(f"Event type not supported: {event_type}")
-        app.logger.info(data)
+        app.logger.error(f"Unknown event type: {event_type}")
         return jsonify({
             "status": "error",
-            "message": "Event type not supported"
+            "message": "Unknown event type."
         }), 400
 
 
