@@ -1,5 +1,16 @@
 # Changelog
 
+## [v1.5.0](https://github.com/francisjgarcia/straperr/releases/v1.5.0) (2024-12-29)
+* Merge pull request #13 from francisjgarcia/feature/sonarr_manual_import @francisjgarcia ([#8f46ef5](https://github.com/francisjgarcia/straperr/commit/8f46ef502335b1027269b69d0f9820d96779e93d))
+* ci(tests): Improve tests check @francisjgarcia ([#a84fde6](https://github.com/francisjgarcia/straperr/commit/a84fde612e2ab9d6bd97757dc73c2fdf16da15d8))
+* Merge pull request #12 from francisjgarcia/feature/sonarr_manual_import @francisjgarcia ([#70f5724](https://github.com/francisjgarcia/straperr/commit/70f57242b69efed8b18393247089c5803e9729e7))
+* style(flake8): Add new line before main app run @francisjgarcia ([#f406ef0](https://github.com/francisjgarcia/straperr/commit/f406ef0e8cdb9dac848de49c9febd4045d18b1bd))
+* style(flake8): format code to adhere to flake8 character line length @francisjgarcia ([#f1dd462](https://github.com/francisjgarcia/straperr/commit/f1dd46221acb099506f1b01f28925bbcff744b59))
+* Merge pull request #11 from francisjgarcia/feature/sonarr_manual_import @francisjgarcia ([#e86bcaf](https://github.com/francisjgarcia/straperr/commit/e86bcafb0f9166c9ecf41e5510d2f0bf38ba8925))
+* feat(clean_title_function): Split clean release title to an external function @francisjgarcia ([#a71351e](https://github.com/francisjgarcia/straperr/commit/a71351e8f2e8eb4f23d3cc981bc16e33f5a2b532))
+* feat(sonarr): Auto import manual interaction required from sonarr series @francisjgarcia ([#87c8044](https://github.com/francisjgarcia/straperr/commit/87c804418b5457be20f660a427fcc5fc48ed6b75))
+
+
 ## [v1.4.0](https://github.com/francisjgarcia/straperr/releases/v1.4.0) (2024-12-02)
 * Merge pull request #10 from francisjgarcia/dependabot/pip/src/selenium-4.27.1 @francisjgarcia ([#5d2820d](https://github.com/francisjgarcia/straperr/commit/5d2820d42b66219d1fd134d98cd5e0860ba7163d))
 * chore(deps): bump selenium from 4.27.0 to 4.27.1 in /src @francisjgarcia ([#12d1635](https://github.com/francisjgarcia/straperr/commit/12d1635c7cfcf2f7985fe495f943bd2468d08a17))
