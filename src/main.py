@@ -27,14 +27,18 @@ def get_manual_import(download_id):
     headers = {
         'X-Api-Key': SONARR_API_KEY
     }
-    url = f"{SONARR_API_URL}/manualimport?downloadId={download_id}&filterExistingFiles=false"
+    url = (
+        f"{SONARR_API_URL}/manualimport?downloadId={download_id}&"
+        "filterExistingFiles=false"
+    )
 
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
-        return response.json()  # Return the JSON response containing the episode data
+        return response.json()  # Return the JSON response
     else:
-        app.logger.error(f"Error in GET: {response.status_code} - {response.text}")
+        app.logger.error(
+            f"Error in GET: {response.status_code} - {response.text}")
         return None
 
 
@@ -43,7 +47,10 @@ def get_languages_for_download(download_id):
     headers = {
         'X-Api-Key': SONARR_API_KEY
     }
-    url = f"{SONARR_API_URL}/manualimport?downloadId={download_id}&filterExistingFiles=false"
+    url = (
+        f"{SONARR_API_URL}/manualimport?downloadId={download_id}&"
+        "filterExistingFiles=false"
+    )
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
@@ -69,7 +76,7 @@ def post_manual_import(data, languages):
         "name": "ManualImport",
         "files": [
             {
-                "path": data["path"],  # Get the outputPath from the manualimport response
+                "path": data["path"],
                 "seriesId": data["episodes"][0]["seriesId"],
                 "episodeIds": [data["episodes"][0]["id"]],
                 "quality": data["quality"],
@@ -84,13 +91,15 @@ def post_manual_import(data, languages):
 
     app.logger.info(f"POST data: {post_data}")
 
-    response = requests.post(f"{SONARR_API_URL}/command",
-                             headers=headers, data=json.dumps(post_data))
+    response = requests.post(
+        f"{SONARR_API_URL}/command",
+        headers=headers, data=json.dumps(post_data))
 
     if response.status_code == 201:
         app.logger.info(f"Successfully posted for {data['name']}")
     else:
-        app.logger.error(f"Error in POST for {data['name']}: {response.status_code}")
+        app.logger.error(
+            f"Error in POST for {data['name']}: {response.status_code}")
         app.logger.error(response.text)
 
 
@@ -148,11 +157,12 @@ def hdolimpo_thanks(username, password, search_query):
         if "Iniciar sesión" in driver.page_source:
             app.logger.error("Login failed. Could not find the success text.")
             app.logger.info("Login page content:")
-            app.logger.info(driver.page_source)  # Print the HTML content for debugging
+            app.logger.info(driver.page_source)
             driver.quit()
             return
         else:
-            app.logger.info("Login successful at HD-Olimpo. User authenticated.")
+            app.logger.info(
+                "Login successful at HD-Olimpo. User authenticated.")
     except Exception as e:
         app.logger.error(f"Error checking login status: {str(e)}")
         driver.quit()
@@ -185,10 +195,12 @@ def hdolimpo_thanks(username, password, search_query):
             if link.text == search_query:
                 # If the link text matches, get the URL of the torrent
                 result_url = link.get_attribute("href")
-                app.logger.info(f"URL of the first matching result: {result_url}")
+                app.logger.info(
+                    f"URL of the first matching result: {result_url}")
                 break
         else:
-            app.logger.warning(f"No matching result found for the search query '{search_query}'.")
+            app.logger.warning(
+                f"No matching result found for '{search_query}'.")
             driver.quit()
             return
 
@@ -217,7 +229,8 @@ def hdolimpo_thanks(username, password, search_query):
             app.logger.info("Successfully thanked!")
 
     except Exception as e:
-        app.logger.error(f"Error interacting with the 'Thank You' button: {str(e)}")
+        app.logger.error(
+            f"Error interacting with the 'Thank You' button: {str(e)}")
 
     # Close the browser session
     driver.quit()
@@ -242,8 +255,7 @@ def main():
     event_type = data.get('eventType')
     instance_name = data.get('instanceName', 'Unknown')
     title = data.get('movie', {}).get('title', 'Unknown')
-    release_title = data.get('release', {}).get('releaseTitle',
-                                                'Unknown')
+    release_title = data.get('release', {}).get('releaseTitle', 'Unknown')
     indexer = data.get('release', {}).get('indexer', 'Unknown')
 
     # Define functions for each event case
@@ -256,8 +268,8 @@ def main():
         }), 200
 
     def handle_grab():
-        app.logger.info(f"Grabbing '{clean_release_title(release_title)}' "
-                        f"from {indexer}.")
+        app.logger.info(
+            f"Grabbing '{clean_release_title(release_title)}' from {indexer}.")
         return jsonify({
             "status": "success",
             "message": (f"Title '{title}' "
@@ -265,10 +277,12 @@ def main():
         }), 200
 
     def handle_download():
-        app.logger.info(f"Downloading '{clean_release_title(release_title)}' from {indexer}.")
-
-        hdolimpo_thanks(HDOLIMPO_USERNAME, HDOLIMPO_PASSWORD,
-                        f'{clean_release_title(release_title)}')
+        app.logger.info(
+            f"Downloading '{clean_release_title(release_title)}'"
+            f"from {indexer}.")
+        hdolimpo_thanks(
+            HDOLIMPO_USERNAME, HDOLIMPO_PASSWORD,
+            f'{clean_release_title(release_title)}')
 
         return jsonify({
             "status": "success",
