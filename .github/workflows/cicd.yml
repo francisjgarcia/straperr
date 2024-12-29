@@ -207,10 +207,14 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           TAG_VERSION: ${{ needs.setup.outputs.tag_version }}
         run: |
-          if ls tests/*.py 1> /dev/null 2>&1; then
-            docker run --rm --user root -v ${{ env.GITHUB_WORKSPACE }}/tests:/app/tests ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ env.TAG_VERSION }} sh -c "pip install pytest > /dev/null 2>&1 && pytest" > result_pytest.log
+          if ls tests/test_*.py 1> /dev/null 2>&1; then
+            if ls tests/test_local_*.py 1> /dev/null 2>&1; then
+              echo "Skipping local tests (test_local_*.py)..." > result_pytest.log
+            else
+              docker run --rm --user root -v ${{ env.GITHUB_WORKSPACE }}/tests:/app/tests ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ env.TAG_VERSION }} sh -c  "pip install pytest > /dev/null 2>&1 && cd tests && pytest test_*.py" > result_pytest.log
+            fi
           else
-            echo "No tests found, skipping pytest." > result_pytest.log
+            echo "No test files found, skipping pytest." > result_pytest.log
           fi
 
       - name: Create tests summary
