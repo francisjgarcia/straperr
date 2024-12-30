@@ -43,3 +43,7 @@ This file contains sensitive configurations necessary for the integration and de
 - **`HDOLIMPO_PASSWORD`**:
   - **Description**: The password for the HDOLimpo account.
   - **Example**: `mypassword`
+
+- **`SONARR_API_KEY`**:
+  - **Description**: The API
+  - **Example**: `myapikey`

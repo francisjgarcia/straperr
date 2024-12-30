@@ -214,6 +214,7 @@ To properly enable the pipeline and deployment, you need to configure the follow
 - **SSH_PROXY_USER**: Proxy user.
 - **HDOLIMPO_USERNAME**: Username for the HDOLimpo account.
 - **HDOLIMPO_PASSWORD**: Password for the HDOLimpo account.
+- **SONARR_API_KEY**: API key for the Sonarr API.
 
 More details about these secrets can be found in the [SECRETS.md](docs/SECRETS.md) file.
 
@@ -223,6 +224,7 @@ To properly configure the application, you need to set the following variables i
 
 - **FLASK_ENV**: Flask environment configuration for the application (development, production, testing).
 - **FLASK_DEBUG**: Flask debug configuration for the application. Set to `1` for debugging or `0` for production mode.
+- **SONARR_API_URL**: URL for the Sonarr API.
 
 Also, you need to set the environment variables for the Docker service:
 

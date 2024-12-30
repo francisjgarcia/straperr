@@ -14,6 +14,10 @@ This file contains the necessary configurations for the integration and deployme
   - **Description**: Flask debug configuration for the application. Set to `1` for debugging or `0` for production mode.
   - **Example**: `0`
 
+- **`SONARR_API_URL`**:
+  - **Description**: The URL for the Sonarr API.
+  - **Example**: `http://localhost:8989/api`
+
 ### Docker Configuration Variables
 
 - **`DOCKER_DNS1`**:
