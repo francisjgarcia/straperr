@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.5.1](https://github.com/francisjgarcia/straperr/releases/v1.5.1) (2024-12-30)
+* [patch] Merge pull request #14 from francisjgarcia/feature/sonarr_api_variables @francisjgarcia ([#ab9615d](https://github.com/francisjgarcia/straperr/commit/ab9615d3a87f06858507d4472f0f917fc1182b13))
+* ci(variables): Add sonarr api variables to workflow and documentation @francisjgarcia ([#1b24776](https://github.com/francisjgarcia/straperr/commit/1b24776b997af77a46ed69d92c6f2e742297ae4a))
+
+
 ## [v1.5.0](https://github.com/francisjgarcia/straperr/releases/v1.5.0) (2024-12-29)
 * Merge pull request #13 from francisjgarcia/feature/sonarr_manual_import @francisjgarcia ([#8f46ef5](https://github.com/francisjgarcia/straperr/commit/8f46ef502335b1027269b69d0f9820d96779e93d))
 * ci(tests): Improve tests check @francisjgarcia ([#a84fde6](https://github.com/francisjgarcia/straperr/commit/a84fde612e2ab9d6bd97757dc73c2fdf16da15d8))
