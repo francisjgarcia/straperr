@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.6.0](https://github.com/francisjgarcia/straperr/releases/v1.6.0) (2025-02-01)
+* Merge pull request #15 from francisjgarcia/dependabot/pip/src/selenium-4.28.1 @francisjgarcia ([#09dff88](https://github.com/francisjgarcia/straperr/commit/09dff88e62cb85ca9a36369f51e50e384a327ebc))
+* chore(deps): bump selenium from 4.27.1 to 4.28.1 in /src @francisjgarcia ([#169c379](https://github.com/francisjgarcia/straperr/commit/169c37903ab1ebfb10d961e2698e83612aa91a1a))
+
+
 ## [v1.5.1](https://github.com/francisjgarcia/straperr/releases/v1.5.1) (2024-12-30)
 * [patch] Merge pull request #14 from francisjgarcia/feature/sonarr_api_variables @francisjgarcia ([#ab9615d](https://github.com/francisjgarcia/straperr/commit/ab9615d3a87f06858507d4472f0f917fc1182b13))
 * ci(variables): Add sonarr api variables to workflow and documentation @francisjgarcia ([#1b24776](https://github.com/francisjgarcia/straperr/commit/1b24776b997af77a46ed69d92c6f2e742297ae4a))
