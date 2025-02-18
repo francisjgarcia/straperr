@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.7.0](https://github.com/francisjgarcia/straperr/releases/v1.7.0) (2025-02-18)
+* style(flake8): format code to adhere to flake8 character line length @francisjgarcia ([#03cea6e](https://github.com/francisjgarcia/straperr/commit/03cea6ed38d51344eabb69c1f0ff9c0a0f75abca))
+* feat: Improve logs and add all *arr connections @francisjgarcia ([#6ebc87b](https://github.com/francisjgarcia/straperr/commit/6ebc87b755a3d36642a62fe40da7a0aa034a481c))
+
+
 ## [v1.6.0](https://github.com/francisjgarcia/straperr/releases/v1.6.0) (2025-02-01)
 * Merge pull request #15 from francisjgarcia/dependabot/pip/src/selenium-4.28.1 @francisjgarcia ([#09dff88](https://github.com/francisjgarcia/straperr/commit/09dff88e62cb85ca9a36369f51e50e384a327ebc))
 * chore(deps): bump selenium from 4.27.1 to 4.28.1 in /src @francisjgarcia ([#169c379](https://github.com/francisjgarcia/straperr/commit/169c37903ab1ebfb10d961e2698e83612aa91a1a))
