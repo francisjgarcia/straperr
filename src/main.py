@@ -2,6 +2,7 @@ import os
 import time
 import re
 import logging
+from logging.handlers import RotatingFileHandler
 import requests
 import json
 from flask import Flask, request, jsonify
@@ -17,18 +18,60 @@ HDOLIMPO_PASSWORD = os.environ.get('HDOLIMPO_PASSWORD')
 SONARR_API_URL = os.environ.get('SONARR_API_URL')
 SONARR_API_KEY = os.environ.get('SONARR_API_KEY')
 
+# Sonarr4K credentials
+SONARR4K_API_URL = os.environ.get('SONARR4K_API_URL')
+SONARR4K_API_KEY = os.environ.get('SONARR4K_API_KEY')
+
+# Radarr credentials
+RADARR_API_URL = os.environ.get('RADARR_API_URL')
+RADARR_API_KEY = os.environ.get('RADARR_API_KEY')
+
+# Radarr4K credentials
+RADARR4K_API_URL = os.environ.get('RADARR4K_API_URL')
+RADARR4K_API_KEY = os.environ.get('RADARR4K_API_KEY')
+
 app = Flask(__name__)
 
-logging.basicConfig(level=logging.INFO)
+# Logger setup for the app
+def setup_logger(name='straperr'):
+    logger = logging.getLogger(name)
+    if not logger.handlers:
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter(
+            f'%(asctime)s - {name} - %(levelname)s - %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(logging.DEBUG)
+    return logger
 
+# Configura el logging al iniciar la app
+logger = setup_logger()
 
 # Function to get the manual import data from Sonarr using downloadId
-def get_manual_import(download_id):
+def get_manual_import(download_id, instance_name):
+    if instance_name == "Sonarr":
+        api_url = SONARR_API_URL
+        api_key = SONARR_API_KEY
+    elif instance_name == "Sonarr4K":
+        api_url = SONARR4K_API_URL
+        api_key = SONARR4K_API_KEY
+    elif instance_name == "Radarr":
+        api_url = RADARR_API_URL
+        api_key = RADARR_API_KEY
+    elif instance_name == "Radarr4K":
+        api_url = RADARR4K_API_URL
+        api_key = RADARR4K_API_KEY
+    else:
+        logger.error(f"Unknown instance name: {instance_name}")
+        return None
+
     headers = {
-        'X-Api-Key': SONARR_API_KEY
+        'X-Api-Key': api_key
     }
     url = (
-        f"{SONARR_API_URL}/manualimport?downloadId={download_id}&"
+        f"{api_url}/manualimport?downloadId={download_id}&"
         "filterExistingFiles=false"
     )
 
@@ -37,18 +80,34 @@ def get_manual_import(download_id):
     if response.status_code == 200:
         return response.json()  # Return the JSON response
     else:
-        app.logger.error(
+        logger.error(
             f"Error in GET: {response.status_code} - {response.text}")
         return None
 
 
 # New function to get languages from the new endpoint using downloadId
-def get_languages_for_download(download_id):
+def get_languages_for_download(download_id, instance_name):
+    if instance_name == "Sonarr":
+        api_url = SONARR_API_URL
+        api_key = SONARR_API_KEY
+    elif instance_name == "Sonarr4K":
+        api_url = SONARR4K_API_URL
+        api_key = SONARR4K_API_KEY
+    elif instance_name == "Radarr":
+        api_url = RADARR_API_URL
+        api_key = RADARR_API_KEY
+    elif instance_name == "Radarr4K":
+        api_url = RADARR4K_API_URL
+        api_key = RADARR4K_API_KEY
+    else:
+        logger.error(f"Unknown instance name: {instance_name}")
+        return []
+
     headers = {
-        'X-Api-Key': SONARR_API_KEY
+        'X-Api-Key': api_key
     }
     url = (
-        f"{SONARR_API_URL}/manualimport?downloadId={download_id}&"
+        f"{api_url}/manualimport?downloadId={download_id}&"
         "filterExistingFiles=false"
     )
     response = requests.get(url, headers=headers)
@@ -58,53 +117,75 @@ def get_languages_for_download(download_id):
         if data and len(data) > 0 and "languages" in data[0]:
             return data[0]["languages"]
         else:
-            app.logger.warning("No languages found in response.")
+            logger.warning("No languages found in response.")
             return []
     else:
-        app.logger.error(f"Error fetching languages: {response.status_code}")
+        logger.error(f"Error fetching languages: {response.status_code}")
         return []
 
 
 # Function to perform the POST with the data from the GET
-def post_manual_import(data, languages):
+def post_manual_import(data, languages, instance_name):
+    if instance_name in ["Sonarr", "Sonarr4K"]:
+        api_url = SONARR_API_URL if instance_name == "Sonarr" else SONARR4K_API_URL
+        api_key = SONARR_API_KEY if instance_name == "Sonarr" else SONARR4K_API_KEY
+        post_data = {
+            "name": "ManualImport",
+            "files": [
+                {
+                    "path": data["path"],
+                    "seriesId": data["episodes"][0]["seriesId"],
+                    "episodeIds": [data["episodes"][0]["id"]],
+                    "quality": data["quality"],
+                    "languages": languages,
+                    "indexerFlags": 0,
+                    "releaseType": "singleEpisode",
+                    "downloadId": data["downloadId"]
+                }
+            ],
+            "importMode": "auto"
+        }
+    elif instance_name in ["Radarr", "Radarr4K"]:
+        api_url = RADARR_API_URL if instance_name == "Radarr" else RADARR4K_API_URL
+        api_key = RADARR_API_KEY if instance_name == "Radarr" else RADARR4K_API_KEY
+        post_data = {
+            "name": "ManualImport",
+            "files": [
+                {
+                    "path": data["path"],
+                    "movieId": data["movie"]["id"],
+                    "quality": data["quality"],
+                    "languages": languages,
+                    "downloadId": data["downloadId"]
+                }
+            ],
+            "importMode": "auto"
+        }
+    else:
+        logger.error(f"Unknown instance name: {instance_name}")
+        return
+
     headers = {
-        'X-Api-Key': SONARR_API_KEY,
+        'X-Api-Key': api_key,
         'Content-Type': 'application/json'
     }
 
-    post_data = {
-        "name": "ManualImport",
-        "files": [
-            {
-                "path": data["path"],
-                "seriesId": data["episodes"][0]["seriesId"],
-                "episodeIds": [data["episodes"][0]["id"]],
-                "quality": data["quality"],
-                "languages": languages,
-                "indexerFlags": 0,
-                "releaseType": "singleEpisode",
-                "downloadId": data["downloadId"]
-            }
-        ],
-        "importMode": "auto"
-    }
-
-    app.logger.info(f"POST data: {post_data}")
+    logger.info(f"POST data: {post_data}")
 
     response = requests.post(
-        f"{SONARR_API_URL}/command",
+        f"{api_url}/command",
         headers=headers, data=json.dumps(post_data))
 
     if response.status_code == 201:
-        app.logger.info(f"Successfully posted for {data['name']}")
+        logger.info(f"Successfully posted for {data['name']}")
     else:
-        app.logger.error(
+        logger.error(
             f"Error in POST for {data['name']}: {response.status_code}")
-        app.logger.error(response.text)
+        logger.error(response.text)
 
 
 # Function to perform the POST with the data from the GET
-def hdolimpo_thanks(username, password, search_query):
+def hdolimpo_thanks(username, password, search_query, instance_name='straperr'):
     """
     Logs in to the website, searches for the specified torrent,
     and clicks the 'Thank You' button if it hasn't been clicked already.
@@ -114,6 +195,9 @@ def hdolimpo_thanks(username, password, search_query):
     - password: The password for login.
     - search_query: The title of the torrent to search for.
     """
+
+    # Reconfigura el logger con el nombre de la instancia
+    logger = setup_logger(instance_name)
 
     # URL for login and search
     login_url = "https://hd-olimpo.club/login"
@@ -145,7 +229,7 @@ def hdolimpo_thanks(username, password, search_query):
         password_field.submit()
 
     except Exception as e:
-        app.logger.error(f"Error filling out the login fields: {str(e)}")
+        logger.error(f"Error filling out the login fields: {str(e)}")
         driver.quit()
         return
 
@@ -155,16 +239,16 @@ def hdolimpo_thanks(username, password, search_query):
     # Check if login was successful
     try:
         if "Iniciar sesión" in driver.page_source:
-            app.logger.error("Login failed. Could not find the success text.")
-            app.logger.info("Login page content:")
-            app.logger.info(driver.page_source)
+            logger.error("Login failed. Could not find the success text.")
+            logger.info("Login page content:")
+            logger.info(driver.page_source)
             driver.quit()
             return
         else:
-            app.logger.info(
+            logger.info(
                 "Login successful at HD-Olimpo. User authenticated.")
     except Exception as e:
-        app.logger.error(f"Error checking login status: {str(e)}")
+        logger.error(f"Error checking login status: {str(e)}")
         driver.quit()
         return
 
@@ -179,7 +263,7 @@ def hdolimpo_thanks(username, password, search_query):
         search_field.send_keys(search_query)
         time.sleep(2)  # Wait for results to load
     except Exception as e:
-        app.logger.error(f"Error searching for the title: {str(e)}")
+        logger.error(f"Error searching for the title: {str(e)}")
         driver.quit()
         return
 
@@ -195,17 +279,17 @@ def hdolimpo_thanks(username, password, search_query):
             if link.text == search_query:
                 # If the link text matches, get the URL of the torrent
                 result_url = link.get_attribute("href")
-                app.logger.info(
+                logger.info(
                     f"URL of the first matching result: {result_url}")
                 break
         else:
-            app.logger.warning(
+            logger.warning(
                 f"No matching result found for '{search_query}'.")
             driver.quit()
             return
 
     except Exception as e:
-        app.logger.error(f"Error getting the result: {str(e)}")
+        logger.error(f"Error getting the result: {str(e)}")
         driver.quit()
         return
 
@@ -220,16 +304,16 @@ def hdolimpo_thanks(username, password, search_query):
             "and contains(., 'Agradecer')]")
 
         # Check if the button has the 'disabled' attribute
-        if thanks_button.get_attribute("disabled") == "true":
-            app.logger.info(
+        if thanks_button.getAttribute("disabled") == "true":
+            logger.info(
                 "You have already thanked for this torrent. No action taken.")
         else:
             # If the button is not disabled, click the 'Thank You' button
             thanks_button.click()
-            app.logger.info("Successfully thanked!")
+            logger.info("Successfully thanked!")
 
     except Exception as e:
-        app.logger.error(
+        logger.error(
             f"Error interacting with the 'Thank You' button: {str(e)}")
 
     # Close the browser session
@@ -253,14 +337,17 @@ def clean_release_title(title):
 def main():
     data = request.json
     event_type = data.get('eventType')
-    instance_name = data.get('instanceName', 'Unknown')
+    instance_name = data.get('instanceName', 'straperr')
     title = data.get('movie', {}).get('title', 'Unknown')
     release_title = data.get('release', {}).get('releaseTitle', 'Unknown')
     indexer = data.get('release', {}).get('indexer', 'Unknown')
 
+    # Reconfigura el logger con el nombre de la instancia
+    logger = setup_logger(instance_name)
+
     # Define functions for each event case
     def handle_test():
-        app.logger.info(f"Test connection from {instance_name}")
+        logger.info(f"Test connection from {instance_name}")
         return jsonify({
             "status": "success",
             "message": (f"Connection test from {instance_name} "
@@ -268,7 +355,7 @@ def main():
         }), 200
 
     def handle_grab():
-        app.logger.info(
+        logger.info(
             f"Grabbing '{clean_release_title(release_title)}' from {indexer}.")
         return jsonify({
             "status": "success",
@@ -277,12 +364,12 @@ def main():
         }), 200
 
     def handle_download():
-        app.logger.info(
+        logger.info(
             f"Downloading '{clean_release_title(release_title)}'"
             f"from {indexer}.")
         hdolimpo_thanks(
             HDOLIMPO_USERNAME, HDOLIMPO_PASSWORD,
-            f'{clean_release_title(release_title)}')
+            f'{clean_release_title(release_title)}', instance_name)
 
         return jsonify({
             "status": "success",
@@ -291,31 +378,31 @@ def main():
         }), 200
 
     def handle_manual_interaction_required():
-        app.logger.info(
+        logger.info(
             f"Starting manual import process to '{instance_name}'.")
 
         download_id = data.get('downloadId', {})
 
         if not download_id:
-            app.logger.error("No downloadId provided in the request.")
+            logger.error("No downloadId provided in the request.")
             return jsonify({
                 "status": "error",
                 "message": "downloadId is required to continue."
             }), 400
 
-        languages = get_languages_for_download(data["downloadId"])
+        languages = get_languages_for_download(data["downloadId"], instance_name)
 
         if not languages:
             languages = [{"id": 3, "name": "Spanish"}]
 
-        manual_import_data = get_manual_import(download_id)
+        manual_import_data = get_manual_import(download_id, instance_name)
 
         if manual_import_data:
             for record in manual_import_data:
-                app.logger.info(f"Processing: {record['name']}")
-                post_manual_import(record, languages)
+                logger.info(f"Processing: {record['name']}")
+                post_manual_import(record, languages, instance_name)
         else:
-            app.logger.warning("No records found or error in manual import.")
+            logger.warning("No records found or error in manual import.")
 
         return jsonify({
             "status": "success",
@@ -336,7 +423,7 @@ def main():
     if handler:
         return handler()
     else:
-        app.logger.error(f"Unknown event type: {event_type}")
+        logger.error(f"Unknown event type: {event_type}")
         return jsonify({
             "status": "error",
             "message": "Unknown event type."
