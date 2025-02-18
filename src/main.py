@@ -2,7 +2,6 @@ import os
 import time
 import re
 import logging
-from logging.handlers import RotatingFileHandler
 import requests
 import json
 from flask import Flask, request, jsonify
@@ -32,6 +31,7 @@ RADARR4K_API_KEY = os.environ.get('RADARR4K_API_KEY')
 
 app = Flask(__name__)
 
+
 # Logger setup for the app
 def setup_logger(name='straperr'):
     logger = logging.getLogger(name)
@@ -46,8 +46,10 @@ def setup_logger(name='straperr'):
         logger.setLevel(logging.DEBUG)
     return logger
 
+
 # Configura el logging al iniciar la app
 logger = setup_logger()
+
 
 # Function to get the manual import data from Sonarr using downloadId
 def get_manual_import(download_id, instance_name):
@@ -127,8 +129,10 @@ def get_languages_for_download(download_id, instance_name):
 # Function to perform the POST with the data from the GET
 def post_manual_import(data, languages, instance_name):
     if instance_name in ["Sonarr", "Sonarr4K"]:
-        api_url = SONARR_API_URL if instance_name == "Sonarr" else SONARR4K_API_URL
-        api_key = SONARR_API_KEY if instance_name == "Sonarr" else SONARR4K_API_KEY
+        api_url = (SONARR_API_URL if instance_name == "Sonarr"
+                   else SONARR4K_API_URL)
+        api_key = (SONARR_API_KEY if instance_name == "Sonarr"
+                   else SONARR4K_API_KEY)
         post_data = {
             "name": "ManualImport",
             "files": [
@@ -146,8 +150,10 @@ def post_manual_import(data, languages, instance_name):
             "importMode": "auto"
         }
     elif instance_name in ["Radarr", "Radarr4K"]:
-        api_url = RADARR_API_URL if instance_name == "Radarr" else RADARR4K_API_URL
-        api_key = RADARR_API_KEY if instance_name == "Radarr" else RADARR4K_API_KEY
+        api_url = (RADARR_API_URL if instance_name == "Radarr"
+                   else RADARR4K_API_URL)
+        api_key = (RADARR_API_KEY if instance_name == "Radarr"
+                   else RADARR4K_API_KEY)
         post_data = {
             "name": "ManualImport",
             "files": [
@@ -185,7 +191,8 @@ def post_manual_import(data, languages, instance_name):
 
 
 # Function to perform the POST with the data from the GET
-def hdolimpo_thanks(username, password, search_query, instance_name='straperr'):
+def hdolimpo_thanks(username, password,
+                    search_query, instance_name='straperr'):
     """
     Logs in to the website, searches for the specified torrent,
     and clicks the 'Thank You' button if it hasn't been clicked already.
@@ -390,7 +397,8 @@ def main():
                 "message": "downloadId is required to continue."
             }), 400
 
-        languages = get_languages_for_download(data["downloadId"], instance_name)
+        languages = get_languages_for_download(
+            data["downloadId"], instance_name)
 
         if not languages:
             languages = [{"id": 3, "name": "Spanish"}]
