@@ -311,7 +311,7 @@ def hdolimpo_thanks(username, password,
             "and contains(., 'Agradecer')]")
 
         # Check if the button has the 'disabled' attribute
-        if thanks_button.getAttribute("disabled") == "true":
+        if thanks_button.get_attribute("disabled") == "true":
             logger.info(
                 "You have already thanked for this torrent. No action taken.")
         else:
