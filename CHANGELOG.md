@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.8.0](https://github.com/francisjgarcia/straperr/releases/v1.8.0) (2025-02-21)
+* fix: Thanks button get attribute function @francisjgarcia ([#c8627d2](https://github.com/francisjgarcia/straperr/commit/c8627d2967a86a3f2b76bf485d9418ac4403c2d6))
+
+
 ## [v1.7.0](https://github.com/francisjgarcia/straperr/releases/v1.7.0) (2025-02-18)
 * style(flake8): format code to adhere to flake8 character line length @francisjgarcia ([#03cea6e](https://github.com/francisjgarcia/straperr/commit/03cea6ed38d51344eabb69c1f0ff9c0a0f75abca))
 * feat: Improve logs and add all *arr connections @francisjgarcia ([#6ebc87b](https://github.com/francisjgarcia/straperr/commit/6ebc87b755a3d36642a62fe40da7a0aa034a481c))
