@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.8.1](https://github.com/francisjgarcia/straperr/releases/v1.8.1) (2025-02-27)
+* Merge pull request #16 from francisjgarcia/dependabot/pip/src/selenium-4.29.0 [patch] @francisjgarcia ([#458f718](https://github.com/francisjgarcia/straperr/commit/458f71877436b1f654af78da7f68129b0a2d3473))
+* chore(deps): bump selenium from 4.28.1 to 4.29.0 in /src @francisjgarcia ([#7fd5071](https://github.com/francisjgarcia/straperr/commit/7fd5071e68f9fcbf2daa438c19364ca2eafd5592))
+
+
 ## [v1.8.0](https://github.com/francisjgarcia/straperr/releases/v1.8.0) (2025-02-21)
 * fix: Thanks button get attribute function @francisjgarcia ([#c8627d2](https://github.com/francisjgarcia/straperr/commit/c8627d2967a86a3f2b76bf485d9418ac4403c2d6))
 
