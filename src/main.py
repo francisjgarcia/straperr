@@ -329,7 +329,7 @@ def hdolimpo_thanks(username, password,
 
 # Function to clean the release title
 def clean_release_title(title):
-    patron = r'\b(MULTi|SPANiSH)\b\s*|\bENGLiSH\b'
+    patron = r'\b(MULTi|SPANiSH|Eng)\b\s*|\bENGLiSH\b'
 
     def reemplazo(match):
         if match.group(0).lower() == 'english':
