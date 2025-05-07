@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.9.1](https://github.com/francisjgarcia/straperr/releases/v1.9.1) (2025-05-07)
+* Merge pull request #20 from francisjgarcia/dependabot/pip/src/selenium-4.32.0 [patch] @francisjgarcia ([#6ac3408](https://github.com/francisjgarcia/straperr/commit/6ac3408c595ae67b08a674068491fce96ab5b3fd))
+* chore(deps): bump selenium from 4.31.0 to 4.32.0 in /src @francisjgarcia ([#76d4bea](https://github.com/francisjgarcia/straperr/commit/76d4bea1c0a5531799e03b5898f2be195f0b4452))
+
+
 ## [v1.9.0](https://github.com/francisjgarcia/straperr/releases/v1.9.0) (2025-04-18)
 * fix: update regex pattern in clean_release_title function @francisjgarcia ([#5a2e150](https://github.com/francisjgarcia/straperr/commit/5a2e15029f1046f30bcc0e9b04d7835f051a8bb8))
 
