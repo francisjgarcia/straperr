@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.9.2](https://github.com/francisjgarcia/straperr/releases/v1.9.2) (2025-05-13)
+* Merge pull request #21 from francisjgarcia/dependabot/pip/src/pip-94eef7f553 [patch] @francisjgarcia ([#bbb3a24](https://github.com/francisjgarcia/straperr/commit/bbb3a243bd616af15e2e92728dfe818ada95f52e))
+* chore(deps): bump flask from 3.1.0 to 3.1.1 in /src in the pip group @francisjgarcia ([#2e1e009](https://github.com/francisjgarcia/straperr/commit/2e1e0097d88705270e80b164a8dee8f7bb48709b))
+
+
 ## [v1.9.1](https://github.com/francisjgarcia/straperr/releases/v1.9.1) (2025-05-07)
 * Merge pull request #20 from francisjgarcia/dependabot/pip/src/selenium-4.32.0 [patch] @francisjgarcia ([#6ac3408](https://github.com/francisjgarcia/straperr/commit/6ac3408c595ae67b08a674068491fce96ab5b3fd))
 * chore(deps): bump selenium from 4.31.0 to 4.32.0 in /src @francisjgarcia ([#76d4bea](https://github.com/francisjgarcia/straperr/commit/76d4bea1c0a5531799e03b5898f2be195f0b4452))
