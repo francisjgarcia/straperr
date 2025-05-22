@@ -179,6 +179,12 @@ jobs:
           HDOLIMPO_PASSWORD: ${{ secrets.HDOLIMPO_PASSWORD }}
           SONARR_API_URL: ${{ vars.SONARR_API_URL }}
           SONARR_API_KEY: ${{ secrets.SONARR_API_KEY }}
+          SONARR4K_API_URL: ${{ vars.SONARR4K_API_URL }}
+          SONARR4K_API_KEY: ${{ secrets.SONARR4K_API_KEY }}
+          RADARR_API_URL: ${{ vars.RADARR_API_URL }}
+          RADARR_API_KEY: ${{ secrets.RADARR_API_KEY }}
+          RADARR4K_API_URL: ${{ vars.RADARR4K_API_URL }}
+          RADARR4K_API_KEY: ${{ secrets.RADARR4K_API_KEY }}
         run: |
           if [ "$(docker ps -a -q -f name=${{ env.REPO_NAME }})" ]; then
             docker rm -f ${{ env.REPO_NAME }}
@@ -196,6 +202,12 @@ jobs:
             -e HDOLIMPO_PASSWORD='${{ env.HDOLIMPO_PASSWORD }}' \
             -e SONARR_API_URL=${{ env.SONARR_API_URL }} \
             -e SONARR_API_KEY=${{ env.SONARR_API_KEY }} \
+            -e SONARR4K_API_URL=${{ env.SONARR4K_API_URL }} \
+            -e SONARR4K_API_KEY=${{ env.SONARR4K_API_KEY }} \
+            -e RADARR_API_URL=${{ env.RADARR_API_URL }} \
+            -e RADARR_API_KEY=${{ env.RADARR_API_KEY }} \
+            -e RADARR4K_API_URL=${{ env.RADARR4K_API_URL }} \
+            -e RADARR4K_API_KEY=${{ env.RADARR4K_API_KEY }} \
             --health-cmd="curl -f ${{ env.DOCKER_HEALTHCHECK_URL }} || exit 1" \
             --health-start-period=30s \
             --health-interval=1h \
