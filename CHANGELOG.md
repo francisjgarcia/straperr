@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.10.0](https://github.com/francisjgarcia/straperr/releases/v1.10.0) (2025-05-22)
+* feat(ci): add Sonarr and Radarr API configurations to workflows @francisjgarcia ([#7aee3d4](https://github.com/francisjgarcia/straperr/commit/7aee3d46c71a90e9eee3eb95ccd6b2ad558e4c92))
+
+
 ## [v1.9.2](https://github.com/francisjgarcia/straperr/releases/v1.9.2) (2025-05-13)
 * Merge pull request #21 from francisjgarcia/dependabot/pip/src/pip-94eef7f553 [patch] @francisjgarcia ([#bbb3a24](https://github.com/francisjgarcia/straperr/commit/bbb3a243bd616af15e2e92728dfe818ada95f52e))
 * chore(deps): bump flask from 3.1.0 to 3.1.1 in /src in the pip group @francisjgarcia ([#2e1e009](https://github.com/francisjgarcia/straperr/commit/2e1e0097d88705270e80b164a8dee8f7bb48709b))
