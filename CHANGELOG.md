@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.10.1](https://github.com/francisjgarcia/straperr/releases/v1.10.1) (2025-05-30)
+* Merge pull request #22 from francisjgarcia/dependabot/pip/src/selenium-4.33.0 [patch] @francisjgarcia ([#36b654e](https://github.com/francisjgarcia/straperr/commit/36b654e36d124c59919001f45c3b05658b5821d2))
+* chore(deps): bump selenium from 4.32.0 to 4.33.0 in /src @francisjgarcia ([#035c0b7](https://github.com/francisjgarcia/straperr/commit/035c0b7427f5eacf59752cb333a2bc35d58f6437))
+
+
 ## [v1.10.0](https://github.com/francisjgarcia/straperr/releases/v1.10.0) (2025-05-22)
 * feat(ci): add Sonarr and Radarr API configurations to workflows @francisjgarcia ([#7aee3d4](https://github.com/francisjgarcia/straperr/commit/7aee3d46c71a90e9eee3eb95ccd6b2ad558e4c92))
 
