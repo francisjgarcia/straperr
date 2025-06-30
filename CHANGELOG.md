@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.10.4](https://github.com/francisjgarcia/straperr/releases/v1.10.4) (2025-06-30)
+* Merge pull request #25 from francisjgarcia/dependabot/pip/src/python-dotenv-1.1.1 [patch] @francisjgarcia ([#fafa11d](https://github.com/francisjgarcia/straperr/commit/fafa11db759e5969cd133500fea581724fb4b397))
+* chore(deps): bump python-dotenv from 1.1.0 to 1.1.1 in /src @francisjgarcia ([#8249511](https://github.com/francisjgarcia/straperr/commit/8249511b0a695406605c1029a5f1b1230d4f738a))
+
+
 ## [v1.10.3](https://github.com/francisjgarcia/straperr/releases/v1.10.3) (2025-06-30)
 * Merge pull request #24 from francisjgarcia/dependabot/pip/src/selenium-4.34.0 [patch] @francisjgarcia ([#59ae8a9](https://github.com/francisjgarcia/straperr/commit/59ae8a9a8a0aa08c423ce994f6f7a003a85c65d8))
 * chore(deps): bump selenium from 4.33.0 to 4.34.0 in /src @francisjgarcia ([#4e6009b](https://github.com/francisjgarcia/straperr/commit/4e6009be603ea886be05ec2b43a13e0d6e4499ce))
