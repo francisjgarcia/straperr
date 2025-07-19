@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.10.6](https://github.com/francisjgarcia/straperr/releases/v1.10.6) (2025-07-19)
+* Merge pull request #27 from francisjgarcia/dependabot/pip/src/selenium-4.34.2 [patch] @francisjgarcia ([#c3a91ef](https://github.com/francisjgarcia/straperr/commit/c3a91ef19981f995324566e1681a6ca44463d854))
+* chore(deps): bump selenium from 4.34.1 to 4.34.2 in /src @francisjgarcia ([#b400ae5](https://github.com/francisjgarcia/straperr/commit/b400ae532627e7c30e2d562aba173b1212c1127d))
+
+
 ## [v1.10.5](https://github.com/francisjgarcia/straperr/releases/v1.10.5) (2025-07-08)
 * Merge pull request #26 from francisjgarcia/dependabot/pip/src/selenium-4.34.1 [patch] @francisjgarcia ([#7a8895e](https://github.com/francisjgarcia/straperr/commit/7a8895ed2abc9332a29d9ea942683fe5f8d70854))
 * chore(deps): bump selenium from 4.34.0 to 4.34.1 in /src @francisjgarcia ([#ede8493](https://github.com/francisjgarcia/straperr/commit/ede8493bbf373ae19bec0070b74adb7b44692dd9))
