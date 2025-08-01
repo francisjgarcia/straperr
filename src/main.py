@@ -56,13 +56,13 @@ def get_manual_import(download_id, instance_name):
     if instance_name == "Sonarr":
         api_url = SONARR_API_URL
         api_key = SONARR_API_KEY
-    elif instance_name == "Sonarr4K":
+    elif instance_name == "Sonarr 4K":
         api_url = SONARR4K_API_URL
         api_key = SONARR4K_API_KEY
     elif instance_name == "Radarr":
         api_url = RADARR_API_URL
         api_key = RADARR_API_KEY
-    elif instance_name == "Radarr4K":
+    elif instance_name == "Radarr 4K":
         api_url = RADARR4K_API_URL
         api_key = RADARR4K_API_KEY
     else:
@@ -92,13 +92,13 @@ def get_languages_for_download(download_id, instance_name):
     if instance_name == "Sonarr":
         api_url = SONARR_API_URL
         api_key = SONARR_API_KEY
-    elif instance_name == "Sonarr4K":
+    elif instance_name == "Sonarr 4K":
         api_url = SONARR4K_API_URL
         api_key = SONARR4K_API_KEY
     elif instance_name == "Radarr":
         api_url = RADARR_API_URL
         api_key = RADARR_API_KEY
-    elif instance_name == "Radarr4K":
+    elif instance_name == "Radarr 4K":
         api_url = RADARR4K_API_URL
         api_key = RADARR4K_API_KEY
     else:
@@ -128,7 +128,7 @@ def get_languages_for_download(download_id, instance_name):
 
 # Function to perform the POST with the data from the GET
 def post_manual_import(data, languages, instance_name):
-    if instance_name in ["Sonarr", "Sonarr4K"]:
+    if instance_name in ["Sonarr", "Sonarr 4K"]:
         api_url = (SONARR_API_URL if instance_name == "Sonarr"
                    else SONARR4K_API_URL)
         api_key = (SONARR_API_KEY if instance_name == "Sonarr"
@@ -149,7 +149,7 @@ def post_manual_import(data, languages, instance_name):
             ],
             "importMode": "auto"
         }
-    elif instance_name in ["Radarr", "Radarr4K"]:
+    elif instance_name in ["Radarr", "Radarr 4K"]:
         api_url = (RADARR_API_URL if instance_name == "Radarr"
                    else RADARR4K_API_URL)
         api_key = (RADARR_API_KEY if instance_name == "Radarr"
