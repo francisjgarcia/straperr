@@ -190,6 +190,60 @@ def post_manual_import(data, languages, instance_name):
         logger.error(response.text)
 
 
+# Remove items from the queue in Sonarr/Radarr by downloadId
+def delete_queue_items_by_download_id(download_id, instance_name):
+    if instance_name == "Sonarr":
+        api_url = SONARR_API_URL
+        api_key = SONARR_API_KEY
+    elif instance_name == "Sonarr 4K":
+        api_url = SONARR4K_API_URL
+        api_key = SONARR4K_API_KEY
+    elif instance_name == "Radarr":
+        api_url = RADARR_API_URL
+        api_key = RADARR_API_KEY
+    elif instance_name == "Radarr 4K":
+        api_url = RADARR4K_API_URL
+        api_key = RADARR4K_API_KEY
+    else:
+        logger.error(f"Unknown instance name: {instance_name}")
+        return
+
+    headers = {'X-Api-Key': api_key}
+    queue_url = f"{api_url}/queue"
+    try:
+        resp = requests.get(queue_url, headers=headers)
+        resp.raise_for_status()
+        queue = resp.json()
+
+        # Sonarr/Radarr could return a list or a dict with 'records'
+        if isinstance(queue, dict):
+            records = queue.get('records', queue)
+        else:
+            records = queue
+        for item in records:
+            if item.get('downloadId') == download_id:
+                queue_id = item.get('id')
+                del_url = (
+                    f"{queue_url}/{queue_id}"
+                    "?removeFromClient=false"
+                    "&blocklist=false"
+                    "&skipRedownload=false"
+                    "&changeCategory=false"
+                )
+                del_resp = requests.delete(del_url, headers=headers)
+                if del_resp.status_code == 200:
+                    logger.info(
+                        f"Deleted queue item {queue_id} for {instance_name}"
+                    )
+                else:
+                    logger.error(
+                        f"Failed to delete queue item {queue_id}: "
+                        f"{del_resp.status_code} {del_resp.text}"
+                    )
+    except Exception as e:
+        logger.error(f"Error deleting queue items: {e}")
+
+
 # Function to perform the POST with the data from the GET
 def hdolimpo_thanks(username, password,
                     search_query, instance_name='straperr'):
@@ -203,7 +257,7 @@ def hdolimpo_thanks(username, password,
     - search_query: The title of the torrent to search for.
     """
 
-    # Reconfigura el logger con el nombre de la instancia
+    # Reconfigure the logger with the instance name
     logger = setup_logger(instance_name)
 
     # URL for login and search
@@ -412,9 +466,12 @@ def main():
         else:
             logger.warning("No records found or error in manual import.")
 
+        # Remove from the queue after manual import
+        delete_queue_items_by_download_id(download_id, instance_name)
+
         return jsonify({
             "status": "success",
-            "message": "Manual import process completed."
+            "message": "Manual import process completed and queue cleaned."
         }), 200
 
     # Dictionary that acts as a switch
