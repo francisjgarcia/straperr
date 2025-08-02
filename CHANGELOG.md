@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.11.0](https://github.com/francisjgarcia/straperr/releases/v1.11.0) (2025-08-02)
+* feat(main): add function to delete queue items by downloadId @francisjgarcia ([#99773de](https://github.com/francisjgarcia/straperr/commit/99773de0e84cb93051126190a134eaa0f5f4e0d6))
+* fix: correct naming for Sonarr and Radarr instances @francisjgarcia ([#774574f](https://github.com/francisjgarcia/straperr/commit/774574f371d531ff65130cfcd9b2e2a112b9a0a5))
+
+
 ## [v1.10.6](https://github.com/francisjgarcia/straperr/releases/v1.10.6) (2025-07-19)
 * Merge pull request #27 from francisjgarcia/dependabot/pip/src/selenium-4.34.2 [patch] @francisjgarcia ([#c3a91ef](https://github.com/francisjgarcia/straperr/commit/c3a91ef19981f995324566e1681a6ca44463d854))
 * chore(deps): bump selenium from 4.34.1 to 4.34.2 in /src @francisjgarcia ([#b400ae5](https://github.com/francisjgarcia/straperr/commit/b400ae532627e7c30e2d562aba173b1212c1127d))
