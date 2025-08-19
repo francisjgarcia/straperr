@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.12.1](https://github.com/francisjgarcia/straperr/releases/v1.12.1) (2025-08-19)
+* Merge pull request #29 from francisjgarcia/dependabot/pip/src/selenium-4.35.0 [patch] @francisjgarcia ([#b2e7c19](https://github.com/francisjgarcia/straperr/commit/b2e7c19ad65ae9dbef764fd75d7254aa968796e7))
+* chore(deps): bump selenium from 4.34.2 to 4.35.0 in /src @francisjgarcia ([#3d495ff](https://github.com/francisjgarcia/straperr/commit/3d495ff88aed7028906df9717acf2ae4c1f5e03f))
+
+
 ## [v1.12.0](https://github.com/francisjgarcia/straperr/releases/v1.12.0) (2025-08-19)
 * Merge pull request #28 from francisjgarcia/dependabot/docker/docker/python-3.13.7-alpine @francisjgarcia ([#c62bea9](https://github.com/francisjgarcia/straperr/commit/c62bea9e949af7fdfdd7516297e0873b47fd6949))
 * chore(docker): bump python from 3.13-alpine to 3.13.7-alpine in /docker @francisjgarcia ([#647398d](https://github.com/francisjgarcia/straperr/commit/647398d1933f000fbfea48b305fe90b2f02aa3f8))
