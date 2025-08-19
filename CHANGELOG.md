@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.12.0](https://github.com/francisjgarcia/straperr/releases/v1.12.0) (2025-08-19)
+* Merge pull request #28 from francisjgarcia/dependabot/docker/docker/python-3.13.7-alpine @francisjgarcia ([#c62bea9](https://github.com/francisjgarcia/straperr/commit/c62bea9e949af7fdfdd7516297e0873b47fd6949))
+* chore(docker): bump python from 3.13-alpine to 3.13.7-alpine in /docker @francisjgarcia ([#647398d](https://github.com/francisjgarcia/straperr/commit/647398d1933f000fbfea48b305fe90b2f02aa3f8))
+
+
 ## [v1.11.0](https://github.com/francisjgarcia/straperr/releases/v1.11.0) (2025-08-02)
 * feat(main): add function to delete queue items by downloadId @francisjgarcia ([#99773de](https://github.com/francisjgarcia/straperr/commit/99773de0e84cb93051126190a134eaa0f5f4e0d6))
 * fix: correct naming for Sonarr and Radarr instances @francisjgarcia ([#774574f](https://github.com/francisjgarcia/straperr/commit/774574f371d531ff65130cfcd9b2e2a112b9a0a5))
