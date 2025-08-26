@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.12.3](https://github.com/francisjgarcia/straperr/releases/v1.12.3) (2025-08-26)
+* Merge pull request #30 from francisjgarcia/dependabot/pip/src/flask-3.1.2 [patch] @francisjgarcia ([#540b678](https://github.com/francisjgarcia/straperr/commit/540b678738acaad7df0013843f42f4f7954a75aa))
+* chore(deps): bump flask from 3.1.1 to 3.1.2 in /src @francisjgarcia ([#17bbeec](https://github.com/francisjgarcia/straperr/commit/17bbeec92d3db8b5bddecced461b3aa50519969e))
+
+
 ## [v1.12.2](https://github.com/francisjgarcia/straperr/releases/v1.12.2) (2025-08-26)
 * Merge pull request #31 from francisjgarcia/dependabot/pip/src/requests-2.32.5 [patch] @francisjgarcia ([#fb6afc7](https://github.com/francisjgarcia/straperr/commit/fb6afc7cf37fc4dd949b397b09711a81b3eea92b))
 * chore(deps): bump requests from 2.32.4 to 2.32.5 in /src @francisjgarcia ([#b1d9bdf](https://github.com/francisjgarcia/straperr/commit/b1d9bdfc48e09d70dc2869a8ee7a1becb75b79bd))
