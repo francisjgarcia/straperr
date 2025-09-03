@@ -76,7 +76,7 @@ jobs:
           chmod 400 ~/.ssh/id_rsa
           eval $(ssh-agent)
           ssh-add ~/.ssh/id_rsa
-          ssh-keyscan -p ${{ env.SSH_PROXY_PORT }} -H ${{ env.SSH_PROXY_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -T 60 -p ${{ env.SSH_PROXY_PORT }} -H ${{ env.SSH_PROXY_HOST }} >> ~/.ssh/known_hosts
 
       - name: Add SSH config
         env:
