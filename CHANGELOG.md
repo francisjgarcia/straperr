@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.13.0](https://github.com/francisjgarcia/straperr/releases/v1.13.0) (2025-09-03)
+* chore(ci): update ssh-keyscan timeout in CI/CD workflows @francisjgarcia ([#e95dab2](https://github.com/francisjgarcia/straperr/commit/e95dab247cd56ea6c66f748383e757379b17eb8b))
+
+
 ## [v1.12.3](https://github.com/francisjgarcia/straperr/releases/v1.12.3) (2025-08-26)
 * Merge pull request #30 from francisjgarcia/dependabot/pip/src/flask-3.1.2 [patch] @francisjgarcia ([#540b678](https://github.com/francisjgarcia/straperr/commit/540b678738acaad7df0013843f42f4f7954a75aa))
 * chore(deps): bump flask from 3.1.1 to 3.1.2 in /src @francisjgarcia ([#17bbeec](https://github.com/francisjgarcia/straperr/commit/17bbeec92d3db8b5bddecced461b3aa50519969e))
