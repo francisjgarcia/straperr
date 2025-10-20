@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.13.1](https://github.com/francisjgarcia/straperr/releases/v1.13.1) (2025-10-20)
+* Merge pull request #33 from francisjgarcia/dependabot/docker/docker/python-3.14.0-alpine [patch] @francisjgarcia ([#0a31321](https://github.com/francisjgarcia/straperr/commit/0a31321d9f004a5f802a869d730d79c0a9b56c73))
+* Merge pull request #34 from francisjgarcia/dependabot/pip/src/selenium-4.37.0 [patch] @francisjgarcia ([#462a0e8](https://github.com/francisjgarcia/straperr/commit/462a0e843f88d6764bf2aa72af0c7e0e249878a6))
+* chore(deps): bump selenium from 4.35.0 to 4.37.0 in /src @francisjgarcia ([#40d4b3b](https://github.com/francisjgarcia/straperr/commit/40d4b3bccb3f334d91c3bb0d9d79022deb4ee922))
+* chore(docker): bump python in /docker @francisjgarcia ([#7ee39d5](https://github.com/francisjgarcia/straperr/commit/7ee39d5508ed94c7875cbe15c4a6a846a05b47a7))
+
+
 ## [v1.13.0](https://github.com/francisjgarcia/straperr/releases/v1.13.0) (2025-09-03)
 * chore(ci): update ssh-keyscan timeout in CI/CD workflows @francisjgarcia ([#e95dab2](https://github.com/francisjgarcia/straperr/commit/e95dab247cd56ea6c66f748383e757379b17eb8b))
 
