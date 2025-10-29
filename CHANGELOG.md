@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.13.2](https://github.com/francisjgarcia/straperr/releases/v1.13.2) (2025-10-29)
+* Merge pull request #36 from francisjgarcia/dependabot/pip/src/selenium-4.38.0 [patch] @francisjgarcia ([#856c293](https://github.com/francisjgarcia/straperr/commit/856c29324a60891ed97312e9f8bf104b2d7f3d25))
+* chore(deps): bump selenium from 4.37.0 to 4.38.0 in /src @francisjgarcia ([#1003767](https://github.com/francisjgarcia/straperr/commit/10037677b9752375b9afa607826b9da58dfb3e21))
+
+
 ## [v1.13.1](https://github.com/francisjgarcia/straperr/releases/v1.13.1) (2025-10-20)
 * Merge pull request #33 from francisjgarcia/dependabot/docker/docker/python-3.14.0-alpine [patch] @francisjgarcia ([#0a31321](https://github.com/francisjgarcia/straperr/commit/0a31321d9f004a5f802a869d730d79c0a9b56c73))
 * Merge pull request #34 from francisjgarcia/dependabot/pip/src/selenium-4.37.0 [patch] @francisjgarcia ([#462a0e8](https://github.com/francisjgarcia/straperr/commit/462a0e843f88d6764bf2aa72af0c7e0e249878a6))
