@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.13.4](https://github.com/francisjgarcia/straperr/releases/v1.13.4) (2025-12-10)
+* Merge pull request #37 from francisjgarcia/dependabot/docker/docker/python-3.14.1-alpine [patch] @francisjgarcia ([#fb82927](https://github.com/francisjgarcia/straperr/commit/fb82927629c5098e46e777b41bac0dfb149060a6))
+* Merge pull request #38 from francisjgarcia/dependabot/pip/src/selenium-4.39.0 [patch] @francisjgarcia ([#6306c35](https://github.com/francisjgarcia/straperr/commit/6306c358f8ca903ceaf1a73b9f0c07f4d255dc79))
+* chore(deps): bump selenium from 4.38.0 to 4.39.0 in /src @francisjgarcia ([#d751bd9](https://github.com/francisjgarcia/straperr/commit/d751bd92a1ba3f72432df061350421edd6730bf7))
+* chore(docker): bump python in /docker @francisjgarcia ([#59d407b](https://github.com/francisjgarcia/straperr/commit/59d407b181abe2b4f61e838f8d1521b52f5f1dcb))
+
+
 ## [v1.13.3](https://github.com/francisjgarcia/straperr/releases/v1.13.3) (2025-11-04)
 * Merge pull request #35 from francisjgarcia/dependabot/pip/src/python-dotenv-1.2.1 [patch] @francisjgarcia ([#b851b5a](https://github.com/francisjgarcia/straperr/commit/b851b5a82baf201062874d0b48548db600bacbba))
 * chore(deps): bump python-dotenv from 1.1.1 to 1.2.1 in /src @francisjgarcia ([#f6c2509](https://github.com/francisjgarcia/straperr/commit/f6c250974022186568fbf6a67f53c60c247aa4a6))
