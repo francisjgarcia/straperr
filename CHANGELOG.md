@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.13.5](https://github.com/francisjgarcia/straperr/releases/v1.13.5) (2025-12-15)
+* Merge pull request #39 from francisjgarcia/dependabot/docker/docker/python-3.15.0a2-alpine [patch] @francisjgarcia ([#b683d4d](https://github.com/francisjgarcia/straperr/commit/b683d4dff95fdca7902ce04670c17333ddb8e2a6))
+* chore(docker): bump python in /docker @francisjgarcia ([#5664a0e](https://github.com/francisjgarcia/straperr/commit/5664a0e6f62fb1c2a9b9e21fdf2aedcdb997ced1))
+
+
 ## [v1.13.4](https://github.com/francisjgarcia/straperr/releases/v1.13.4) (2025-12-10)
 * Merge pull request #37 from francisjgarcia/dependabot/docker/docker/python-3.14.1-alpine [patch] @francisjgarcia ([#fb82927](https://github.com/francisjgarcia/straperr/commit/fb82927629c5098e46e777b41bac0dfb149060a6))
 * Merge pull request #38 from francisjgarcia/dependabot/pip/src/selenium-4.39.0 [patch] @francisjgarcia ([#6306c35](https://github.com/francisjgarcia/straperr/commit/6306c358f8ca903ceaf1a73b9f0c07f4d255dc79))
