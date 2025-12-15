@@ -1,5 +1,5 @@
 # Use an official Python base image
-FROM python:3.14.1-alpine
+FROM python:3.15.0a2-alpine
 
 # Set environment variables to ensure Python output is sent straight to the terminal
 ENV PYTHONUNBUFFERED=1 \
