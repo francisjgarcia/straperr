@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.13.6](https://github.com/francisjgarcia/straperr/releases/v1.13.6) (2025-12-23)
+* Merge pull request #40 from francisjgarcia/dependabot/docker/docker/python-3.15.0a3-alpine [patch] @francisjgarcia ([#e72ad4e](https://github.com/francisjgarcia/straperr/commit/e72ad4e54fb2c471446846f12adf11204962d6cd))
+* chore(docker): bump python in /docker @francisjgarcia ([#927de3f](https://github.com/francisjgarcia/straperr/commit/927de3f7ce094301363042783ed7ebde41b9a87d))
+
+
 ## [v1.13.5](https://github.com/francisjgarcia/straperr/releases/v1.13.5) (2025-12-15)
 * Merge pull request #39 from francisjgarcia/dependabot/docker/docker/python-3.15.0a2-alpine [patch] @francisjgarcia ([#b683d4d](https://github.com/francisjgarcia/straperr/commit/b683d4dff95fdca7902ce04670c17333ddb8e2a6))
 * chore(docker): bump python in /docker @francisjgarcia ([#5664a0e](https://github.com/francisjgarcia/straperr/commit/5664a0e6f62fb1c2a9b9e21fdf2aedcdb997ced1))
