@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.14.0](https://github.com/francisjgarcia/straperr/releases/v1.14.0) (2026-01-22)
+* feat(selenium): update WebDriver options for improved headless mode @francisjgarcia ([#d456046](https://github.com/francisjgarcia/straperr/commit/d456046f61d5e0faa3f2713c8751fc0d80391a12))
+
+
 ## [v1.13.8](https://github.com/francisjgarcia/straperr/releases/v1.13.8) (2026-01-20)
 * Merge pull request #41 from francisjgarcia/dependabot/docker/docker/python-3.15.0a5-alpine [patch] @francisjgarcia ([#ffec03d](https://github.com/francisjgarcia/straperr/commit/ffec03dcfcfab2ec6686f093ab21f67054cb9688))
 * chore(docker): bump python in /docker @francisjgarcia ([#7dcbbd1](https://github.com/francisjgarcia/straperr/commit/7dcbbd13ad07ba77de88a8d0c07e5b2e32d29d6e))
