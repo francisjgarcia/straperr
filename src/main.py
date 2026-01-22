@@ -266,7 +266,12 @@ def hdolimpo_thanks(username, password,
 
     # Configure the Selenium WebDriver for headless mode
     options = Options()
-    options.headless = True  # Set to False if you want to see the browser
+    options.browser_name = 'chrome'
+    options.add_argument('--headless=new')  # Use new headless mode
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--window-size=1920,1080')
 
     # Create the Selenium driver (connected to Selenium Grid)
     driver = webdriver.Remote(
