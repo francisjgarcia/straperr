@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.15.0](https://github.com/francisjgarcia/straperr/releases/v1.15.0) (2026-01-26)
+* fix(hdolimpo): update page load strategy to avoid compatibility errors @francisjgarcia ([#2033275](https://github.com/francisjgarcia/straperr/commit/20332755155844c39b8867fa790050b2464d0c49))
+* feat(hdolimpo): improve page load strategy and driver cleanup @francisjgarcia ([#e3d64ce](https://github.com/francisjgarcia/straperr/commit/e3d64cef0da6a787137a79848bcbf8e5ace7620d))
+
+
 ## [v1.14.0](https://github.com/francisjgarcia/straperr/releases/v1.14.0) (2026-01-22)
 * feat(selenium): update WebDriver options for improved headless mode @francisjgarcia ([#d456046](https://github.com/francisjgarcia/straperr/commit/d456046f61d5e0faa3f2713c8751fc0d80391a12))
 
