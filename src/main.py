@@ -273,6 +273,9 @@ def hdolimpo_thanks(username, password,
     options.add_argument('--disable-gpu')
     options.add_argument('--window-size=1920,1080')
 
+    # Establece la estrategia de carga de página para evitar errores de compatibilidad
+    options.page_load_strategy = 'normal'
+
     # Create the Selenium driver (connected to Selenium Grid)
     driver = webdriver.Remote(
         command_executor='http://straperr-selenium:4444/wd/hub',
@@ -383,7 +386,8 @@ def hdolimpo_thanks(username, password,
             f"Error interacting with the 'Thank You' button: {str(e)}")
 
     # Close the browser session
-    driver.quit()
+    if 'driver' in locals():
+        driver.quit()
 
 
 # Function to clean the release title
