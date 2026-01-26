@@ -273,7 +273,7 @@ def hdolimpo_thanks(username, password,
     options.add_argument('--disable-gpu')
     options.add_argument('--window-size=1920,1080')
 
-    # Establece la estrategia de carga de página para evitar errores de compatibilidad
+    # Set page load strategy to avoid compatibility errors
     options.page_load_strategy = 'normal'
 
     # Create the Selenium driver (connected to Selenium Grid)
