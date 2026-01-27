@@ -30,9 +30,6 @@ services:
           memory: 6M
     depends_on:
       - straperr-selenium
-    user: root
-    tty: true
-    command: /bin/sh
     restart: on-failure
 
   straperr-selenium:

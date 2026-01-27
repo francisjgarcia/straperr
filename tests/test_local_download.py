@@ -12,7 +12,7 @@ test_data = {
         "releaseTitle": "Movie Title [SPANiSH]",
         "indexer": "HD-Olimpo"
     },
-    "Movie": {
+    "movie": {
         "title": "Movie Title"
     }
 }

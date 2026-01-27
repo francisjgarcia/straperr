@@ -266,15 +266,8 @@ def hdolimpo_thanks(username, password,
 
     # Configure the Selenium WebDriver for headless mode
     options = Options()
-    options.browser_name = 'chrome'
-    options.add_argument('--headless=new')  # Use new headless mode
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--window-size=1920,1080')
-
-    # Set page load strategy to avoid compatibility errors
-    options.page_load_strategy = 'normal'
+    options.headless = True  # Set to False if you want to see the browser
+    options.page_load_strategy = 'normal' # Wait for full page load
 
     # Create the Selenium driver (connected to Selenium Grid)
     driver = webdriver.Remote(
@@ -330,6 +323,7 @@ def hdolimpo_thanks(username, password,
         search_field = driver.find_element(
             By.XPATH, "//input[@type='search' and @placeholder='Título']")
         search_field.send_keys(search_query)
+        logger.info(f"Searching for title: {search_query}")
         time.sleep(2)  # Wait for results to load
     except Exception as e:
         logger.error(f"Error searching for the title: {str(e)}")
@@ -435,7 +429,7 @@ def main():
 
     def handle_download():
         logger.info(
-            f"Downloading '{clean_release_title(release_title)}'"
+            f"Downloading '{clean_release_title(release_title)}' "
             f"from {indexer}.")
         hdolimpo_thanks(
             HDOLIMPO_USERNAME, HDOLIMPO_PASSWORD,
