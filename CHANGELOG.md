@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.16.0](https://github.com/francisjgarcia/straperr/releases/v1.16.0) (2026-01-30)
+* fix(hdolimpo): adjust page load strategy for Selenium WebDriver @francisjgarcia ([#baf034e](https://github.com/francisjgarcia/straperr/commit/baf034e2574f8de69f8a0e26836760a550cf2e5f))
+* fix(docker): remove unnecessary user and command settings @francisjgarcia ([#89a1bd3](https://github.com/francisjgarcia/straperr/commit/89a1bd3a6e1427045c1bdf4de0a70a53c2c6263c))
+
+
 ## [v1.15.0](https://github.com/francisjgarcia/straperr/releases/v1.15.0) (2026-01-26)
 * fix(hdolimpo): update page load strategy to avoid compatibility errors @francisjgarcia ([#2033275](https://github.com/francisjgarcia/straperr/commit/20332755155844c39b8867fa790050b2464d0c49))
 * feat(hdolimpo): improve page load strategy and driver cleanup @francisjgarcia ([#e3d64ce](https://github.com/francisjgarcia/straperr/commit/e3d64cef0da6a787137a79848bcbf8e5ace7620d))
