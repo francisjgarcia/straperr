@@ -267,7 +267,7 @@ def hdolimpo_thanks(username, password,
     # Configure the Selenium WebDriver for headless mode
     options = Options()
     options.headless = True  # Set to False if you want to see the browser
-    options.page_load_strategy = 'normal' # Wait for full page load
+    options.page_load_strategy = 'normal'  # Wait for full page load
 
     # Create the Selenium driver (connected to Selenium Grid)
     driver = webdriver.Remote(
