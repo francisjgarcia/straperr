@@ -412,6 +412,7 @@ def main():
     # Define functions for each event case
     def handle_test():
         logger.info(f"Test connection from {instance_name}")
+
         return jsonify({
             "status": "success",
             "message": (f"Connection test from {instance_name} "
@@ -421,6 +422,11 @@ def main():
     def handle_grab():
         logger.info(
             f"Grabbing '{clean_release_title(release_title)}' from {indexer}.")
+
+        hdolimpo_thanks(
+            HDOLIMPO_USERNAME, HDOLIMPO_PASSWORD,
+            f'{clean_release_title(release_title)}', instance_name)
+
         return jsonify({
             "status": "success",
             "message": (f"Title '{title}' "
@@ -431,9 +437,6 @@ def main():
         logger.info(
             f"Downloading '{clean_release_title(release_title)}' "
             f"from {indexer}.")
-        hdolimpo_thanks(
-            HDOLIMPO_USERNAME, HDOLIMPO_PASSWORD,
-            f'{clean_release_title(release_title)}', instance_name)
 
         return jsonify({
             "status": "success",
