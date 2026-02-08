@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.17.0](https://github.com/francisjgarcia/straperr/releases/v1.17.0) (2026-02-08)
+* feat(main): enhance event handling with HD-Olimpo integration @francisjgarcia ([#071d1f4](https://github.com/francisjgarcia/straperr/commit/071d1f4b4cd9093aa4895c22a04cec57cd308f70))
+
+
 ## [v1.16.0](https://github.com/francisjgarcia/straperr/releases/v1.16.0) (2026-01-30)
 * fix(hdolimpo): adjust page load strategy for Selenium WebDriver @francisjgarcia ([#baf034e](https://github.com/francisjgarcia/straperr/commit/baf034e2574f8de69f8a0e26836760a550cf2e5f))
 * fix(docker): remove unnecessary user and command settings @francisjgarcia ([#89a1bd3](https://github.com/francisjgarcia/straperr/commit/89a1bd3a6e1427045c1bdf4de0a70a53c2c6263c))
