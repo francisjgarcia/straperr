@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.17.1](https://github.com/francisjgarcia/straperr/releases/v1.17.1) (2026-02-16)
+* Merge pull request #43 from francisjgarcia/dependabot/docker/docker/python-3.15.0a6-alpine [patch] @francisjgarcia ([#8c2434d](https://github.com/francisjgarcia/straperr/commit/8c2434d085150415f45c488b50dad3c8527e4962))
+* chore(docker): bump python in /docker @francisjgarcia ([#2d968d7](https://github.com/francisjgarcia/straperr/commit/2d968d75d0463272afa82e103f046e77a9c39189))
+
+
 ## [v1.17.0](https://github.com/francisjgarcia/straperr/releases/v1.17.0) (2026-02-08)
 * feat(main): enhance event handling with HD-Olimpo integration @francisjgarcia ([#071d1f4](https://github.com/francisjgarcia/straperr/commit/071d1f4b4cd9093aa4895c22a04cec57cd308f70))
 
