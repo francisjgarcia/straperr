@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.17.2](https://github.com/francisjgarcia/straperr/releases/v1.17.2) (2026-02-25)
+* Merge pull request #45 from francisjgarcia/dependabot/pip/src/selenium-4.41.0 [patch] @francisjgarcia ([#e085753](https://github.com/francisjgarcia/straperr/commit/e085753928be82383ebc8e6640a49c30ac0de5de))
+* Merge pull request #44 from francisjgarcia/dependabot/pip/src/flask-3.1.3 [patch] @francisjgarcia ([#8ff0ed9](https://github.com/francisjgarcia/straperr/commit/8ff0ed9d261c537d0501244f7103c5439556c82f))
+* chore(deps): bump selenium from 4.40.0 to 4.41.0 in /src @francisjgarcia ([#59892c1](https://github.com/francisjgarcia/straperr/commit/59892c109779836a2ce889fd5c4043421b66d1c1))
+* chore(deps): bump flask from 3.1.2 to 3.1.3 in /src @francisjgarcia ([#30f15c9](https://github.com/francisjgarcia/straperr/commit/30f15c90f30fea7e80100268392cd08915c97c69))
+
+
 ## [v1.17.1](https://github.com/francisjgarcia/straperr/releases/v1.17.1) (2026-02-16)
 * Merge pull request #43 from francisjgarcia/dependabot/docker/docker/python-3.15.0a6-alpine [patch] @francisjgarcia ([#8c2434d](https://github.com/francisjgarcia/straperr/commit/8c2434d085150415f45c488b50dad3c8527e4962))
 * chore(docker): bump python in /docker @francisjgarcia ([#2d968d7](https://github.com/francisjgarcia/straperr/commit/2d968d75d0463272afa82e103f046e77a9c39189))
