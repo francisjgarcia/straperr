@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.17.3](https://github.com/francisjgarcia/straperr/releases/v1.17.3) (2026-03-02)
+* Merge pull request #46 from francisjgarcia/dependabot/pip/src/python-dotenv-1.2.2 [patch] @francisjgarcia ([#9185a5e](https://github.com/francisjgarcia/straperr/commit/9185a5ef2627ea8582bdcf6f073dfbdc9977c275))
+* chore(deps): bump python-dotenv from 1.2.1 to 1.2.2 in /src @francisjgarcia ([#6113e4b](https://github.com/francisjgarcia/straperr/commit/6113e4be61a92e3dab56efbc88d7a16fa1e35e7e))
+
+
 ## [v1.17.2](https://github.com/francisjgarcia/straperr/releases/v1.17.2) (2026-02-25)
 * Merge pull request #45 from francisjgarcia/dependabot/pip/src/selenium-4.41.0 [patch] @francisjgarcia ([#e085753](https://github.com/francisjgarcia/straperr/commit/e085753928be82383ebc8e6640a49c30ac0de5de))
 * Merge pull request #44 from francisjgarcia/dependabot/pip/src/flask-3.1.3 [patch] @francisjgarcia ([#8ff0ed9](https://github.com/francisjgarcia/straperr/commit/8ff0ed9d261c537d0501244f7103c5439556c82f))
