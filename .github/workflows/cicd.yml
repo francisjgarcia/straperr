@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
 
 permissions:
   contents: write
@@ -16,9 +24,22 @@ defaults:
     working-directory: .
 
 jobs:
+  lint:
+    name: Lint workflows
+    if: github.event_name == 'pull_request'
+    uses: francisjgarcia/actions-templates/.github/workflows/wf-lint.yml@main
+    with:
+      yamllint_paths: '.github/workflows/'
+
+  pr-validation:
+    name: Validate PR title
+    if: github.event_name == 'pull_request'
+    uses: francisjgarcia/actions-templates/.github/workflows/wf-pr-validation.yml@main
+
   setup:
     name: Setup environment
     if: |
+      github.event_name == 'push' &&
       github.event.head_commit.message != 'Initial commit' &&
       !startsWith(github.event.head_commit.message, 'docs: update CHANGELOG.md')
     uses: francisjgarcia/actions-templates/.github/workflows/wf-setup.yml@main
@@ -45,7 +66,7 @@ jobs:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}
       flake8_enabled:    true
-      pytest_enabled:    false
+      pytest_enabled:    true
 
   scan:
     name: Scan vulnerabilities
@@ -81,8 +102,7 @@ jobs:
 
   deploy:
     name: Deploy to server
-    needs: [setup, push]
-    # needs: [setup, push, release]
+    needs: [setup, push, release]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
     with:
@@ -104,16 +124,10 @@ jobs:
               "TZ": "Europe/Madrid",
               "FLASK_ENV": "${{ vars.FLASK_ENV }}",
               "FLASK_DEBUG": "${{ vars.FLASK_DEBUG }}",
-              "HDOLIMPO_USERNAME": "${{ secrets.HDOLIMPO_USERNAME }}",
-              "HDOLIMPO_PASSWORD": "${{ secrets.HDOLIMPO_PASSWORD }}",
               "SONARR_API_URL": "${{ vars.SONARR_API_URL }}",
-              "SONARR_API_KEY": "${{ secrets.SONARR_API_KEY }}",
               "SONARR4K_API_URL": "${{ vars.SONARR4K_API_URL }}",
-              "SONARR4K_API_KEY": "${{ secrets.SONARR4K_API_KEY }}",
               "RADARR_API_URL": "${{ vars.RADARR_API_URL }}",
-              "RADARR_API_KEY": "${{ secrets.RADARR_API_KEY }}",
-              "RADARR4K_API_URL": "${{ vars.RADARR4K_API_URL }}",
-              "RADARR4K_API_KEY": "${{ secrets.RADARR4K_API_KEY }}"
+              "RADARR4K_API_URL": "${{ vars.RADARR4K_API_URL }}"
             }
           },
           {
@@ -128,3 +142,5 @@ jobs:
             }
           }
         ]
+    secrets:
+      APP_ENV_VARS: ${{ secrets.APP_ENV_VARS }}
