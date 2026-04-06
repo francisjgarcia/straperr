@@ -128,10 +128,3 @@ jobs:
             }
           }
         ]
-    secrets:
-      HDOLIMPO_USERNAME:  ${{ secrets.HDOLIMPO_USERNAME }}
-      HDOLIMPO_PASSWORD:  ${{ secrets.HDOLIMPO_PASSWORD }}
-      SONARR_API_KEY:     ${{ secrets.SONARR_API_KEY }}
-      SONARR4K_API_KEY:   ${{ secrets.SONARR4K_API_KEY }}
-      RADARR_API_KEY:     ${{ secrets.RADARR_API_KEY }}
-      RADARR4K_API_KEY:   ${{ secrets.RADARR4K_API_KEY }}
