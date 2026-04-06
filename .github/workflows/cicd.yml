@@ -144,3 +144,4 @@ jobs:
         ]
     secrets:
       APP_ENV_VARS: ${{ secrets.APP_ENV_VARS }}
+
