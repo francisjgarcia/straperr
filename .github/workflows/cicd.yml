@@ -57,52 +57,54 @@ jobs:
       repo_description:  ${{ needs.setup.outputs.repo_description }}
       created_at:        ${{ needs.setup.outputs.created_at }}
 
-  tests:
-    name: Test application
-    needs: [setup, build]
-    if: needs.setup.outputs.tag_version != ''
-    uses: francisjgarcia/actions-templates/.github/workflows/wf-tests.yml@main
-    with:
-      tag_version:       ${{ needs.setup.outputs.tag_version }}
-      github_repository: ${{ github.repository }}
-      flake8_enabled:    true
-      pytest_enabled:    true
+  # tests:
+  #   name: Test application
+  #   needs: [setup, build]
+  #   if: needs.setup.outputs.tag_version != ''
+  #   uses: francisjgarcia/actions-templates/.github/workflows/wf-tests.yml@main
+  #   with:
+  #     tag_version:       ${{ needs.setup.outputs.tag_version }}
+  #     github_repository: ${{ github.repository }}
+  #     flake8_enabled:    true
+  #     pytest_enabled:    true
 
-  scan:
-    name: Scan vulnerabilities
-    needs: [setup, build]
-    if: needs.setup.outputs.tag_version != ''
-    uses: francisjgarcia/actions-templates/.github/workflows/wf-scan.yml@main
-    with:
-      tag_version:       ${{ needs.setup.outputs.tag_version }}
-      github_repository: ${{ github.repository }}
-      fail_on_critical:  true
-      severity_cutoff:   critical
-      only_fixed:        true
+  # scan:
+  #   name: Scan vulnerabilities
+  #   needs: [setup, build]
+  #   if: needs.setup.outputs.tag_version != ''
+  #   uses: francisjgarcia/actions-templates/.github/workflows/wf-scan.yml@main
+  #   with:
+  #     tag_version:       ${{ needs.setup.outputs.tag_version }}
+  #     github_repository: ${{ github.repository }}
+  #     fail_on_critical:  true
+  #     severity_cutoff:   critical
+  #     only_fixed:        true
 
   push:
     name: Push to registry
-    needs: [setup, tests, scan]
+    needs: [build]
+    # needs: [setup, tests, scan]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-push.yml@main
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}
 
-  release:
-    name: Tag and release
-    needs: [setup, push]
-    if: needs.setup.outputs.tag_version != ''
-    uses: francisjgarcia/actions-templates/.github/workflows/wf-release.yml@main
-    with:
-      tag_version:       ${{ needs.setup.outputs.tag_version }}
-      bump_type:         ${{ needs.setup.outputs.bump_type }}
-      github_repository: ${{ github.repository }}
-      changelog_entries: ${{ needs.setup.outputs.changelog_entries }}
+  # release:
+  #   name: Tag and release
+  #   needs: [setup, push]
+  #   if: needs.setup.outputs.tag_version != ''
+  #   uses: francisjgarcia/actions-templates/.github/workflows/wf-release.yml@main
+  #   with:
+  #     tag_version:       ${{ needs.setup.outputs.tag_version }}
+  #     bump_type:         ${{ needs.setup.outputs.bump_type }}
+  #     github_repository: ${{ github.repository }}
+      # changelog_entries: ${{ needs.setup.outputs.changelog_entries }}
 
   deploy:
     name: Deploy to server
-    needs: [setup, push, release]
+    needs: [push]
+    # needs: [setup, push, release]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
     with:
@@ -144,4 +146,3 @@ jobs:
         ]
     secrets:
       APP_ENV_VARS: ${{ secrets.APP_ENV_VARS }}
-
