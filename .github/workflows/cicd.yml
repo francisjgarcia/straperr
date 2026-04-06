@@ -82,7 +82,7 @@ jobs:
 
   push:
     name: Push to registry
-    needs: [build]
+    needs: build
     # needs: [setup, tests, scan]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-push.yml@main
@@ -103,7 +103,7 @@ jobs:
 
   deploy:
     name: Deploy to server
-    needs: [push]
+    needs: push
     # needs: [setup, push, release]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
