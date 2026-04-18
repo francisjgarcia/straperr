@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.18.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.1) (2026-04-18)
+## [v1.18.2](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.2) (2026-04-18)
 
 ### 🤖 AI-generated summary
-In release v1.18.1, a bug fix was implemented to correct the jq command syntax in the prepare-secrets job within the continuous integration process. This enhancement is important as it ensures that the job runs smoothly without errors, improving the reliability of the deployment and overall user experience.
+In the v1.18.2 release, a significant bug fix was made to enhance the handling of secret environment variables during deployment. This improvement is crucial for users as it ensures better security and reliability when managing sensitive data within the application.
 
 
 ### 🐛 Bug fixes
 
+* fix(deploy): correct secret environment variable handling ([c97b763](https://github.com/francisjgarcia/straperr/commit/c97b763)) — Francis J. García
+
+
+
+## [v1.18.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.1) (2026-04-18)
+
+### 🤖 AI-generated summary
+In release v1.18.1, a bug fix was implemented to correct the jq command syntax in the prepare-secrets job within the continuous integration process. This enhancement is important as it ensures that the job runs smoothly without errors, improving the reliability of the deployment and overall user experience.
+### 🐛 Bug fixes
+
 * fix(ci): correct jq command syntax in prepare-secrets job ([be0c03f](https://github.com/francisjgarcia/straperr/commit/be0c03f)) — Francis J. García
-
-
 
 ## [v1.18.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.0) (2026-04-18)
 
