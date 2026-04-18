@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.18.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.3) (2026-04-18)
+## [v1.18.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.4) (2026-04-18)
 
 ### 🤖 AI-generated summary
-In the v1.18.3 release, a bug fix was implemented to remove inherited secrets from the deployment job. This change enhances security by ensuring that sensitive information is not unintentionally exposed during the deployment process, which is crucial for protecting user data and maintaining system integrity.
+In the v1.18.4 release, the handling of the HDOLIMPO_USERNAME environment variable has been updated to address issues that may have affected deployment processes. This fix is important for users as it ensures a more reliable and efficient setup during deployment, potentially reducing errors and improving overall workflow stability.
 
 
 ### 🐛 Bug fixes
 
+* fix(deploy): update HDOLIMPO_USERNAME environment variable handling ([81fedc3](https://github.com/francisjgarcia/straperr/commit/81fedc3)) — Francis J. García
+
+
+
+## [v1.18.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.3) (2026-04-18)
+
+### 🤖 AI-generated summary
+In the v1.18.3 release, a bug fix was implemented to remove inherited secrets from the deployment job. This change enhances security by ensuring that sensitive information is not unintentionally exposed during the deployment process, which is crucial for protecting user data and maintaining system integrity.
+### 🐛 Bug fixes
+
 * fix(deploy): remove inherited secrets from deploy job ([9096e12](https://github.com/francisjgarcia/straperr/commit/9096e12)) — Francis J. García
-
-
 
 ## [v1.18.2](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.2) (2026-04-18)
 
