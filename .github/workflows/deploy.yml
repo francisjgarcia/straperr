@@ -62,7 +62,6 @@ jobs:
     needs: [setup, prepare-secrets]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
-    secrets: inherit
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}
