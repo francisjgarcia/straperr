@@ -1,11 +1,21 @@
 # Changelog
 
+## [v1.18.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.1) (2026-04-18)
+
+### 🤖 AI-generated summary
+In release v1.18.1, a bug fix was implemented to correct the jq command syntax in the prepare-secrets job within the continuous integration process. This enhancement is important as it ensures that the job runs smoothly without errors, improving the reliability of the deployment and overall user experience.
+
+
+### 🐛 Bug fixes
+
+* fix(ci): correct jq command syntax in prepare-secrets job ([be0c03f](https://github.com/francisjgarcia/straperr/commit/be0c03f)) — Francis J. García
+
+
+
 ## [v1.18.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.0) (2026-04-18)
 
 ### 🤖 AI-generated summary
 In the v1.18.0 release, several enhancements to the CI/CD workflow were introduced, allowing users to specify and inherit secrets for the release job, which improves the security and efficiency of deployment processes. Additionally, the release process was further streamlined with job dependency updates and the inclusion of an APP_ENV_VARS secret. Other improvements included updates to library dependencies and simplifications in the CI/CD structure, ultimately contributing to a more robust and secure development environment.
-
-
 ### ✨ New features
 
 * feat(ci): specify secrets for release job ([44e0d9e](https://github.com/francisjgarcia/straperr/commit/44e0d9e)) — Francis J. García
@@ -33,8 +43,6 @@ In the v1.18.0 release, several enhancements to the CI/CD workflow were introduc
 * chore(deps): bump requests in /src in the pip group across 1 directory ([a8cc39c](https://github.com/francisjgarcia/straperr/commit/a8cc39c)) — dependabot[bot]
 * Merge pull request #48 from francisjgarcia/dependabot/docker/docker/python-3.15.0a7-alpine [patch] ([3800341](https://github.com/francisjgarcia/straperr/commit/3800341)) — Francis J. García
 * chore(docker): bump python in /docker ([669dca2](https://github.com/francisjgarcia/straperr/commit/669dca2)) — dependabot[bot]
-
-
 
 ## [v1.17.3](https://github.com/francisjgarcia/straperr/releases/v1.17.3) (2026-03-02)
 * Merge pull request #46 from francisjgarcia/dependabot/pip/src/python-dotenv-1.2.2 [patch] @francisjgarcia ([#9185a5e](https://github.com/francisjgarcia/straperr/commit/9185a5ef2627ea8582bdcf6f073dfbdc9977c275))
