@@ -27,42 +27,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Add SSH private key
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_PROXY_PORT: ${{ secrets.SSH_PROXY_PORT }}
-          SSH_PROXY_HOST: ${{ secrets.SSH_PROXY_HOST }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 400 ~/.ssh/id_rsa
-          eval $(ssh-agent)
-          ssh-add ~/.ssh/id_rsa
-          ssh-keyscan -T 60 -p ${{ env.SSH_PROXY_PORT }} -H ${{ env.SSH_PROXY_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Add SSH config
-        env:
-          SSH_PRIVATE_HOST: ${{ secrets.SSH_PRIVATE_HOST }}
-          SSH_PRIVATE_USER: ${{ secrets.SSH_PRIVATE_USER }}
-          SSH_PRIVATE_PORT: ${{ secrets.SSH_PRIVATE_PORT }}
-          SSH_PROXY_USER: ${{ secrets.SSH_PROXY_USER }}
-          SSH_PROXY_HOST: ${{ secrets.SSH_PROXY_HOST }}
-          SSH_PROXY_PORT: ${{ secrets.SSH_PROXY_PORT }}
-        run: |
-          echo "Host proxy
-                HostName ${{ env.SSH_PRIVATE_HOST }}
-                User ${{ env.SSH_PRIVATE_USER }}
-                Port ${{ env.SSH_PRIVATE_PORT }}
-                ProxyJump ${{ env.SSH_PROXY_USER }}@${{ env.SSH_PROXY_HOST }}:${{ env.SSH_PROXY_PORT }}
-                StrictHostKeyChecking no
-                UserKnownHostsFile /dev/null
-          " >> ~/.ssh/config
-
-      - name: Create docker context
-        run: |
-          docker context create proxy --docker host=ssh://proxy
-          docker context use proxy
-
       - name: Remove selenium container from server
         run: |
           if [ "$(docker ps -a -q -f name=straperr-selenium)" ]; then

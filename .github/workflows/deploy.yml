@@ -19,15 +19,52 @@ jobs:
     name: Setup environment
     uses: francisjgarcia/actions-templates/.github/workflows/wf-setup.yml@main
 
+  prepare-secrets:
+    name: Prepare secrets for deployment
+    needs: [setup]
+    runs-on: ubuntu-latest
+    outputs:
+      secret_env_vars: ${{ steps.prepare-secrets.outputs.secret_env_vars }}
+    steps:
+      - name: Prepare secret environment variables
+        id: prepare-secrets
+        env:
+          HDOLIMPO_USERNAME: ${{ secrets.HDOLIMPO_USERNAME }}
+          HDOLIMPO_PASSWORD: ${{ secrets.HDOLIMPO_PASSWORD }}
+          SONARR_API_KEY:    ${{ secrets.SONARR_API_KEY }}
+          SONARR4K_API_KEY:  ${{ secrets.SONARR4K_API_KEY }}
+          RADARR_API_KEY:    ${{ secrets.RADARR_API_KEY }}
+          RADARR4K_API_KEY:  ${{ secrets.RADARR4K_API_KEY }}
+        run: |
+          JSON=$(jq -n \
+            --arg hdolimpo_username "$HDOLIMPO_USERNAME" \
+            --arg hdolimpo_password "$HDOLIMPO_PASSWORD" \
+            --arg sonarr_api_key    "$SONARR_API_KEY" \
+            --arg sonarr4k_api_key  "$SONARR4K_API_KEY" \
+            --arg radarr_api_key    "$RADARR_API_KEY" \
+            --arg radarr4k_api_key  "$RADARR4K_API_KEY" \
+            '{
+              "straperr": {
+                "HDOLIMPO_USERNAME": $hdolimpo_username,
+                "HDOLIMPO_PASSWORD": $hdolimpo_password,
+                "SONARR_API_KEY":    $sonarr_api_key,
+                "SONARR4K_API_KEY":  $sonarr4k_api_key,
+                "RADARR_API_KEY":    $radarr_api_key,
+                "RADARR4K_API_KEY":  $radarr4k_api_key
+              }
+            } ')
+          echo "secret_env_vars=$JSON" >> $GITHUB_OUTPUT
+
   deploy:
     name: Deploy to server
-    needs: [setup]
+    needs: [setup, prepare-secrets]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
     secrets: inherit
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}
+      secret_env_vars:   ${{ needs.prepare-secrets.outputs.secret_env_vars }}
       containers: |
         [
           {
