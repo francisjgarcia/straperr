@@ -1,4 +1,4 @@
-# .github/workflows/deploy.yml
+---
 name: Deploy application to server
 
 on:
@@ -7,6 +7,7 @@ on:
 permissions:
   contents: read
   packages: read
+  actions: write
 
 defaults:
   run:
@@ -16,227 +17,49 @@ defaults:
 jobs:
   setup:
     name: Setup environment
-    runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.ref == 'refs/heads/main' && 'production' || startsWith(github.ref, 'refs/tags/v') && 'production' }}
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
-
-    outputs:
-      environment: ${{ steps.get_variables.outputs.environment }}
-      tag_version: ${{ steps.get_variables.outputs.tag_version }}
-      repo_name: ${{ steps.get_variables.outputs.repo_name }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set environment output
-        id: get_variables
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_BRANCH: ${{ github.ref }}
-        run: |
-          echo "environment=${{ github.ref == 'refs/heads/main' && 'production' || startsWith(github.ref, 'refs/tags/v') && 'production' }}" >> $GITHUB_OUTPUT
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            TAG_VERSION="${GITHUB_REF#refs/tags/}"
-          else
-            TAG_VERSION=$(git tag -l | sort -V | tail -n 1)
-          fi
-          echo "tag_version=$TAG_VERSION" >> $GITHUB_OUTPUT
-          echo "repo_name=$(echo ${{ env.GITHUB_REPOSITORY }} | awk -F/ '{print $2}')" >> $GITHUB_OUTPUT
-
-      - name: Create setup summary
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_BRANCH: ${{ github.ref }}
-          ENVIRONMENT: ${{ steps.get_variables.outputs.environment }}
-          TAG_VERSION: ${{ steps.get_variables.outputs.tag_version }}
-          REPO_NAME: ${{ steps.get_variables.outputs.repo_name }}
-        run: |
-          echo "## Setup Summary" >> $GITHUB_STEP_SUMMARY
-          echo "### Output variables" >> $GITHUB_STEP_SUMMARY
-          echo "- Environment: ${{ env.ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Tag version: [${{ env.TAG_VERSION }}](https://github.com/${{ env.GITHUB_REPOSITORY }}/releases/tag/${{ env.TAG_VERSION }})" >> $GITHUB_STEP_SUMMARY
-          echo "- Repository name: [${{ env.REPO_NAME }}](https://github.com/${{ env.GITHUB_REPOSITORY }})" >> $GITHUB_STEP_SUMMARY
+    uses: francisjgarcia/actions-templates/.github/workflows/wf-setup.yml@main
 
   deploy:
     name: Deploy to server
     needs: [setup]
-    runs-on: ubuntu-latest
-    environment:
-      name: ${{ needs.setup.outputs.environment }}
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    if: needs.setup.outputs.tag_version != ''
+    uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
+    secrets: inherit
+    with:
+      tag_version:       ${{ needs.setup.outputs.tag_version }}
+      github_repository: ${{ github.repository }}
+      containers: |
+        [
+          {
+            "name": "straperr",
+            "image": "ghcr.io/${{ github.repository }}:${{ needs.setup.outputs.tag_version }}",
+            "network": "${{ vars.DOCKER_NETWORK }}",
+            "healthcheck_url": "${{ vars.DOCKER_HEALTHCHECK_URL }}",
+            "memory_limit": "${{ vars.DOCKER_MEMORY_LIMIT }}",
+            "memory_reservation": "${{ vars.DOCKER_MEMORY_RESERVATION }}",
+            "extra_networks": ["${{ vars.DOCKER_NETWORK_STRAPERR }}"],
+            "env_vars": {
+              "PUID": "1000",
+              "PGID": "1000",
+              "TZ": "Europe/Madrid",
+              "FLASK_ENV": "${{ vars.FLASK_ENV }}",
+              "FLASK_DEBUG": "${{ vars.FLASK_DEBUG }}",
+              "SONARR_API_URL": "${{ vars.SONARR_API_URL }}",
+              "SONARR4K_API_URL": "${{ vars.SONARR4K_API_URL }}",
+              "RADARR_API_URL": "${{ vars.RADARR_API_URL }}",
+              "RADARR4K_API_URL": "${{ vars.RADARR4K_API_URL }}"
+            }
+          },
+          {
+            "name": "straperr-selenium",
+            "image": "selenium/standalone-chrome:latest",
+            "network": "${{ vars.DOCKER_NETWORK_STRAPERR }}",
+            "healthcheck_url": "http://localhost:4444/wd/hub/status",
+            "memory_limit": "${{ vars.DOCKER_MEMORY_LIMIT_SELENIUM }}",
+            "memory_reservation": "${{ vars.DOCKER_MEMORY_RESERVATION_SELENIUM }}",
+            "env_vars": {
+              "SE_ENABLE_TRACING": "false"
+            }
+          }
+        ]
 
-    steps:
-      - name: Add SSH private key
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_PROXY_PORT: ${{ secrets.SSH_PROXY_PORT }}
-          SSH_PROXY_HOST: ${{ secrets.SSH_PROXY_HOST }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 400 ~/.ssh/id_rsa
-          eval $(ssh-agent)
-          ssh-add ~/.ssh/id_rsa
-          ssh-keyscan -T 60 -p ${{ env.SSH_PROXY_PORT }} -H ${{ env.SSH_PROXY_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Add SSH config
-        env:
-          SSH_PRIVATE_HOST: ${{ secrets.SSH_PRIVATE_HOST }}
-          SSH_PRIVATE_USER: ${{ secrets.SSH_PRIVATE_USER }}
-          SSH_PRIVATE_PORT: ${{ secrets.SSH_PRIVATE_PORT }}
-          SSH_PROXY_USER: ${{ secrets.SSH_PROXY_USER }}
-          SSH_PROXY_HOST: ${{ secrets.SSH_PROXY_HOST }}
-          SSH_PROXY_PORT: ${{ secrets.SSH_PROXY_PORT }}
-        run: |
-          echo "Host proxy
-                HostName ${{ env.SSH_PRIVATE_HOST }}
-                User ${{ env.SSH_PRIVATE_USER }}
-                Port ${{ env.SSH_PRIVATE_PORT }}
-                ProxyJump ${{ env.SSH_PROXY_USER }}@${{ env.SSH_PROXY_HOST }}:${{ env.SSH_PROXY_PORT }}
-                StrictHostKeyChecking no
-                UserKnownHostsFile /dev/null
-          " >> ~/.ssh/config
-
-      - name: Create docker context
-        run: |
-          docker context create proxy --docker host=ssh://proxy
-          docker context use proxy
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3.3.0
-        env:
-          REPOSITORY_OWNER: ${{ github.repository_owner }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          registry: ghcr.io
-          username: ${{ env.REPOSITORY_OWNER }}
-          password: ${{ env.GITHUB_TOKEN }}
-
-      - name: Pull docker application image
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          TAG_VERSION: ${{ needs.setup.outputs.tag_version }}
-        run: docker pull ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ env.TAG_VERSION }}
-
-      - name: Pull docker selenium image
-        run: docker pull selenium/standalone-chrome:latest
-
-      - name: Create straperr docker network if not exists
-        env:
-          DOCKER_NETWORK_STRAPERR: ${{ vars.DOCKER_NETWORK_STRAPERR }}
-        run: |
-          if [ ! "$(docker network ls --format '{{.Name}}' | grep ${{ env.DOCKER_NETWORK_STRAPERR }})" ]; then
-            docker network create ${{ env.DOCKER_NETWORK_STRAPERR }}
-          fi
-
-      - name: Deploy selenium container to server
-        env:
-          DOCKER_NETWORK_STRAPERR: ${{ vars.DOCKER_NETWORK_STRAPERR }}
-          DOCKER_DNS1: ${{ vars.DOCKER_DNS1 }}
-          DOCKER_DNS2: ${{ vars.DOCKER_DNS2 }}
-          DOCKER_SHM_SIZE_SELENIUM: ${{ vars.DOCKER_SHM_SIZE_SELENIUM }}
-          DOCKER_MEMORY_LIMIT_SELENIUM: ${{ vars.DOCKER_MEMORY_LIMIT_SELENIUM }}
-          DOCKER_MEMORY_RESERVATION_SELENIUM: ${{ vars.DOCKER_MEMORY_RESERVATION_SELENIUM }}
-        run: |
-          if [ "$(docker ps -a -q -f name=straperr-selenium)" ]; then
-            docker rm -f straperr-selenium
-          fi
-          docker run -d \
-            --name straperr-selenium \
-            --hostname straperr-selenium \
-            --network ${{ env.DOCKER_NETWORK_STRAPERR }} \
-            --dns=${{ env.DOCKER_DNS1 }} \
-            --dns=${{ env.DOCKER_DNS2 }} \
-            -e SE_ENABLE_TRACING=false \
-            --health-cmd="curl -f http://localhost:4444/wd/hub/status || exit 1" \
-            --health-start-period=30s \
-            --health-interval=1m \
-            --health-timeout=10s \
-            --health-retries=3 \
-            --shm-size=${{ env.DOCKER_SHM_SIZE_SELENIUM }} \
-            --memory=${{ env.DOCKER_MEMORY_LIMIT_SELENIUM }} \
-            --memory-reservation=${{ env.DOCKER_MEMORY_RESERVATION_SELENIUM }} \
-            --restart always \
-          selenium/standalone-chrome:latest
-
-      - name: Deploy application to server
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          REPO_NAME: ${{ needs.setup.outputs.repo_name }}
-          TAG_VERSION: ${{ needs.setup.outputs.tag_version }}
-          DOCKER_NETWORK: ${{ vars.DOCKER_NETWORK }}
-          DOCKER_HEALTHCHECK_URL: ${{ vars.DOCKER_HEALTHCHECK_URL }}
-          DOCKER_MEMORY_LIMIT: ${{ vars.DOCKER_MEMORY_LIMIT }}
-          DOCKER_MEMORY_RESERVATION: ${{ vars.DOCKER_MEMORY_RESERVATION }}
-          FLASK_ENV: ${{ vars.FLASK_ENV }}
-          FLASK_DEBUG: ${{ vars.FLASK_DEBUG }}
-          HDOLIMPO_USERNAME: ${{ secrets.HDOLIMPO_USERNAME }}
-          HDOLIMPO_PASSWORD: ${{ secrets.HDOLIMPO_PASSWORD }}
-          SONARR_API_URL: ${{ vars.SONARR_API_URL }}
-          SONARR_API_KEY: ${{ secrets.SONARR_API_KEY }}
-          SONARR4K_API_URL: ${{ vars.SONARR4K_API_URL }}
-          SONARR4K_API_KEY: ${{ secrets.SONARR4K_API_KEY }}
-          RADARR_API_URL: ${{ vars.RADARR_API_URL }}
-          RADARR_API_KEY: ${{ secrets.RADARR_API_KEY }}
-          RADARR4K_API_URL: ${{ vars.RADARR4K_API_URL }}
-          RADARR4K_API_KEY: ${{ secrets.RADARR4K_API_KEY }}
-        run: |
-          if [ "$(docker ps -a -q -f name=${{ env.REPO_NAME }})" ]; then
-            docker rm -f ${{ env.REPO_NAME }}
-          fi
-          docker run -d \
-            --name ${{ env.REPO_NAME }} \
-            --hostname ${{ env.REPO_NAME }} \
-            --network ${{ env.DOCKER_NETWORK }} \
-            -e PUID=1000 \
-            -e PGID=1000 \
-            -e TZ=Europe/Madrid \
-            -e FLASK_ENV=${{ env.FLASK_ENV }} \
-            -e FLASK_DEBUG=${{ env.FLASK_DEBUG }} \
-            -e HDOLIMPO_USERNAME=${{ env.HDOLIMPO_USERNAME }} \
-            -e HDOLIMPO_PASSWORD='${{ env.HDOLIMPO_PASSWORD }}' \
-            -e SONARR_API_URL=${{ env.SONARR_API_URL }} \
-            -e SONARR_API_KEY=${{ env.SONARR_API_KEY }} \
-            -e SONARR4K_API_URL=${{ env.SONARR4K_API_URL }} \
-            -e SONARR4K_API_KEY=${{ env.SONARR4K_API_KEY }} \
-            -e RADARR_API_URL=${{ env.RADARR_API_URL }} \
-            -e RADARR_API_KEY=${{ env.RADARR_API_KEY }} \
-            -e RADARR4K_API_URL=${{ env.RADARR4K_API_URL }} \
-            -e RADARR4K_API_KEY=${{ env.RADARR4K_API_KEY }} \
-            --health-cmd="curl -f ${{ env.DOCKER_HEALTHCHECK_URL }} || exit 1" \
-            --health-start-period=30s \
-            --health-interval=1h \
-            --health-timeout=10s \
-            --health-retries=3 \
-            --memory="${{ env.DOCKER_MEMORY_LIMIT }}" \
-            --memory-reservation="${{ env.DOCKER_MEMORY_RESERVATION }}" \
-            --restart always \
-          ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ env.TAG_VERSION }}
-
-      - name: Connect docker container application to straperr network
-        env:
-          REPO_NAME: ${{ needs.setup.outputs.repo_name }}
-          DOCKER_NETWORK_STRAPERR: ${{ vars.DOCKER_NETWORK_STRAPERR }}
-        run: docker network connect ${{ env.DOCKER_NETWORK_STRAPERR }} ${{ env.REPO_NAME }}
-
-      - name: Remove old docker images
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: |
-          for DOCKER_IMAGE_ID in $(docker images -q ghcr.io/${{ env.GITHUB_REPOSITORY }}); do
-            docker rmi -f $DOCKER_IMAGE_ID || true
-          done
-
-      - name: Create deploy summary
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          TAG_VERSION: ${{ needs.setup.outputs.tag_version }}
-        run: |
-          echo "## Deploy Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- Deploy ghcr.io/${{ env.GITHUB_REPOSITORY }}:${{ env.TAG_VERSION }} to server successful!" >> $GITHUB_STEP_SUMMARY
-          echo "- Remove old docker images." >> $GITHUB_STEP_SUMMARY

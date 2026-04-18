@@ -1,4 +1,4 @@
-# .github/workflows/remove-deploy.yml
+---
 name: Remove application from server
 
 on:
@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 defaults:
   run:
@@ -15,53 +16,14 @@ defaults:
 jobs:
   setup:
     name: Setup environment
-    runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.ref == 'refs/heads/main' && 'production' }}
-    if: ${{ github.ref == 'refs/heads/main' }}
-
-    outputs:
-      environment: ${{ steps.get_variables.outputs.environment }}
-      tag_version: ${{ steps.get_variables.outputs.tag_version }}
-      repo_name: ${{ steps.get_variables.outputs.repo_name }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set environment output
-        id: get_variables
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_BRANCH: ${{ github.ref }}
-        run: |
-          echo "environment=${{ github.ref == 'refs/heads/main' && 'production' }}" >> $GITHUB_OUTPUT
-          echo "tag_version=$(git tag -l | sort -V | tail -n 1)" >> $GITHUB_OUTPUT
-          echo "repo_name=$(echo ${{ env.GITHUB_REPOSITORY }} | awk -F/ '{print $2}')" >> $GITHUB_OUTPUT
-
-      - name: Create setup summary
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_BRANCH: ${{ github.ref }}
-          ENVIRONMENT: ${{ steps.get_variables.outputs.environment }}
-          TAG_VERSION: ${{ steps.get_variables.outputs.tag_version }}
-          REPO_NAME: ${{ steps.get_variables.outputs.repo_name }}
-        run: |
-          echo "## Setup Summary" >> $GITHUB_STEP_SUMMARY
-          echo "### Output variables" >> $GITHUB_STEP_SUMMARY
-          echo "- Environment: ${{ env.ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Tag version: [${{ env.TAG_VERSION }}](https://github.com/${{ env.GITHUB_REPOSITORY }}/releases/tag/${{ env.TAG_VERSION }})" >> $GITHUB_STEP_SUMMARY
-          echo "- Repository name: [${{ env.REPO_NAME }}](https://github.com/${{ env.GITHUB_REPOSITORY }})" >> $GITHUB_STEP_SUMMARY
+    uses: francisjgarcia/actions-templates/.github/workflows/wf-setup.yml@main
 
   remove-deploy:
     name: Remove application from server
     needs: [setup]
     runs-on: ubuntu-latest
     environment:
-      name: ${{ needs.setup.outputs.environment }}
+      name: production
     if: github.ref == 'refs/heads/main'
 
     steps:
