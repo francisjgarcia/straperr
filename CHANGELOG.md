@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.18.2](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.2) (2026-04-18)
+## [v1.18.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.3) (2026-04-18)
 
 ### 🤖 AI-generated summary
-In the v1.18.2 release, a significant bug fix was made to enhance the handling of secret environment variables during deployment. This improvement is crucial for users as it ensures better security and reliability when managing sensitive data within the application.
+In the v1.18.3 release, a bug fix was implemented to remove inherited secrets from the deployment job. This change enhances security by ensuring that sensitive information is not unintentionally exposed during the deployment process, which is crucial for protecting user data and maintaining system integrity.
 
 
 ### 🐛 Bug fixes
 
+* fix(deploy): remove inherited secrets from deploy job ([9096e12](https://github.com/francisjgarcia/straperr/commit/9096e12)) — Francis J. García
+
+
+
+## [v1.18.2](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.2) (2026-04-18)
+
+### 🤖 AI-generated summary
+In the v1.18.2 release, a significant bug fix was made to enhance the handling of secret environment variables during deployment. This improvement is crucial for users as it ensures better security and reliability when managing sensitive data within the application.
+### 🐛 Bug fixes
+
 * fix(deploy): correct secret environment variable handling ([c97b763](https://github.com/francisjgarcia/straperr/commit/c97b763)) — Francis J. García
-
-
 
 ## [v1.18.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.1) (2026-04-18)
 
