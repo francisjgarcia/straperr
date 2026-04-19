@@ -110,6 +110,7 @@ jobs:
     needs: [setup, push, release]
     if: needs.setup.outputs.tag_version != ''
     runs-on: ubuntu-latest
+    environment: production
     outputs:
       app_env_vars: ${{ steps.combine.outputs.app_env_vars }}
 
@@ -118,26 +119,11 @@ jobs:
         id: combine
         env:
           HDOLIMPO_USERNAME: ${{ secrets.HDOLIMPO_USERNAME }}
-          HDOLIMPO_PASSWORD: ${{ secrets.HDOLIMPO_PASSWORD }}
-          SONARR_API_KEY:    ${{ secrets.SONARR_API_KEY }}
-          SONARR4K_API_KEY:  ${{ secrets.SONARR4K_API_KEY }}
-          RADARR_API_KEY:    ${{ secrets.RADARR_API_KEY }}
-          RADARR4K_API_KEY:  ${{ secrets.RADARR4K_API_KEY }}
         run: |
           APP_ENV_VARS=$(jq -cn \
-            --arg hdolimpo_username "miusuario" \
-            --arg hdolimpo_password "$HDOLIMPO_PASSWORD" \
-            --arg sonarr_api_key    "$SONARR_API_KEY" \
-            --arg sonarr4k_api_key  "$SONARR4K_API_KEY" \
-            --arg radarr_api_key    "$RADARR_API_KEY" \
-            --arg radarr4k_api_key  "$RADARR4K_API_KEY" \
+            --arg hdolimpo_username "$HDOLIMPO_USERNAME" \
             '{
-              HDOLIMPO_USERNAME: $hdolimpo_username,
-              HDOLIMPO_PASSWORD: $hdolimpo_password,
-              SONARR_API_KEY:    $sonarr_api_key,
-              SONARR4K_API_KEY:  $sonarr4k_api_key,
-              RADARR_API_KEY:    $radarr_api_key,
-              RADARR4K_API_KEY:  $radarr4k_api_key
+              HDOLIMPO_USERNAME: $hdolimpo_username
             }')
           echo "app_env_vars=$APP_ENV_VARS" >> $GITHUB_OUTPUT
 
