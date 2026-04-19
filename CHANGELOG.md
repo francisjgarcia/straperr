@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.20.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.3) (2026-04-19)
+## [v1.20.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.4) (2026-04-19)
 
 ### 🤖 AI-generated summary
-In release v1.20.3, the deployment workflow has been streamlined by removing the 'secret-vars' job, which simplifies the deployment process. This change aims to enhance efficiency and reduce unnecessary complexity, making it easier for users to manage deployments without the extra step.
+In release v1.20.4, the deployment process was improved by refactoring the remove-deploy job to utilize a self-hosted runner. This change enhances efficiency and control during deployments, ultimately leading to a more reliable and streamlined experience for users.
 
 
 ### ♻️ Refactors
 
+* refactor(deploy): change runner to self-hosted for remove-deploy job ([1798e94](https://github.com/francisjgarcia/straperr/commit/1798e94)) — Francis J. García
+
+
+
+## [v1.20.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.3) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.20.3, the deployment workflow has been streamlined by removing the 'secret-vars' job, which simplifies the deployment process. This change aims to enhance efficiency and reduce unnecessary complexity, making it easier for users to manage deployments without the extra step.
+### ♻️ Refactors
+
 * refactor(deploy): remove secret-vars job from deployment workflow ([c879def](https://github.com/francisjgarcia/straperr/commit/c879def)) — Francis J. García
-
-
 
 ## [v1.20.2](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.2) (2026-04-19)
 
