@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.19.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.3) (2026-04-19)
+## [v1.19.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.4) (2026-04-19)
 
 ### 🤖 AI-generated summary
-In release v1.19.3, a minor bug fix was implemented to ensure that there is an empty line at the end of the cicd.yml file. This change streamlines the continuous integration process, which can help prevent potential issues during automated builds. By addressing this small detail, users may experience smoother functionality in their CI/CD workflows.
+In release v1.19.4, a minor but important update was made to the CI/CD configuration file by removing an unnecessary empty line in `cicd.yml`. This change improves the clarity and organization of the file, which can help streamline the continuous integration and delivery processes for users.
 
 
 ### 🐛 Bug fixes
 
+* fix(ci): remove unnecessary empty line in cicd.yml ([51cc121](https://github.com/francisjgarcia/straperr/commit/51cc121)) — Francis J. García
+
+
+
+## [v1.19.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.3) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.19.3, a minor bug fix was implemented to ensure that there is an empty line at the end of the cicd.yml file. This change streamlines the continuous integration process, which can help prevent potential issues during automated builds. By addressing this small detail, users may experience smoother functionality in their CI/CD workflows.
+### 🐛 Bug fixes
+
 * fix(ci): add empty line at the end of cicd.yml ([c7631d8](https://github.com/francisjgarcia/straperr/commit/c7631d8)) — Francis J. García
-
-
 
 ## [v1.19.2](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.2) (2026-04-19)
 
