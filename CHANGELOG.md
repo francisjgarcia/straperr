@@ -1,18 +1,26 @@
 # Changelog
 
+## [v1.18.17](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.17) (2026-04-19)
+
+### 🤖 AI-generated summary
+In the v1.18.17 release, a significant update was made to the CI/CD pipeline by renaming and improving the secret-vars job, which enhances its functionality and clarity. This change is crucial for developers as it streamlines the process of managing secrets in their deployment workflows.
+
+
+### 🐛 Bug fixes
+
+* fix(ci): rename and update secret-vars job in CI/CD pipeline ([b26cb92](https://github.com/francisjgarcia/straperr/commit/b26cb92)) — Francis J. García
+
+
+
 ## [v1.18.16](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.16) (2026-04-19)
 
 ### 🤖 AI-generated summary
 In release v1.18.16, several updates were made to enhance the CI/CD pipeline, focusing on permissions for models and actions, as well as improving the management of environment variables. These changes are important as they ensure smoother operations and increased security in the deployment process, which can lead to a more reliable software experience for users.
-
-
 ### 🐛 Bug fixes
 
 * fix(ci): update permissions for models in CI/CD pipeline ([0ec81b2](https://github.com/francisjgarcia/straperr/commit/0ec81b2)) — Francis J. García
 * fix(ci): update permissions for actions in CI/CD pipeline ([bd7c4d0](https://github.com/francisjgarcia/straperr/commit/bd7c4d0)) — Francis J. García
 * fix(ci): update environment variable handling in CI/CD pipeline ([a79814f](https://github.com/francisjgarcia/straperr/commit/a79814f)) — Francis J. García
-
-
 
 ## [v1.18.15](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.15) (2026-04-19)
 
