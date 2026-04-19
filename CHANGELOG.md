@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.19.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.1) (2026-04-19)
+## [v1.19.2](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.2) (2026-04-19)
 
 ### 🤖 AI-generated summary
-Release v1.19.1 includes a bug fix that removes the environment specification from the prepare-deploy job. This change simplifies the deployment process, ensuring it runs more smoothly and minimizing potential configuration issues. Users can expect a more streamlined experience when preparing their deployments.
+In the v1.19.2 release, a bug fix was implemented that removes the environment specification from the prepare-deploy job. This change simplifies the deployment process, enhancing usability and reducing potential deployment errors for users.
 
 
 ### 🐛 Bug fixes
 
+* fix(deploy): remove environment specification from prepare-deploy job ([67ce2b7](https://github.com/francisjgarcia/straperr/commit/67ce2b7)) — Francis J. García
+
+
+
+## [v1.19.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.1) (2026-04-19)
+
+### 🤖 AI-generated summary
+Release v1.19.1 includes a bug fix that removes the environment specification from the prepare-deploy job. This change simplifies the deployment process, ensuring it runs more smoothly and minimizing potential configuration issues. Users can expect a more streamlined experience when preparing their deployments.
+### 🐛 Bug fixes
+
 * fix(deploy): remove environment specification from prepare-deploy job ([4d00384](https://github.com/francisjgarcia/straperr/commit/4d00384)) — Francis J. García
-
-
 
 ## [v1.19.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.0) (2026-04-19)
 
