@@ -23,7 +23,6 @@ jobs:
     name: Prepare deploy secrets
     needs: [setup]
     runs-on: ubuntu-latest
-    environment: production
     outputs:
       secret_env_vars: ${{ steps.secrets.outputs.secret_env_vars }}
     steps:
