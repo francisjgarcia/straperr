@@ -1,16 +1,24 @@
 # Changelog
 
+## [v1.20.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.0) (2026-04-19)
+
+### 🤖 AI-generated summary
+In the v1.20.0 release, a new feature has been introduced that allows users to deploy to a production environment directly from the deploy job. This enhancement simplifies the deployment process, making it more efficient and accessible for users who need to manage their production environments effectively.
+
+
+### ✨ New features
+
+* feat(deploy): add production environment to deploy job ([88661d6](https://github.com/francisjgarcia/straperr/commit/88661d6)) — Francis J. García
+
+
+
 ## [v1.19.5](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.5) (2026-04-19)
 
 ### 🤖 AI-generated summary
 In release v1.19.5, a bug was fixed that addressed a hardcoded username issue in the CI/CD configuration file. This update is important for users as it ensures that the continuous integration and delivery processes run more smoothly and securely, minimizing potential issues related to unauthorized access.
-
-
 ### 🐛 Bug fixes
 
 * fix(ci): update hardcoded username in cicd.yml ([70bac01](https://github.com/francisjgarcia/straperr/commit/70bac01)) — Francis J. García
-
-
 
 ## [v1.19.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.4) (2026-04-19)
 
