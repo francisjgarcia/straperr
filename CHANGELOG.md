@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.18.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.4) (2026-04-18)
+## [v1.18.5](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.5) (2026-04-19)
 
 ### 🤖 AI-generated summary
-In the v1.18.4 release, the handling of the HDOLIMPO_USERNAME environment variable has been updated to address issues that may have affected deployment processes. This fix is important for users as it ensures a more reliable and efficient setup during deployment, potentially reducing errors and improving overall workflow stability.
+In release v1.18.5, the handling of secret environment variables was improved during deployment, addressing issues that may have affected the security and reliability of deploying applications. This update ensures that sensitive information is managed more effectively, which is crucial for protecting user data and maintaining the integrity of deployments.
 
 
 ### 🐛 Bug fixes
 
+* fix(deploy): update secret environment variable handling ([006786e](https://github.com/francisjgarcia/straperr/commit/006786e)) — Francis J. García
+
+
+
+## [v1.18.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.4) (2026-04-18)
+
+### 🤖 AI-generated summary
+In the v1.18.4 release, the handling of the HDOLIMPO_USERNAME environment variable has been updated to address issues that may have affected deployment processes. This fix is important for users as it ensures a more reliable and efficient setup during deployment, potentially reducing errors and improving overall workflow stability.
+### 🐛 Bug fixes
+
 * fix(deploy): update HDOLIMPO_USERNAME environment variable handling ([81fedc3](https://github.com/francisjgarcia/straperr/commit/81fedc3)) — Francis J. García
-
-
 
 ## [v1.18.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.3) (2026-04-18)
 
