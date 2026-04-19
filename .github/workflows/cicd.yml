@@ -97,7 +97,7 @@ jobs:
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-release.yml@main
     secrets:
-      APP_ID:          ${{ secrets.APP_ID }}
+      APP_CLIENT_ID: ${{ secrets.APP_CLIENT_ID }}
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
