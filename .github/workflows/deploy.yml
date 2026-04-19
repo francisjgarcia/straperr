@@ -39,12 +39,11 @@ jobs:
                 "HDOLIMPO_USERNAME": $hdolimpo_username
               }
             }')
-          echo "secret_env_vars=$JSON" >> $GITHUB_OUTPUT
+          echo "secret_env_vars=$(echo "$JSON" | base64 -w 0)" >> $GITHUB_OUTPUT
 
   deploy:
     name: Deploy to server
     needs: [setup, prepare-secrets]
-    if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
