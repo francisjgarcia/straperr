@@ -22,7 +22,6 @@ jobs:
   prepare-secrets:
     name: Prepare deploy secrets
     needs: [setup]
-    if: needs.setup.outputs.tag_version != ''
     runs-on: ubuntu-latest
     environment: production
     outputs:
@@ -50,7 +49,6 @@ jobs:
   deploy:
     name: Deploy to server
     needs: [setup, prepare-secrets]
-    if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
