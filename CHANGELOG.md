@@ -1,16 +1,28 @@
 # Changelog
 
+## [v1.19.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.0) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.19.0, a new production environment has been added to the prepare-deploy job, enhancing deployment capabilities for users. Additionally, the secret-vars job has been renamed to prepare-deploy, and the environment variables have been updated accordingly, ensuring clarity and consistency in the CI workflow. These changes aim to improve the deployment process and streamline configuration management for developers.
+
+
+### ✨ New features
+
+* feat(deploy): add production environment to prepare-deploy job ([22276f6](https://github.com/francisjgarcia/straperr/commit/22276f6)) — Francis J. García
+
+### 🐛 Bug fixes
+
+* fix(ci): rename secret-vars job to prepare-deploy and update environment variables ([9576534](https://github.com/francisjgarcia/straperr/commit/9576534)) — Francis J. García
+
+
+
 ## [v1.18.18](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.18) (2026-04-19)
 
 ### 🤖 AI-generated summary
 In the latest release v1.18.18, an unused HDOLIMPO credential was removed from the secret-vars job in the continuous integration setup. This change helps streamline the CI process by eliminating unnecessary credentials, enhancing security and reducing potential confusion for users.
-
-
 ### 🐛 Bug fixes
 
 * fix(ci): remove unused HDOLIMPO credentials from secret-vars job ([d227c35](https://github.com/francisjgarcia/straperr/commit/d227c35)) — Francis J. García
-
-
 
 ## [v1.18.17](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.17) (2026-04-19)
 
