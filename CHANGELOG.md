@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.18.14](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.14) (2026-04-19)
+## [v1.18.15](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.15) (2026-04-19)
 
 ### 🤖 AI-generated summary
-In release v1.18.14, a bug fix was implemented to add additional secret environment variables during deployment. This enhancement ensures better security by allowing users to manage sensitive information more effectively, thereby improving the overall deployment process.
+In release v1.18.15, a bug was fixed to ensure that `secret_env_vars` are now included correctly in the container configuration during deployment. This change enhances security and functionality for users, allowing for proper management of sensitive environment variables when deploying applications.
 
 
 ### 🐛 Bug fixes
 
+* fix(deploy): include secret_env_vars in container configuration ([29a96f0](https://github.com/francisjgarcia/straperr/commit/29a96f0)) — Francis J. García
+
+
+
+## [v1.18.14](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.14) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.18.14, a bug fix was implemented to add additional secret environment variables during deployment. This enhancement ensures better security by allowing users to manage sensitive information more effectively, thereby improving the overall deployment process.
+### 🐛 Bug fixes
+
 * fix(deploy): add additional secret environment variables ([428f624](https://github.com/francisjgarcia/straperr/commit/428f624)) — Francis J. García
-
-
 
 ## [v1.18.13](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.13) (2026-04-19)
 
