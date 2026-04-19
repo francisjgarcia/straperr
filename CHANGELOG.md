@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.19.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.4) (2026-04-19)
+## [v1.19.5](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.5) (2026-04-19)
 
 ### 🤖 AI-generated summary
-In release v1.19.4, a minor but important update was made to the CI/CD configuration file by removing an unnecessary empty line in `cicd.yml`. This change improves the clarity and organization of the file, which can help streamline the continuous integration and delivery processes for users.
+In release v1.19.5, a bug was fixed that addressed a hardcoded username issue in the CI/CD configuration file. This update is important for users as it ensures that the continuous integration and delivery processes run more smoothly and securely, minimizing potential issues related to unauthorized access.
 
 
 ### 🐛 Bug fixes
 
+* fix(ci): update hardcoded username in cicd.yml ([70bac01](https://github.com/francisjgarcia/straperr/commit/70bac01)) — Francis J. García
+
+
+
+## [v1.19.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.4) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.19.4, a minor but important update was made to the CI/CD configuration file by removing an unnecessary empty line in `cicd.yml`. This change improves the clarity and organization of the file, which can help streamline the continuous integration and delivery processes for users.
+### 🐛 Bug fixes
+
 * fix(ci): remove unnecessary empty line in cicd.yml ([51cc121](https://github.com/francisjgarcia/straperr/commit/51cc121)) — Francis J. García
-
-
 
 ## [v1.19.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.3) (2026-04-19)
 
