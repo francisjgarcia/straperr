@@ -125,7 +125,7 @@ jobs:
           RADARR4K_API_KEY:  ${{ secrets.RADARR4K_API_KEY }}
         run: |
           APP_ENV_VARS=$(jq -cn \
-            --arg hdolimpo_username "$HDOLIMPO_USERNAME" \
+            --arg hdolimpo_username "miusuario" \
             --arg hdolimpo_password "$HDOLIMPO_PASSWORD" \
             --arg sonarr_api_key    "$SONARR_API_KEY" \
             --arg sonarr4k_api_key  "$SONARR4K_API_KEY" \
