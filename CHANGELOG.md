@@ -1,16 +1,24 @@
 # Changelog
 
+## [v1.20.2](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.2) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.20.2, the deployment process has been streamlined with the removal of the prepare-deploy job, enhancing efficiency. This refactor simplifies the overall deployment workflow, making it easier and faster for users to deploy updates.
+
+
+### ♻️ Refactors
+
+* refactor(deploy): streamline deployment process by removing prepare-deploy job ([c509113](https://github.com/francisjgarcia/straperr/commit/c509113)) — Francis J. García
+
+
+
 ## [v1.20.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.1) (2026-04-19)
 
 ### 🤖 AI-generated summary
 In release v1.20.1, a critical bug was addressed in the continuous integration deployment workflow by renaming the variable from `app_env_vars` to `app_env_secrets`. This change ensures better clarity and accuracy in the configuration settings, which is important for users to manage their environment secrets securely.
-
-
 ### 🐛 Bug fixes
 
 * fix(ci): rename app_env_vars to app_env_secrets in deployment workflow ([1f8546e](https://github.com/francisjgarcia/straperr/commit/1f8546e)) — Francis J. García
-
-
 
 ## [v1.20.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.0) (2026-04-19)
 
