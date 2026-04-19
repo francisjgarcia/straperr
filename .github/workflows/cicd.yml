@@ -1,4 +1,3 @@
----
 name: CI/CD Pipeline
 
 on:
@@ -18,8 +17,6 @@ permissions:
   contents: write
   packages: write
   security-events: write
-  actions: write
-  models: read
 
 defaults:
   run:
@@ -49,7 +46,7 @@ jobs:
 
   build:
     name: Build image
-    needs: [setup]
+    needs: setup
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-build.yml@main
     with:
@@ -106,17 +103,17 @@ jobs:
       github_repository: ${{ github.repository }}
       changelog_entries: ${{ needs.setup.outputs.changelog_entries }}
 
-  prepare-secrets:
+  prepare-deploy:
     name: Prepare deploy secrets
     needs: [setup, push, release]
     if: needs.setup.outputs.tag_version != ''
     runs-on: ubuntu-latest
-    environment: production
     outputs:
-      secret_env_vars: ${{ steps.build.outputs.secret_env_vars }}
+      app_env_vars: ${{ steps.combine.outputs.app_env_vars }}
+
     steps:
-      - name: Build SECRET_ENV_VARS
-        id: build
+      - name: Combine secrets into app_env_vars
+        id: combine
         env:
           HDOLIMPO_USERNAME: ${{ secrets.HDOLIMPO_USERNAME }}
           HDOLIMPO_PASSWORD: ${{ secrets.HDOLIMPO_PASSWORD }}
@@ -125,7 +122,7 @@ jobs:
           RADARR_API_KEY:    ${{ secrets.RADARR_API_KEY }}
           RADARR4K_API_KEY:  ${{ secrets.RADARR4K_API_KEY }}
         run: |
-          JSON=$(jq -cn \
+          APP_ENV_VARS=$(jq -cn \
             --arg hdolimpo_username "$HDOLIMPO_USERNAME" \
             --arg hdolimpo_password "$HDOLIMPO_PASSWORD" \
             --arg sonarr_api_key    "$SONARR_API_KEY" \
@@ -133,26 +130,24 @@ jobs:
             --arg radarr_api_key    "$RADARR_API_KEY" \
             --arg radarr4k_api_key  "$RADARR4K_API_KEY" \
             '{
-              "straperr": {
-                "HDOLIMPO_USERNAME": $hdolimpo_username,
-                "HDOLIMPO_PASSWORD": $hdolimpo_password,
-                "SONARR_API_KEY":    $sonarr_api_key,
-                "SONARR4K_API_KEY":  $sonarr4k_api_key,
-                "RADARR_API_KEY":    $radarr_api_key,
-                "RADARR4K_API_KEY":  $radarr4k_api_key
-              }
+              HDOLIMPO_USERNAME: $hdolimpo_username,
+              HDOLIMPO_PASSWORD: $hdolimpo_password,
+              SONARR_API_KEY:    $sonarr_api_key,
+              SONARR4K_API_KEY:  $sonarr4k_api_key,
+              RADARR_API_KEY:    $radarr_api_key,
+              RADARR4K_API_KEY:  $radarr4k_api_key
             }')
-          echo "secret_env_vars=$(echo "$JSON" | base64 -w 0)" >> $GITHUB_OUTPUT
+          echo "app_env_vars=$APP_ENV_VARS" >> $GITHUB_OUTPUT
 
   deploy:
     name: Deploy to server
-    needs: [setup, push, release, prepare-secrets]
+    needs: [setup, prepare-deploy]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}
-      secret_env_vars:   ${{ needs.prepare-secrets.outputs.secret_env_vars }}
+      app_env_vars:      ${{ needs.prepare-deploy.outputs.app_env_vars }}
       containers: |
         [
           {
