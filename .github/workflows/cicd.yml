@@ -110,7 +110,6 @@ jobs:
     needs: [setup, push, release]
     if: needs.setup.outputs.tag_version != ''
     runs-on: ubuntu-latest
-    environment: production
     outputs:
       app_env_vars: ${{ steps.combine.outputs.app_env_vars }}
 
