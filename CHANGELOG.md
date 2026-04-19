@@ -1,16 +1,24 @@
 # Changelog
 
+## [v1.20.5](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.5) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.20.5, a bug fix was implemented that updates the secret variable name from APP_ID to APP_CLIENT_ID. This change is important for users as it ensures correct variable usage, improving the deployment process and reducing potential errors related to configuration.
+
+
+### 🐛 Bug fixes
+
+* fix(deploy): update secret variable name from APP_ID to APP_CLIENT_ID ([f49d405](https://github.com/francisjgarcia/straperr/commit/f49d405)) — Francis J. García
+
+
+
 ## [v1.20.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.4) (2026-04-19)
 
 ### 🤖 AI-generated summary
 In release v1.20.4, the deployment process was improved by refactoring the remove-deploy job to utilize a self-hosted runner. This change enhances efficiency and control during deployments, ultimately leading to a more reliable and streamlined experience for users.
-
-
 ### ♻️ Refactors
 
 * refactor(deploy): change runner to self-hosted for remove-deploy job ([1798e94](https://github.com/francisjgarcia/straperr/commit/1798e94)) — Francis J. García
-
-
 
 ## [v1.20.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.3) (2026-04-19)
 
