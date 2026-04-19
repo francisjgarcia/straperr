@@ -21,9 +21,7 @@ jobs:
   remove-deploy:
     name: Remove application from server
     needs: [setup]
-    runs-on: ubuntu-latest
-    environment:
-      name: production
+    runs-on: self-hosted
     if: github.ref == 'refs/heads/main'
 
     steps:
