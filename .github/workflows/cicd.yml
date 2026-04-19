@@ -112,20 +112,20 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     outputs:
-      app_env_vars: ${{ steps.combine.outputs.app_env_vars }}
+      app_env_secrets: ${{ steps.combine.outputs.app_env_secrets }}
 
     steps:
-      - name: Combine secrets into app_env_vars
+      - name: Combine secrets into app_env_secrets
         id: combine
         env:
           HDOLIMPO_USERNAME: ${{ secrets.HDOLIMPO_USERNAME }}
         run: |
-          APP_ENV_VARS=$(jq -cn \
-            --arg hdolimpo_username "$HDOLIMPO_USERNAME" \
+          APP_ENV_SECRETS=$(jq -cn \
+            --arg hdolimpo_username "$(echo -n "$HDOLIMPO_USERNAME" | base64 -w 0)" \
             '{
               HDOLIMPO_USERNAME: $hdolimpo_username
             }')
-          echo "app_env_vars=$APP_ENV_VARS" >> $GITHUB_OUTPUT
+          echo "app_env_secrets=$APP_ENV_SECRETS" >> $GITHUB_OUTPUT
 
   deploy:
     name: Deploy to server
@@ -135,7 +135,7 @@ jobs:
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}
-      app_env_vars:      ${{ needs.prepare-deploy.outputs.app_env_vars }}
+      app_env_secrets:   ${{ needs.prepare-deploy.outputs.app_env_secrets }}
       containers: |
         [
           {
