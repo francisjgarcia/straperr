@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.18.17](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.17) (2026-04-19)
+## [v1.18.18](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.18) (2026-04-19)
 
 ### 🤖 AI-generated summary
-In the v1.18.17 release, a significant update was made to the CI/CD pipeline by renaming and improving the secret-vars job, which enhances its functionality and clarity. This change is crucial for developers as it streamlines the process of managing secrets in their deployment workflows.
+In the latest release v1.18.18, an unused HDOLIMPO credential was removed from the secret-vars job in the continuous integration setup. This change helps streamline the CI process by eliminating unnecessary credentials, enhancing security and reducing potential confusion for users.
 
 
 ### 🐛 Bug fixes
 
+* fix(ci): remove unused HDOLIMPO credentials from secret-vars job ([d227c35](https://github.com/francisjgarcia/straperr/commit/d227c35)) — Francis J. García
+
+
+
+## [v1.18.17](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.17) (2026-04-19)
+
+### 🤖 AI-generated summary
+In the v1.18.17 release, a significant update was made to the CI/CD pipeline by renaming and improving the secret-vars job, which enhances its functionality and clarity. This change is crucial for developers as it streamlines the process of managing secrets in their deployment workflows.
+### 🐛 Bug fixes
+
 * fix(ci): rename and update secret-vars job in CI/CD pipeline ([b26cb92](https://github.com/francisjgarcia/straperr/commit/b26cb92)) — Francis J. García
-
-
 
 ## [v1.18.16](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.16) (2026-04-19)
 
