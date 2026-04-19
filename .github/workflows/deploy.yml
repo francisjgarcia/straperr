@@ -19,16 +19,16 @@ jobs:
     name: Setup environment
     uses: francisjgarcia/actions-templates/.github/workflows/wf-setup.yml@main
 
-  prepare-secrets:
+  secret-vars:
     name: Prepare deploy secrets
     needs: [setup]
     runs-on: ubuntu-latest
     environment: production
     outputs:
-      secret_env_vars: ${{ steps.build.outputs.secret_env_vars }}
+      secret_env_vars: ${{ steps.secrets.outputs.secret_env_vars }}
     steps:
       - name: Build SECRET_ENV_VARS
-        id: build
+        id: secrets
         env:
           HDOLIMPO_USERNAME: ${{ secrets.HDOLIMPO_USERNAME }}
           HDOLIMPO_PASSWORD: ${{ secrets.HDOLIMPO_PASSWORD }}
@@ -58,12 +58,12 @@ jobs:
 
   deploy:
     name: Deploy to server
-    needs: [setup, prepare-secrets]
+    needs: [setup, secret-vars]
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}
-      secret_env_vars:   ${{ needs.prepare-secrets.outputs.secret_env_vars }}
+      secret_env_vars:   ${{ needs.secret-vars.outputs.secret_env_vars }}
       containers: |
         [
           {
@@ -84,8 +84,7 @@ jobs:
               "SONARR4K_API_URL": "${{ vars.SONARR4K_API_URL }}",
               "RADARR_API_URL": "${{ vars.RADARR_API_URL }}",
               "RADARR4K_API_URL": "${{ vars.RADARR4K_API_URL }}"
-            },
-            "secret_env_vars": "${{ needs.prepare-secrets.outputs.secret_env_vars }}"
+            }
           },
           {
             "name": "straperr-selenium",

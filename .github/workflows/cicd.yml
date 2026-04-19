@@ -105,17 +105,17 @@ jobs:
       github_repository: ${{ github.repository }}
       changelog_entries: ${{ needs.setup.outputs.changelog_entries }}
 
-  prepare-deploy:
+  secret-vars:
     name: Prepare deploy secrets
     needs: [setup, push, release]
     if: needs.setup.outputs.tag_version != ''
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    environment: production
     outputs:
-      app_env_vars: ${{ steps.combine.outputs.app_env_vars }}
-
+      secret_env_vars: ${{ steps.secrets.outputs.secret_env_vars }}
     steps:
-      - name: Combine secrets into app_env_vars
-        id: combine
+      - name: Build SECRET_ENV_VARS
+        id: secrets
         env:
           HDOLIMPO_USERNAME: ${{ secrets.HDOLIMPO_USERNAME }}
           HDOLIMPO_PASSWORD: ${{ secrets.HDOLIMPO_PASSWORD }}
@@ -124,7 +124,7 @@ jobs:
           RADARR_API_KEY:    ${{ secrets.RADARR_API_KEY }}
           RADARR4K_API_KEY:  ${{ secrets.RADARR4K_API_KEY }}
         run: |
-          APP_ENV_VARS=$(jq -cn \
+          SECRET_ENV_VARS=$(jq -cn \
             --arg hdolimpo_username "$HDOLIMPO_USERNAME" \
             --arg hdolimpo_password "$HDOLIMPO_PASSWORD" \
             --arg sonarr_api_key    "$SONARR_API_KEY" \
@@ -139,17 +139,17 @@ jobs:
               RADARR_API_KEY:    $radarr_api_key,
               RADARR4K_API_KEY:  $radarr4k_api_key
             }')
-          echo "app_env_vars=$APP_ENV_VARS" >> $GITHUB_OUTPUT
+          echo "secret_env_vars=$(echo "$SECRET_ENV_VARS" | base64 -w 0)" >> $GITHUB_OUTPUT
 
   deploy:
     name: Deploy to server
-    needs: [setup, prepare-deploy]
+    needs: [setup, secret-vars]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}
-      app_env_vars:      ${{ needs.prepare-deploy.outputs.app_env_vars }}
+      secret_env_vars:      ${{ needs.secret-vars.outputs.secret_env_vars }}
       containers: |
         [
           {
