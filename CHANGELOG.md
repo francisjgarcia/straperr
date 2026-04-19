@@ -1,16 +1,24 @@
 # Changelog
 
+## [v1.20.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.1) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.20.1, a critical bug was addressed in the continuous integration deployment workflow by renaming the variable from `app_env_vars` to `app_env_secrets`. This change ensures better clarity and accuracy in the configuration settings, which is important for users to manage their environment secrets securely.
+
+
+### 🐛 Bug fixes
+
+* fix(ci): rename app_env_vars to app_env_secrets in deployment workflow ([1f8546e](https://github.com/francisjgarcia/straperr/commit/1f8546e)) — Francis J. García
+
+
+
 ## [v1.20.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.0) (2026-04-19)
 
 ### 🤖 AI-generated summary
 In the v1.20.0 release, a new feature has been introduced that allows users to deploy to a production environment directly from the deploy job. This enhancement simplifies the deployment process, making it more efficient and accessible for users who need to manage their production environments effectively.
-
-
 ### ✨ New features
 
 * feat(deploy): add production environment to deploy job ([88661d6](https://github.com/francisjgarcia/straperr/commit/88661d6)) — Francis J. García
-
-
 
 ## [v1.19.5](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.5) (2026-04-19)
 
