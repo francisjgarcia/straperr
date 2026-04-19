@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.18.10](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.10) (2026-04-19)
+## [v1.18.11](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.11) (2026-04-19)
 
 ### 🤖 AI-generated summary
-In release v1.18.10, a bug fix was implemented to enhance the deployment process by adding additional secret environment variables. This improvement is significant for users as it helps secure sensitive information during deployment, leading to a more reliable and safe experience.
+In the v1.18.11 release, the main update is the fix related to deployment. Additional secret environment variables have been added, which enhances the security and flexibility for users during deployment processes. This update ensures that sensitive information can be managed more effectively, improving the overall user experience.
 
 
 ### 🐛 Bug fixes
 
+* fix(deploy): add additional secret environment variables ([075101e](https://github.com/francisjgarcia/straperr/commit/075101e)) — Francis J. García
+
+
+
+## [v1.18.10](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.10) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.18.10, a bug fix was implemented to enhance the deployment process by adding additional secret environment variables. This improvement is significant for users as it helps secure sensitive information during deployment, leading to a more reliable and safe experience.
+### 🐛 Bug fixes
+
 * fix(deploy): add additional secret environment variables ([e60e19b](https://github.com/francisjgarcia/straperr/commit/e60e19b)) — Francis J. García
-
-
 
 ## [v1.18.9](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.9) (2026-04-19)
 
