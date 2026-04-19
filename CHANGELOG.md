@@ -1,11 +1,21 @@
 # Changelog
 
+## [v1.19.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.1) (2026-04-19)
+
+### 🤖 AI-generated summary
+Release v1.19.1 includes a bug fix that removes the environment specification from the prepare-deploy job. This change simplifies the deployment process, ensuring it runs more smoothly and minimizing potential configuration issues. Users can expect a more streamlined experience when preparing their deployments.
+
+
+### 🐛 Bug fixes
+
+* fix(deploy): remove environment specification from prepare-deploy job ([4d00384](https://github.com/francisjgarcia/straperr/commit/4d00384)) — Francis J. García
+
+
+
 ## [v1.19.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.19.0) (2026-04-19)
 
 ### 🤖 AI-generated summary
 In release v1.19.0, a new production environment has been added to the prepare-deploy job, enhancing deployment capabilities for users. Additionally, the secret-vars job has been renamed to prepare-deploy, and the environment variables have been updated accordingly, ensuring clarity and consistency in the CI workflow. These changes aim to improve the deployment process and streamline configuration management for developers.
-
-
 ### ✨ New features
 
 * feat(deploy): add production environment to prepare-deploy job ([22276f6](https://github.com/francisjgarcia/straperr/commit/22276f6)) — Francis J. García
@@ -13,8 +23,6 @@ In release v1.19.0, a new production environment has been added to the prepare-d
 ### 🐛 Bug fixes
 
 * fix(ci): rename secret-vars job to prepare-deploy and update environment variables ([9576534](https://github.com/francisjgarcia/straperr/commit/9576534)) — Francis J. García
-
-
 
 ## [v1.18.18](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.18) (2026-04-19)
 
