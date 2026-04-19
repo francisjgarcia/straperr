@@ -119,14 +119,14 @@ jobs:
         id: build
         env:
           HDOLIMPO_USERNAME: ${{ secrets.HDOLIMPO_USERNAME }}
+          HDOLIMPO_PASSWORD: ${{ secrets.HDOLIMPO_PASSWORD }}
+          SONARR_API_KEY:    ${{ secrets.SONARR_API_KEY }}
+          SONARR4K_API_KEY:  ${{ secrets.SONARR4K_API_KEY }}
+          RADARR_API_KEY:    ${{ secrets.RADARR_API_KEY }}
+          RADARR4K_API_KEY:  ${{ secrets.RADARR4K_API_KEY }}
         run: |
           JSON=$(jq -cn \
             --arg hdolimpo_username "$HDOLIMPO_USERNAME" \
-            --arg hdolimpo_password "$HDOLIMPO_PASSWORD" \
-            --arg sonarr_api_key    "$SONARR_API_KEY" \
-            --arg sonarr4k_api_key  "$SONARR4K_API_KEY" \
-            --arg radarr_api_key    "$RADARR_API_KEY" \
-            --arg radarr4k_api_key  "$RADARR4K_API_KEY" \
             '{
               "straperr": {
                 "HDOLIMPO_USERNAME": $hdolimpo_username,
