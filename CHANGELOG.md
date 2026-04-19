@@ -1,16 +1,26 @@
 # Changelog
 
-## [v1.18.15](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.15) (2026-04-19)
+## [v1.18.16](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.16) (2026-04-19)
 
 ### 🤖 AI-generated summary
-In release v1.18.15, a bug was fixed to ensure that `secret_env_vars` are now included correctly in the container configuration during deployment. This change enhances security and functionality for users, allowing for proper management of sensitive environment variables when deploying applications.
+In release v1.18.16, several updates were made to enhance the CI/CD pipeline, focusing on permissions for models and actions, as well as improving the management of environment variables. These changes are important as they ensure smoother operations and increased security in the deployment process, which can lead to a more reliable software experience for users.
 
 
 ### 🐛 Bug fixes
 
+* fix(ci): update permissions for models in CI/CD pipeline ([0ec81b2](https://github.com/francisjgarcia/straperr/commit/0ec81b2)) — Francis J. García
+* fix(ci): update permissions for actions in CI/CD pipeline ([bd7c4d0](https://github.com/francisjgarcia/straperr/commit/bd7c4d0)) — Francis J. García
+* fix(ci): update environment variable handling in CI/CD pipeline ([a79814f](https://github.com/francisjgarcia/straperr/commit/a79814f)) — Francis J. García
+
+
+
+## [v1.18.15](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.15) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.18.15, a bug was fixed to ensure that `secret_env_vars` are now included correctly in the container configuration during deployment. This change enhances security and functionality for users, allowing for proper management of sensitive environment variables when deploying applications.
+### 🐛 Bug fixes
+
 * fix(deploy): include secret_env_vars in container configuration ([29a96f0](https://github.com/francisjgarcia/straperr/commit/29a96f0)) — Francis J. García
-
-
 
 ## [v1.18.14](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.14) (2026-04-19)
 
