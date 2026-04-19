@@ -84,7 +84,8 @@ jobs:
               "SONARR4K_API_URL": "${{ vars.SONARR4K_API_URL }}",
               "RADARR_API_URL": "${{ vars.RADARR_API_URL }}",
               "RADARR4K_API_URL": "${{ vars.RADARR4K_API_URL }}"
-            }
+            },
+            "secret_env_vars": "${{ needs.prepare-secrets.outputs.secret_env_vars }}"
           },
           {
             "name": "straperr-selenium",
