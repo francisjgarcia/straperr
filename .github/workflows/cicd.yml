@@ -105,37 +105,16 @@ jobs:
       github_repository: ${{ github.repository }}
       changelog_entries: ${{ needs.setup.outputs.changelog_entries }}
 
-  prepare-deploy:
-    name: Prepare deploy secrets
-    needs: [setup, push, release]
-    if: needs.setup.outputs.tag_version != ''
-    runs-on: ubuntu-latest
-    environment: production
-    outputs:
-      app_env_secrets: ${{ steps.combine.outputs.app_env_secrets }}
-
-    steps:
-      - name: Combine secrets into app_env_secrets
-        id: combine
-        env:
-          HDOLIMPO_USERNAME: ${{ secrets.HDOLIMPO_USERNAME }}
-        run: |
-          APP_ENV_SECRETS=$(jq -cn \
-            --arg hdolimpo_username "$(echo -n "$HDOLIMPO_USERNAME" | base64 -w 0)" \
-            '{
-              HDOLIMPO_USERNAME: $hdolimpo_username
-            }')
-          echo "app_env_secrets=$APP_ENV_SECRETS" >> $GITHUB_OUTPUT
-
   deploy:
     name: Deploy to server
-    needs: [setup, prepare-deploy]
+    needs: [setup, tests, scan, push, release]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
+    secrets:
+      APP_ENV_SECRETS: ${{ secrets.APP_ENV_SECRETS }}
     with:
       tag_version:       ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}
-      app_env_secrets:   ${{ needs.prepare-deploy.outputs.app_env_secrets }}
       containers: |
         [
           {
