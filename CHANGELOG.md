@@ -1,16 +1,24 @@
 # Changelog
 
-## [v1.18.6](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.6) (2026-04-19)
+## [v1.18.7](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.7) (2026-04-19)
 
 ### 🤖 AI-generated summary
-In release v1.18.6, a bug fix addressed an issue with incorrect JSON argument formatting for the HDOLIMPO_USERNAME during deployment. This correction improves the stability and reliability of the deployment process, ensuring users can successfully utilize this feature without encountering formatting errors.
+In release v1.18.7, the handling of environment variables for secrets was updated to fix a bug in the deployment process. This improvement enhances the security and reliability of managing sensitive information, ensuring users can deploy applications more safely and effectively.
 
 
 ### 🐛 Bug fixes
 
+* fix(deploy): update environment variable handling for secrets ([33b3c3c](https://github.com/francisjgarcia/straperr/commit/33b3c3c)) — Francis J. García
+
+
+
+## [v1.18.6](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.6) (2026-04-19)
+
+### 🤖 AI-generated summary
+In release v1.18.6, a bug fix addressed an issue with incorrect JSON argument formatting for the HDOLIMPO_USERNAME during deployment. This correction improves the stability and reliability of the deployment process, ensuring users can successfully utilize this feature without encountering formatting errors.
+### 🐛 Bug fixes
+
 * fix(deploy): correct JSON argument formatting for HDOLIMPO_USERNAME ([8681108](https://github.com/francisjgarcia/straperr/commit/8681108)) — Francis J. García
-
-
 
 ## [v1.18.5](https://github.com/francisjgarcia/straperr/releases/tag/v1.18.5) (2026-04-19)
 
