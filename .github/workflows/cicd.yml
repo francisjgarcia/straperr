@@ -121,7 +121,7 @@ jobs:
           HDOLIMPO_USERNAME: ${{ vars.HDOLIMPO_USERNAME }}
         run: |
           JSON=$(jq -cn \
-            --arg hdolimpo_username "$HDOLIMPO_USERNAME"
+            --arg hdolimpo_username "$HDOLIMPO_USERNAME" \
             '{
               "straperr": {
                 "HDOLIMPO_USERNAME": $hdolimpo_username
