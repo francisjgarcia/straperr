@@ -26,7 +26,7 @@ jobs:
     secrets:
       APP_ENV_SECRETS: ${{ secrets.APP_ENV_SECRETS }}
     with:
-      tag_version:       ${{ needs.setup.outputs.tag_version }}
+      tag_version: ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}
       containers: |
         [
