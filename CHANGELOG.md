@@ -1,16 +1,24 @@
 # Changelog
 
+## [v1.21.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.21.0) (2026-06-06)
+
+### 🤖 AI-generated summary
+In release v1.21.0, a significant enhancement has been made to the workflows by updating the CI/CD processes and incorporating linting for pull requests. This improvement aims to streamline the development process and ensure code quality, making it easier for users to maintain clean and efficient code while collaborating on projects.
+
+
+### ✨ New features
+
+* feat(workflows): update CI/CD and add linting for pull requests (#57) ([b73d9ca](https://github.com/francisjgarcia/straperr/commit/b73d9ca)) — Francis J. García
+
+
+
 ## [v1.20.5](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.5) (2026-04-19)
 
 ### 🤖 AI-generated summary
 In release v1.20.5, a bug fix was implemented that updates the secret variable name from APP_ID to APP_CLIENT_ID. This change is important for users as it ensures correct variable usage, improving the deployment process and reducing potential errors related to configuration.
-
-
 ### 🐛 Bug fixes
 
 * fix(deploy): update secret variable name from APP_ID to APP_CLIENT_ID ([f49d405](https://github.com/francisjgarcia/straperr/commit/f49d405)) — Francis J. García
-
-
 
 ## [v1.20.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.4) (2026-04-19)
 
