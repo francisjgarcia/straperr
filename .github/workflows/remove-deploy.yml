@@ -51,8 +51,8 @@ jobs:
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          for DOCKER_IMAGE_ID in $(docker images -q ghcr.io/${{ env.GITHUB_REPOSITORY }}); do
-            docker rmi -f $DOCKER_IMAGE_ID || true
+          for DOCKER_IMAGE_ID in $(docker images -q "ghcr.io/${{ env.GITHUB_REPOSITORY }}"); do
+            docker rmi -f "$DOCKER_IMAGE_ID" || true
           done
 
       - name: Create remove-deploy summary
@@ -61,5 +61,5 @@ jobs:
           TAG_VERSION: ${{ needs.setup.outputs.tag_version }}
           REPO_NAME: ${{ needs.setup.outputs.repo_name }}
         run: |
-          echo "## Deploy Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- ${{ env.REPO_NAME }} container has been removed from server." >> $GITHUB_STEP_SUMMARY
+          echo "## Deploy Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "- ${{ env.REPO_NAME }} container has been removed from server." >> "$GITHUB_STEP_SUMMARY"
