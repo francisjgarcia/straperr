@@ -35,24 +35,24 @@ jobs:
         env:
           REPO_NAME: ${{ needs.setup.outputs.repo_name }}
         run: |
-          if [ "$(docker ps -a -q -f name=${{ env.REPO_NAME }})" ]; then
-            docker rm -f ${{ env.REPO_NAME }}
+          if [ "$(docker ps -a -q -f name=\"${{ env.REPO_NAME }}\")" ]; then
+            docker rm -f "${{ env.REPO_NAME }}"
           fi
 
       - name: Remove straperr docker network
         env:
           DOCKER_NETWORK_STRAPERR: ${{ secrets.DOCKER_NETWORK_STRAPERR }}
         run: |
-          if [ "$(docker network ls -q -f name=${{ env.DOCKER_NETWORK_STRAPERR }})" ]; then
-            docker network rm ${{ env.DOCKER_NETWORK_STRAPERR }}
+          if [ "$(docker network ls -q -f name=\"${{ env.DOCKER_NETWORK_STRAPERR }}\")" ]; then
+            docker network rm "${{ env.DOCKER_NETWORK_STRAPERR }}"
           fi
 
       - name: Remove old docker images
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          for DOCKER_IMAGE_ID in $(docker images -q ghcr.io/${{ env.GITHUB_REPOSITORY }}); do
-            docker rmi -f $DOCKER_IMAGE_ID || true
+          for DOCKER_IMAGE_ID in $(docker images -q "ghcr.io/${{ env.GITHUB_REPOSITORY }}"); do
+            docker rmi -f "$DOCKER_IMAGE_ID" || true
           done
 
       - name: Create remove-deploy summary
@@ -61,5 +61,5 @@ jobs:
           TAG_VERSION: ${{ needs.setup.outputs.tag_version }}
           REPO_NAME: ${{ needs.setup.outputs.repo_name }}
         run: |
-          echo "## Deploy Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- ${{ env.REPO_NAME }} container has been removed from server." >> $GITHUB_STEP_SUMMARY
+          echo "## Deploy Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "- ${{ env.REPO_NAME }} container has been removed from server." >> "$GITHUB_STEP_SUMMARY"
