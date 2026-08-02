@@ -49,8 +49,7 @@ This is a python flask project to interact between a *arr aplicattions (such as 
 │   └── release.yml                         # Automatic release generation on GitHub
 ├── docker/
 │   ├── .env.example                        # Example environment variables file for Docker
-│   ├── Dockerfile                          # Dockerfile to build the project image
-│   ├── Dockerfile.local                    # Dockerfile to run the project locally
+│   ├── Dockerfile                          # Single Dockerfile for both production and local dev
 │   └── compose.yml                         # Docker Compose file to define services and networks
 ├── docs/
 │   ├── VARIABLES.md                        # Documentation about variables needed for integration and deployment
@@ -58,13 +57,21 @@ This is a python flask project to interact between a *arr aplicattions (such as 
 │   └── STYLEGUIDE.md                       # Guidelines for code style and formatting
 ├── src/
 │   ├── .env.example                        # Example environment variables file for the application
-│   ├── main.py                             # Main script of the project
+│   ├── main.py                             # Flask app: *arr webhook receiver + HD-Olimpo automation
 │   └── requirements.txt                    # Python dependencies file
+├── tests/
+│   ├── common.py                           # Shared helper: POSTs a test payload to the running app
+│   ├── test_local_connection.py            # Simulates a "Test" webhook event
+│   ├── test_local_download.py              # Simulates a "Download" webhook event
+│   ├── test_local_grab.py                  # Simulates a "Grab" webhook event (real HD-Olimpo login)
+│   └── test_local_manual_interaction.py    # Simulates a "ManualInteractionRequired" webhook event
 ├── .dockerignore                           # File to exclude files from Docker context
 ├── .editorconfig                           # Configuration for code formatting in compatible editors
 ├── .gitignore                              # File to exclude files and directories from version control
+├── AGENTS.md                               # Project knowledge for AI coding agents (architecture, gotchas, commands)
 ├── AUTHORS                                 # List of authors and contributors to the project
 ├── CHANGELOG.md (*)                        # History of changes and versions of the project (Created after first main deploy)
+├── CLAUDE.md                               # Claude Code entry point (imports AGENTS.md)
 ├── CODE_OF_CONDUCT.md                      # Code of conduct for project contributors
 ├── CONTRIBUTING.md                         # Guidelines for contributing to the project
 ├── GOVERNANCE.md                           # Project governance model and decision-making process
@@ -109,7 +116,13 @@ cd <repository-name>
 
 ### Local Development
 
-To develop and test the project locally, follow these steps:
+> [!NOTE]
+> The `Grab` event logs into HD-Olimpo using a local headless Chromium
+> (via Selenium), which is installed in the Docker image but not assumed to
+> be on your host. Running `main.py` directly on the host works fine for the
+> `Test`, `Download`, and `ManualInteractionRequired` events, but `Grab` will
+> fail unless Chromium + a matching chromedriver are also installed locally.
+> Docker (below) is the supported way to run the full app.
 
 1. Install the dependencies:
 
@@ -117,7 +130,9 @@ To develop and test the project locally, follow these steps:
 pip install -r src/requirements.txt
 ```
 
-2. Run the main script:
+2. Copy `src/.env.example` to `src/.env` and fill in your values.
+
+3. Run the main script:
 
 ```bash
 python src/main.py
@@ -164,9 +179,12 @@ This will build the container image according to the Dockerfile and start the se
 
 ### Dockerfile
 
-The `Dockerfile` in the `docker` directory is used to build the Docker image for the project. The file contains instructions to create the image, including the base image, dependencies, and commands to run the application.
+The `Dockerfile` in the `docker` directory is used to build the Docker image for both production and local development — there is only one. The file contains instructions to create the image, including the base image, dependencies, and commands to run the application.
 
-The `Dockerfile.local` is used to run the project locally with Docker. This file is used to build the image and run the container locally.
+The `INSTALL_DEV_TOOLS` build argument controls whether `pytest` and `flake8`
+get installed. It defaults to `false` (production); `docker/compose.yml`
+passes `INSTALL_DEV_TOOLS: "true"` for local dev so those tools are available
+inside the container.
 
 ### Docker Compose
 
@@ -226,17 +244,16 @@ To properly configure the application, you need to set the following variables i
 - **FLASK_DEBUG**: Flask debug configuration for the application. Set to `1` for debugging or `0` for production mode.
 - **SONARR_API_URL**: URL for the Sonarr API.
 
-Also, you need to set the environment variables for the Docker service:
+Also, you need to set the environment variables for the Docker service
+(as GitHub Actions repository variables, used by the deploy workflows):
 
-- **DOCKER_DNS1**: DNS server for the Docker service.
-- **DOCKER_DNS2**: Secondary DNS server for the Docker service.
-- **DOCKER_NETWORK**: Docker network name for the service.
-- **DOCKER_HEALTHCHECK_URL**: Healthcheck URL for the service application.
-- **DOCKER_MEMORY_LIMIT**: Memory limit for the Docker service.
-- **DOCKER_MEMORY_RESERVATION**: Memory reservation for the Docker service.
-- **DOCKER_MEMORY_LIMIT_SELENIUM**: Memory limit for the Docker service running Selenium.
-- **DOCKER_MEMORY_RESERVATION_SELENIUM**: Memory reservation for the Docker service running Selenium.
-- **DOCKER_SHM_SIZE_SELENIUM**: Shared memory size for the Docker service running Selenium.
+- **DOCKER_NETWORK_STRAPERR**: Docker network the deployed container joins.
+- **DOCKER_HEALTHCHECK_URL**: Healthcheck URL for the service application (`/status`).
+- **DOCKER_MEMORY_LIMIT**: Memory limit for the Docker service. The container
+  runs a headless Chromium for the HD-Olimpo login, so this needs real
+  headroom — `docker/compose.yml` uses `700M` for local dev as a reference point.
+- **DOCKER_MEMORY_RESERVATION**: Memory reservation for the Docker service
+  (`300M` locally).
 
 More details about these variables can be found in the [VARIABLES.md](docs/VARIABLES.md) file.
 
@@ -262,13 +279,24 @@ The `src` directory contains the project's source code:
 
 ## Tests
 
-The `tests` directory contains the project's test scripts. These tests can be run using the following command:
+The `tests` directory contains manual smoke-test scripts, not automated
+`pytest` assertions — each one simulates a single Sonarr/Radarr webhook event
+by POSTing a realistic payload to a running instance of the app
+(`http://localhost:5000/`, see `tests/common.py`). Run one directly against a
+running container:
 
 ```bash
-pytest src/tests/
+docker exec straperr sh -c "cd /app/tests && python test_local_grab.py"
 ```
 
-> [!NOTE]
-> Actually there are no tests but they will be added in the future.
+Available scripts: `test_local_connection.py` (`Test` event),
+`test_local_download.py` (`Download` event), `test_local_grab.py` (`Grab`
+event — logs into HD-Olimpo for real), and `test_local_manual_interaction.py`
+(`ManualInteractionRequired` event, with a full realistic Sonarr payload).
 
-The tests are automatically run as part of the CI/CD pipeline to ensure the project's functionality is maintained.
+A successful HTTP response from these scripts only means the webhook was
+accepted — check the container logs (`docker logs straperr` if the app is
+running as PID 1, otherwise wherever its stdout is going) to confirm what
+actually happened, since most handlers return `"status": "success"`
+regardless of what happens downstream (e.g. whether the HD-Olimpo login
+actually succeeded).

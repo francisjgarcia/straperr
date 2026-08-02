@@ -20,38 +20,23 @@ This file contains the necessary configurations for the integration and deployme
 
 ### Docker Configuration Variables
 
-- **`DOCKER_DNS1`**:
-  - **Description**: The primary DNS server for Docker containers.
-  - **Example**: `8.8.8.8`
-
-- **`DOCKER_DNS2`**:
-  - **Description**: The secondary DNS server for Docker containers.
-  - **Example**: `8.8.4.4`
-
-- **`DOCKER_NETWORK`**:
-  - **Description**: The name of the Docker network to use for the application.
+- **`DOCKER_NETWORK_STRAPERR`**:
+  - **Description**: The name of the Docker network the deployed container joins.
   - **Example**: `straperr_network`
 
 - **`DOCKER_HEALTHCHECK_URL`**:
   - **Description**: The URL to use for the Docker healthcheck.
-  - **Example**: `http://localhost:5000/health`
+  - **Example**: `http://localhost:5000/status`
 
 - **`DOCKER_MEMORY_LIMIT`**:
-  - **Description**: The memory limit for the Docker container.
-  - **Example**: `50M`
+  - **Description**: The memory limit for the Docker container. The container
+    runs a headless Chromium (Selenium) for the HD-Olimpo login on top of the
+    Flask app, so this needs meaningfully more headroom than a plain API
+    service.
+  - **Example**: `700M`
 
 - **`DOCKER_MEMORY_RESERVATION`**:
   - **Description**: The memory reservation for the Docker container.
-  - **Example**: `10M`
+  - **Example**: `300M`
 
-- **`DOCKER_MEMORY_LIMIT_SELENIUM`**:
-  - **Description**: The memory limit for the Docker container running Selenium.
-  - **Example**: `200M`
 
-- **`DOCKER_MEMORY_RESERVATION_SELENIUM`**:
-  - **Description**: The memory reservation for the Docker container running Selenium.
-  - **Example**: `100M`
-
-- **`DOCKER_SHM_SIZE_SELENIUM`**:
-  - **Description**: The shared memory size for the Docker container running Selenium.
-  - **Example**: `2G`
