@@ -45,5 +45,5 @@ This file contains sensitive configurations necessary for the integration and de
   - **Example**: `mypassword`
 
 - **`SONARR_API_KEY`**:
-  - **Description**: The API
+  - **Description**: The API key for the Sonarr API.
   - **Example**: `myapikey`
