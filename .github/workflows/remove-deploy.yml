@@ -25,12 +25,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Remove selenium container from server
-        run: |
-          if [ "$(docker ps -a -q -f name=straperr-selenium)" ]; then
-            docker rm -f straperr-selenium
-          fi
-
       - name: Remove application from server
         env:
           REPO_NAME: ${{ needs.setup.outputs.repo_name }}
