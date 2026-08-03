@@ -12,6 +12,10 @@ permissions:
   actions: write
   security-events: write
 
+concurrency:
+  group: straperr-deploy
+  cancel-in-progress: false
+
 defaults:
   run:
     shell: bash
@@ -104,7 +108,7 @@ jobs:
             "healthcheck_url": "${{ vars.DOCKER_HEALTHCHECK_URL }}",
             "memory_limit": "${{ vars.DOCKER_MEMORY_LIMIT }}",
             "memory_reservation": "${{ vars.DOCKER_MEMORY_RESERVATION }}",
-            "extra_networks": ["${{ vars.DOCKER_NETWORK_STRAPERR }}"],
+            "network": "${{ vars.DOCKER_NETWORK }}",
             "env_vars": {
               "PUID": "1000",
               "PGID": "1000",

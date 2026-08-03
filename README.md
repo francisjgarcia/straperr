@@ -247,7 +247,7 @@ To properly configure the application, you need to set the following variables i
 Also, you need to set the environment variables for the Docker service
 (as GitHub Actions repository variables, used by the deploy workflows):
 
-- **DOCKER_NETWORK_STRAPERR**: Docker network the deployed container joins.
+- **DOCKER_NETWORK**: Existing Docker network the deployed container joins.
 - **DOCKER_HEALTHCHECK_URL**: Healthcheck URL for the service application (`/status`).
 - **DOCKER_MEMORY_LIMIT**: Memory limit for the Docker service. The container
   runs a headless Chromium for the HD-Olimpo login, so this needs real

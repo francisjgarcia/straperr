@@ -33,14 +33,6 @@ jobs:
             docker rm -f "${{ env.REPO_NAME }}"
           fi
 
-      - name: Remove straperr docker network
-        env:
-          DOCKER_NETWORK_STRAPERR: ${{ secrets.DOCKER_NETWORK_STRAPERR }}
-        run: |
-          if [ "$(docker network ls -q -f name=\"${{ env.DOCKER_NETWORK_STRAPERR }}\")" ]; then
-            docker network rm "${{ env.DOCKER_NETWORK_STRAPERR }}"
-          fi
-
       - name: Remove old docker images
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
