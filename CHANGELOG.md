@@ -1,16 +1,29 @@
 # Changelog
 
-## [v1.21.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.21.0) (2026-06-06)
-
-### 🤖 AI-generated summary
-In release v1.21.0, a significant enhancement has been made to the workflows by updating the CI/CD processes and incorporating linting for pull requests. This improvement aims to streamline the development process and ensure code quality, making it easier for users to maintain clean and efficient code while collaborating on projects.
+## [v1.22.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.0) (2026-08-03)
 
 
 ### ✨ New features
 
+* feat: refactorizar aplicación añadiendo selenium en el propio contenedor de straperr (#62) ([b02ae5c](https://github.com/francisjgarcia/straperr/commit/b02ae5c)) — Francis J. García
+
+### 🔧 Other changes
+
+* chore(deps): bump selenium from 4.45.0 to 4.46.0 in /src (#60) ([5a815d6](https://github.com/francisjgarcia/straperr/commit/5a815d6)) — dependabot[bot]
+* chore(docker): bump python in /docker (#59) ([ec56e16](https://github.com/francisjgarcia/straperr/commit/ec56e16)) — dependabot[bot]
+* chore(deps): bump selenium from 4.44.0 to 4.45.0 in /src (#58) ([2f05df5](https://github.com/francisjgarcia/straperr/commit/2f05df5)) — dependabot[bot]
+* chore(deps): bump selenium from 4.43.0 to 4.44.0 in /src (#56) ([b90bf71](https://github.com/francisjgarcia/straperr/commit/b90bf71)) — dependabot[bot]
+* chore(deps): bump requests from 2.33.1 to 2.34.2 in /src (#55) ([209df24](https://github.com/francisjgarcia/straperr/commit/209df24)) — dependabot[bot]
+
+
+
+## [v1.21.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.21.0) (2026-06-06)
+
+### 🤖 AI-generated summary
+In release v1.21.0, a significant enhancement has been made to the workflows by updating the CI/CD processes and incorporating linting for pull requests. This improvement aims to streamline the development process and ensure code quality, making it easier for users to maintain clean and efficient code while collaborating on projects.
+### ✨ New features
+
 * feat(workflows): update CI/CD and add linting for pull requests (#57) ([b73d9ca](https://github.com/francisjgarcia/straperr/commit/b73d9ca)) — Francis J. García
-
-
 
 ## [v1.20.5](https://github.com/francisjgarcia/straperr/releases/tag/v1.20.5) (2026-04-19)
 
