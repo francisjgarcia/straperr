@@ -20,9 +20,9 @@ This file contains the necessary configurations for the integration and deployme
 
 ### Docker Configuration Variables
 
-- **`DOCKER_NETWORK_STRAPERR`**:
-  - **Description**: The name of the Docker network the deployed container joins.
-  - **Example**: `straperr_network`
+- **`DOCKER_NETWORK`**:
+  - **Description**: The name of the existing Docker network the deployed container joins.
+  - **Example**: `shared_network`
 
 - **`DOCKER_HEALTHCHECK_URL`**:
   - **Description**: The URL to use for the Docker healthcheck.
