@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
-# ── Credenciales HD-Olimpo ────────────────────────────────────────────────────
+# ── Credenciales HD-Olimpo ───────────────────────────────────────────────────
 HDOLIMPO_BASE_URL = "https://hd-olimpo.club"
 HDOLIMPO_USERNAME = os.environ.get('HDOLIMPO_USERNAME')
 HDOLIMPO_PASSWORD = os.environ.get('HDOLIMPO_PASSWORD')
@@ -41,7 +41,7 @@ ARR_INSTANCES: dict[str, dict] = {
 app = Flask(__name__)
 
 
-# ── Logger ────────────────────────────────────────────────────────────────────
+# ── Logger ───────────────────────────────────────────────────────────────────
 def setup_logger(name: str = 'straperr') -> logging.Logger:
     logger = logging.getLogger(name)
     if not logger.handlers:
@@ -58,7 +58,7 @@ def setup_logger(name: str = 'straperr') -> logging.Logger:
 logger = setup_logger()
 
 
-# ── Helpers de instancia ──────────────────────────────────────────────────────
+# ── Helpers de instancia ─────────────────────────────────────────────────────
 def get_arr_instance(name: str) -> dict:
     """Devuelve el config dict de la instancia o lanza ValueError."""
     instance = ARR_INSTANCES.get(name)
@@ -71,7 +71,7 @@ def arr_headers(instance: dict) -> dict:
     return {'X-Api-Key': instance['api_key']}
 
 
-# ── *Arr API ──────────────────────────────────────────────────────────────────
+# ── *Arr API ─────────────────────────────────────────────────────────────────
 def get_manual_import(download_id: str, instance_name: str) -> list | None:
     try:
         instance = get_arr_instance(instance_name)
@@ -88,7 +88,9 @@ def get_manual_import(download_id: str, instance_name: str) -> list | None:
     if response.status_code == 200:
         return response.json()
 
-    logger.error(f"GET /manualimport error {response.status_code}: {response.text}")
+    logger.error(
+        f"GET /manualimport error {response.status_code}: {response.text}"
+    )
     return None
 
 
@@ -97,11 +99,15 @@ def get_languages_for_download(download_id: str, instance_name: str) -> list:
     import_records = get_manual_import(download_id, instance_name)
     if import_records and import_records[0].get("languages"):
         return import_records[0]["languages"]
-    logger.warning("No se encontraron idiomas en la respuesta de manualimport.")
+    logger.warning(
+        "No se encontraron idiomas en la respuesta de manualimport."
+    )
     return []
 
 
-def post_manual_import(record: dict, languages: list, instance_name: str) -> None:
+def post_manual_import(
+    record: dict, languages: list, instance_name: str
+) -> None:
     try:
         instance = get_arr_instance(instance_name)
     except ValueError as e:
@@ -133,7 +139,9 @@ def post_manual_import(record: dict, languages: list, instance_name: str) -> Non
 
     logger.info(f"POST ManualImport payload: {payload}")
 
-    response = requests.post(f"{instance['api_url']}/command", headers=headers, json=payload)
+    response = requests.post(
+        f"{instance['api_url']}/command", headers=headers, json=payload
+    )
     if response.status_code == 201:
         logger.info(f"ManualImport OK → {record['name']!r}")
     else:
@@ -143,7 +151,9 @@ def post_manual_import(record: dict, languages: list, instance_name: str) -> Non
         )
 
 
-def delete_queue_items_by_download_id(download_id: str, instance_name: str) -> None:
+def delete_queue_items_by_download_id(
+    download_id: str, instance_name: str
+) -> None:
     try:
         instance = get_arr_instance(instance_name)
     except ValueError as e:
@@ -157,7 +167,9 @@ def delete_queue_items_by_download_id(download_id: str, instance_name: str) -> N
         response = requests.get(queue_url, headers=headers)
         response.raise_for_status()
         queue = response.json()
-        records = queue.get('records', queue) if isinstance(queue, dict) else queue
+        records = (
+            queue.get('records', queue) if isinstance(queue, dict) else queue
+        )
 
         for item in records:
             if item.get('downloadId') != download_id:
@@ -170,7 +182,9 @@ def delete_queue_items_by_download_id(download_id: str, instance_name: str) -> N
             )
             delete_response = requests.delete(delete_url, headers=headers)
             if delete_response.status_code == 200:
-                logger.info(f"Queue item {queue_id} eliminado de {instance_name}")
+                logger.info(
+                    f"Queue item {queue_id} eliminado de {instance_name}"
+                )
             else:
                 logger.error(
                     f"No se pudo eliminar queue item {queue_id}: "
@@ -180,7 +194,7 @@ def delete_queue_items_by_download_id(download_id: str, instance_name: str) -> N
         logger.error(f"Error eliminando items de la cola: {e}")
 
 
-# ── HD-Olimpo: thanks con Chromium local ──────────────────────────────────────
+# ── HD-Olimpo: thanks con Chromium local ─────────────────────────────────────
 def build_chrome_driver() -> webdriver.Chrome:
     """
     Configura un Chromium headless instalado en el propio contenedor (paquetes
@@ -188,14 +202,18 @@ def build_chrome_driver() -> webdriver.Chrome:
     contenedor Selenium Grid externo.
     """
     options = Options()
-    options.binary_location = os.environ.get('CHROME_BIN', '/usr/bin/chromium-browser')
+    options.binary_location = os.environ.get(
+        'CHROME_BIN', '/usr/bin/chromium-browser'
+    )
     options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
 
     service = Service(
-        executable_path=os.environ.get('CHROMEDRIVER_PATH', '/usr/bin/chromedriver')
+        executable_path=os.environ.get(
+            'CHROMEDRIVER_PATH', '/usr/bin/chromedriver'
+        )
     )
     return webdriver.Chrome(service=service, options=options)
 
@@ -228,7 +246,7 @@ def hdolimpo_thanks(
         driver = build_chrome_driver()
         driver.set_page_load_timeout(30)
 
-        # ── 1. Login ──────────────────────────────────────────────────────────
+        # ── 1. Login ─────────────────────────────────────────────────────────
         driver.get(f"{HDOLIMPO_BASE_URL}/login")
         time.sleep(2)
 
@@ -245,7 +263,10 @@ def hdolimpo_thanks(
         time.sleep(3)
 
         if "Iniciar sesión" in driver.page_source:
-            log.error("Login fallido en HD-Olimpo (credenciales incorrectas o bloqueo anti-bot).")
+            log.error(
+                "Login fallido en HD-Olimpo "
+                "(credenciales incorrectas o bloqueo anti-bot)."
+            )
             return False
 
         log.info("Login exitoso en HD-Olimpo.")
@@ -266,7 +287,9 @@ def hdolimpo_thanks(
 
         try:
             torrent_list = driver.find_element(By.ID, "torrent-list-table")
-            result_links = torrent_list.find_elements(By.XPATH, ".//tbody/tr/td/a")
+            result_links = torrent_list.find_elements(
+                By.XPATH, ".//tbody/tr/td/a"
+            )
 
             result_url = None
             for link in result_links:
@@ -312,7 +335,7 @@ def hdolimpo_thanks(
             driver.quit()
 
 
-# ── Utilidades ────────────────────────────────────────────────────────────────
+# ── Utilidades ───────────────────────────────────────────────────────────────
 def clean_release_title(title: str) -> str:
     pattern = r'\b(MULTi|SPANiSH|Eng)\b\s*|\bENGLiSH\b'
 
@@ -322,7 +345,7 @@ def clean_release_title(title: str) -> str:
     return re.sub(pattern, replace, title, flags=re.IGNORECASE).strip()
 
 
-# ── Webhook event handlers ────────────────────────────────────────────────────
+# ── Webhook event handlers ───────────────────────────────────────────────────
 def handle_test(data: dict, log: logging.Logger):
     instance_name = data.get('instanceName', 'straperr')
     log.info(f"Test de conexión desde {instance_name}")
@@ -340,7 +363,9 @@ def handle_grab(data: dict, log: logging.Logger):
 
     clean_title = clean_release_title(release_title)
     log.info(f"Grabando {clean_title!r} desde {indexer}.")
-    hdolimpo_thanks(HDOLIMPO_USERNAME, HDOLIMPO_PASSWORD, clean_title, instance_name)
+    hdolimpo_thanks(
+        HDOLIMPO_USERNAME, HDOLIMPO_PASSWORD, clean_title, instance_name
+    )
     return jsonify({
         "status": "success",
         "message": f"{title!r} desde {indexer} grabado correctamente."
@@ -352,7 +377,10 @@ def handle_download(data: dict, log: logging.Logger):
     release_title = data.get('release', {}).get('releaseTitle', 'Unknown')
     indexer = data.get('release', {}).get('indexer', 'Unknown')
 
-    log.info(f"Descarga completada: {clean_release_title(release_title)!r} desde {indexer}.")
+    log.info(
+        f"Descarga completada: {clean_release_title(release_title)!r} "
+        f"desde {indexer}."
+    )
     return jsonify({
         "status": "success",
         "message": f"Descargando {title!r} desde {indexer}."
@@ -399,7 +427,7 @@ WEBHOOK_HANDLERS = {
 }
 
 
-# ── Flask routes ──────────────────────────────────────────────────────────────
+# ── Flask routes ─────────────────────────────────────────────────────────────
 @app.route('/', methods=['POST'])
 def webhook():
     data = flask_request.json
@@ -413,7 +441,9 @@ def webhook():
         return handler(data, log)
 
     log.error(f"Tipo de evento desconocido: {event_type!r}")
-    return jsonify({"status": "error", "message": "Tipo de evento desconocido."}), 400
+    return jsonify(
+        {"status": "error", "message": "Tipo de evento desconocido."}
+    ), 400
 
 
 @app.route('/status', methods=['GET'])
