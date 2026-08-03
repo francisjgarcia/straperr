@@ -1,8 +1,15 @@
 # Changelog
 
+## [v1.22.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.1) (2026-08-03)
+
+
+### 🐛 Bug fixes
+
+* fix(ci): use shared docker network and unblock dependency-bump releases (#63) ([2722ee3](https://github.com/francisjgarcia/straperr/commit/2722ee3)) — Francis J. García
+
+
+
 ## [v1.22.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.0) (2026-08-03)
-
-
 ### ✨ New features
 
 * feat: refactorizar aplicación añadiendo selenium en el propio contenedor de straperr (#62) ([b02ae5c](https://github.com/francisjgarcia/straperr/commit/b02ae5c)) — Francis J. García
@@ -14,8 +21,6 @@
 * chore(deps): bump selenium from 4.44.0 to 4.45.0 in /src (#58) ([2f05df5](https://github.com/francisjgarcia/straperr/commit/2f05df5)) — dependabot[bot]
 * chore(deps): bump selenium from 4.43.0 to 4.44.0 in /src (#56) ([b90bf71](https://github.com/francisjgarcia/straperr/commit/b90bf71)) — dependabot[bot]
 * chore(deps): bump requests from 2.33.1 to 2.34.2 in /src (#55) ([209df24](https://github.com/francisjgarcia/straperr/commit/209df24)) — dependabot[bot]
-
-
 
 ## [v1.21.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.21.0) (2026-06-06)
 
