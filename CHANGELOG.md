@@ -1,13 +1,18 @@
 # Changelog
 
-## [v1.22.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.1) (2026-08-03)
+## [v1.22.2](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.2) (2026-08-05)
 
 
 ### 🐛 Bug fixes
 
+* fix(ci): forward deploy secrets and allow targeting a specific tag (#64) ([876f7cd](https://github.com/francisjgarcia/straperr/commit/876f7cd)) — Francis J. García
+
+
+
+## [v1.22.1](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.1) (2026-08-03)
+### 🐛 Bug fixes
+
 * fix(ci): use shared docker network and unblock dependency-bump releases (#63) ([2722ee3](https://github.com/francisjgarcia/straperr/commit/2722ee3)) — Francis J. García
-
-
 
 ## [v1.22.0](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.0) (2026-08-03)
 ### ✨ New features
