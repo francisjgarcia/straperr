@@ -207,10 +207,9 @@ This repository includes a fully automated CI/CD pipeline using `cicd.yml` GitHu
 
 ### Deploy to server
 
-To deploy an specific version of the application to a remote server. You can use the `deploy.yml` workflow. This workflow is triggered by a manual event. Only the `main` branch and tags are allowed to trigger this workflow.
+To deploy a specific version of the application to a remote server, use the `deploy.yml` workflow. This workflow is triggered manually and requires a `tag_version` input (e.g. `v1.22.0`, or `latest`) naming an image tag already published to the GitHub Container Registry.
 
-1. **Setup**: Generates the necessary variables for use in the subsequent tasks.
-2. **Deploy**: Deploys the application to remote servers using SSH.
+1. **Deploy**: Deploys the given tag to remote servers using SSH.
 
 ### Remove deploy from server
 
