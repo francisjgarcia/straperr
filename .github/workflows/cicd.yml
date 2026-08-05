@@ -97,6 +97,8 @@ jobs:
     needs: [setup, tests, scan, push, release]
     if: needs.setup.outputs.tag_version != ''
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
+    secrets:
+      APP_ENV_SECRETS: ${{ secrets.APP_ENV_SECRETS }}
     with:
       tag_version: ${{ needs.setup.outputs.tag_version }}
       github_repository: ${{ github.repository }}

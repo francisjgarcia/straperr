@@ -3,6 +3,11 @@ name: Deploy application to server
 
 on:
   workflow_dispatch:
+    inputs:
+      tag_version:
+        description: "Tag to deploy (e.g. v1.0.0)"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -19,24 +24,19 @@ defaults:
     working-directory: .
 
 jobs:
-  setup:
-    name: Setup environment
-    uses: francisjgarcia/actions-templates/.github/workflows/wf-setup.yml@main
-
   deploy:
     name: Deploy to server
-    needs: [setup]
     uses: francisjgarcia/actions-templates/.github/workflows/wf-deploy.yml@main
     secrets:
       APP_ENV_SECRETS: ${{ secrets.APP_ENV_SECRETS }}
     with:
-      tag_version: ${{ needs.setup.outputs.tag_version }}
+      tag_version: ${{ inputs.tag_version }}
       github_repository: ${{ github.repository }}
       containers: |
         [
           {
             "name": "straperr",
-            "image": "ghcr.io/${{ github.repository }}:${{ needs.setup.outputs.tag_version }}",
+            "image": "ghcr.io/${{ github.repository }}:${{ inputs.tag_version }}",
             "healthcheck_url": "${{ vars.DOCKER_HEALTHCHECK_URL }}",
             "memory_limit": "${{ vars.DOCKER_MEMORY_LIMIT }}",
             "memory_reservation": "${{ vars.DOCKER_MEMORY_RESERVATION }}",
