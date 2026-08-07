@@ -5,6 +5,7 @@ import logging
 import requests
 from flask import Flask, request as flask_request, jsonify
 from selenium import webdriver
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -285,24 +286,39 @@ def hdolimpo_thanks(
             log.error(f"Error buscando el título: {e}")
             return False
 
-        try:
-            torrent_list = driver.find_element(By.ID, "torrent-list-table")
-            result_links = torrent_list.find_elements(
-                By.XPATH, ".//tbody/tr/td/a"
-            )
+        # La tabla de resultados se re-renderiza vía JS (búsqueda en vivo)
+        # tras cada tecleo, por lo que los elementos pueden quedar stale
+        # mientras los leemos; reintentamos releyendo la tabla desde cero.
+        result_url = None
+        max_attempts = 3
+        for attempt in range(1, max_attempts + 1):
+            try:
+                torrent_list = driver.find_element(By.ID, "torrent-list-table")
+                result_links = torrent_list.find_elements(
+                    By.XPATH, ".//tbody/tr/td/a"
+                )
 
-            result_url = None
-            for link in result_links:
-                if link.text == search_query:
-                    result_url = link.get_attribute("href")
-                    log.info(f"Torrent encontrado: {result_url}")
-                    break
-
-            if not result_url:
-                log.warning(f"Sin coincidencia exacta para {search_query!r}.")
+                for link in result_links:
+                    if link.text == search_query:
+                        result_url = link.get_attribute("href")
+                        log.info(f"Torrent encontrado: {result_url}")
+                        break
+                break
+            except StaleElementReferenceException:
+                if attempt == max_attempts:
+                    log.error(
+                        "Error obteniendo el resultado de búsqueda: "
+                        "la tabla de resultados no se estabilizó "
+                        f"tras {max_attempts} intentos."
+                    )
+                    return False
+                time.sleep(1)
+            except Exception as e:
+                log.error(f"Error obteniendo el resultado de búsqueda: {e}")
                 return False
-        except Exception as e:
-            log.error(f"Error obteniendo el resultado de búsqueda: {e}")
+
+        if not result_url:
+            log.warning(f"Sin coincidencia exacta para {search_query!r}.")
             return False
 
         # ── 3. Página del torrent → clic en Agradecer ────────────────────────
