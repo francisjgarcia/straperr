@@ -1,13 +1,19 @@
 # Changelog
 
-## [v1.22.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.3) (2026-08-07)
+## [v1.22.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.4) (2026-08-15)
 
 
 ### 🐛 Bug fixes
 
+* fix(deps): bump selenium from 4.46.0 to 4.47.0 in /src (#67) ([0deee34](https://github.com/francisjgarcia/straperr/commit/0deee34)) — dependabot[bot]
+* fix(docker): bump python in /docker (#66) ([9794f72](https://github.com/francisjgarcia/straperr/commit/9794f72)) — dependabot[bot]
+
+
+
+## [v1.22.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.3) (2026-08-07)
+### 🐛 Bug fixes
+
 * fix(hdolimpo): retry torrent search on stale element reference (#65) ([f2dce5f](https://github.com/francisjgarcia/straperr/commit/f2dce5f)) — Francis J. García
-
-
 
 ## [v1.22.2](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.2) (2026-08-05)
 ### 🐛 Bug fixes
