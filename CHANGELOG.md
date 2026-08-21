@@ -1,14 +1,20 @@
 # Changelog
 
-## [v1.22.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.4) (2026-08-15)
+## [v1.22.5](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.5) (2026-08-21)
 
 
 ### 🐛 Bug fixes
 
+* fix(deps): bump python-dotenv from 1.2.2 to 1.2.3 in /src (#69) ([8bc9861](https://github.com/francisjgarcia/straperr/commit/8bc9861)) — dependabot[bot]
+* fix(deps): bump gunicorn from 26.0.0 to 26.1.0 in /src (#68) ([7cec0da](https://github.com/francisjgarcia/straperr/commit/7cec0da)) — dependabot[bot]
+
+
+
+## [v1.22.4](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.4) (2026-08-15)
+### 🐛 Bug fixes
+
 * fix(deps): bump selenium from 4.46.0 to 4.47.0 in /src (#67) ([0deee34](https://github.com/francisjgarcia/straperr/commit/0deee34)) — dependabot[bot]
 * fix(docker): bump python in /docker (#66) ([9794f72](https://github.com/francisjgarcia/straperr/commit/9794f72)) — dependabot[bot]
-
-
 
 ## [v1.22.3](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.3) (2026-08-07)
 ### 🐛 Bug fixes
