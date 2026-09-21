@@ -1,13 +1,18 @@
 # Changelog
 
-## [v1.22.8](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.8) (2026-09-19)
+## [v1.22.9](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.9) (2026-09-21)
 
 
 ### 🐛 Bug fixes
 
+* fix(hdolimpo): update selectors for HD-Olimpo markup changes (#74) ([570002d](https://github.com/francisjgarcia/straperr/commit/570002d)) — Francis J. García
+
+
+
+## [v1.22.8](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.8) (2026-09-19)
+### 🐛 Bug fixes
+
 * fix(deps): bump selenium from 4.48.0 to 4.49.0 in /src (#73) ([a72d3bf](https://github.com/francisjgarcia/straperr/commit/a72d3bf)) — dependabot[bot]
-
-
 
 ## [v1.22.7](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.7) (2026-09-04)
 ### 🐛 Bug fixes
