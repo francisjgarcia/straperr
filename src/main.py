@@ -277,8 +277,7 @@ def hdolimpo_thanks(
         time.sleep(2)
 
         try:
-            search_field = driver.find_element(
-                By.XPATH, "//input[@type='search' and @placeholder='Título']")
+            search_field = driver.find_element(By.ID, "name")
             search_field.send_keys(search_query)
             log.info(f"Buscando título: {search_query!r}")
             time.sleep(2)
@@ -293,9 +292,8 @@ def hdolimpo_thanks(
         max_attempts = 3
         for attempt in range(1, max_attempts + 1):
             try:
-                torrent_list = driver.find_element(By.ID, "torrent-list-table")
-                result_links = torrent_list.find_elements(
-                    By.XPATH, ".//tbody/tr/td/a"
+                result_links = driver.find_elements(
+                    By.CSS_SELECTOR, "a.torrent-search--list__name"
                 )
 
                 for link in result_links:
@@ -328,8 +326,8 @@ def hdolimpo_thanks(
         try:
             thanks_button = driver.find_element(
                 By.XPATH,
-                "//button[contains(@class, 'btn btn-sm btn-primary') "
-                "and contains(., 'Agradecer')]")
+                "//button[contains(@class, 'form__button') "
+                "and contains(normalize-space(.), 'Agradecer')]")
 
             if thanks_button.get_attribute("disabled") == "true":
                 log.info("Ya habías agradecido este torrent. Sin acción.")
