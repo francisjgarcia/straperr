@@ -1,19 +1,21 @@
 import os
 import re
+import json
 import time
 import logging
 import requests
+from bs4 import BeautifulSoup
 from flask import Flask, request as flask_request, jsonify
-from selenium import webdriver
-from selenium.common.exceptions import StaleElementReferenceException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 
 # ── Credenciales HD-Olimpo ───────────────────────────────────────────────────
 HDOLIMPO_BASE_URL = "https://hd-olimpo.club"
 HDOLIMPO_USERNAME = os.environ.get('HDOLIMPO_USERNAME')
 HDOLIMPO_PASSWORD = os.environ.get('HDOLIMPO_PASSWORD')
+HDOLIMPO_TIMEOUT = 30
+HDOLIMPO_USER_AGENT = (
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/140.0 Safari/537.36"
+)
 
 # ── Configuración de instancias *arr ─────────────────────────────────────────
 ARR_INSTANCES: dict[str, dict] = {
@@ -195,28 +197,178 @@ def delete_queue_items_by_download_id(
         logger.error(f"Error eliminando items de la cola: {e}")
 
 
-# ── HD-Olimpo: thanks con Chromium local ─────────────────────────────────────
-def build_chrome_driver() -> webdriver.Chrome:
-    """
-    Configura un Chromium headless instalado en el propio contenedor (paquetes
-    Alpine `chromium` + `chromium-chromedriver`), en vez de conectar a un
-    contenedor Selenium Grid externo.
-    """
-    options = Options()
-    options.binary_location = os.environ.get(
-        'CHROME_BIN', '/usr/bin/chromium-browser'
-    )
-    options.add_argument('--headless=new')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-gpu')
+# ── HD-Olimpo: thanks vía HTTP ───────────────────────────────────────────────
+def normalize_whitespace(text: str) -> str:
+    return ' '.join(text.split())
 
-    service = Service(
-        executable_path=os.environ.get(
-            'CHROMEDRIVER_PATH', '/usr/bin/chromedriver'
-        )
+
+def hdolimpo_login(
+    session: requests.Session,
+    username: str,
+    password: str,
+    log: logging.Logger,
+) -> bool:
+    """
+    Inicia sesión en hd-olimpo.club (UNIT3D).
+
+    El login está protegido por el HiddenCaptcha de UNIT3D, que se valida por
+    completo en el servidor: un token cifrado `_captcha` (ligado a sesión, IP
+    y User-Agent), un honeypot `_username` que debe llegar presente y vacío,
+    y un campo de nombre aleatorio cuyo valor es el timestamp del token. Basta
+    con reenviar todos los inputs del formulario tal cual, con la misma
+    sesión y User-Agent del GET.
+    """
+    response = session.get(
+        f"{HDOLIMPO_BASE_URL}/login", timeout=HDOLIMPO_TIMEOUT
     )
-    return webdriver.Chrome(service=service, options=options)
+    response.raise_for_status()
+
+    form = BeautifulSoup(response.text, 'html.parser').select_one(
+        'form[action$="/login"]'
+    )
+    if form is None:
+        log.error("No se encontró el formulario de login de HD-Olimpo.")
+        return False
+
+    data = {
+        field['name']: field.get('value', '')
+        for field in form.find_all('input', attrs={'name': True})
+        if field.get('type') != 'checkbox'
+    }
+    data['username'] = username
+    data['password'] = password
+
+    # Margen por si el captcha exige un tiempo mínimo entre render y envío.
+    time.sleep(2)
+
+    response = session.post(
+        f"{HDOLIMPO_BASE_URL}/login",
+        data=data,
+        headers={'Referer': f"{HDOLIMPO_BASE_URL}/login"},
+        timeout=HDOLIMPO_TIMEOUT,
+    )
+    response.raise_for_status()
+
+    if response.url.rstrip('/').endswith('/login'):
+        log.error(
+            "Login fallido en HD-Olimpo "
+            "(credenciales incorrectas o captcha rechazado)."
+        )
+        return False
+
+    log.info("Login exitoso en HD-Olimpo.")
+    return True
+
+
+def hdolimpo_find_torrent(
+    session: requests.Session, search_query: str, log: logging.Logger
+) -> str | None:
+    """Devuelve la URL del torrent cuyo nombre coincide exactamente."""
+    response = session.get(
+        f"{HDOLIMPO_BASE_URL}/torrents",
+        params={'name': search_query},
+        timeout=HDOLIMPO_TIMEOUT,
+    )
+    response.raise_for_status()
+    log.info(f"Buscando título: {search_query!r}")
+
+    wanted = normalize_whitespace(search_query)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for link in soup.select('a.torrent-search--list__name'):
+        if normalize_whitespace(link.get_text()) == wanted:
+            log.info(f"Torrent encontrado: {link['href']}")
+            return link['href']
+
+    log.warning(f"Sin coincidencia exacta para {search_query!r}.")
+    return None
+
+
+def hdolimpo_click_thanks(
+    session: requests.Session, torrent_url: str, log: logging.Logger
+) -> bool:
+    """
+    Pulsa "Agradecer" en la página del torrent.
+
+    El botón es un componente Livewire 3 (`thank-button`): pulsarlo equivale
+    a un POST JSON al endpoint de update de Livewire con el snapshot del
+    componente y la llamada de su `wire:click` (p. ej. `store(77444)`).
+    """
+    response = session.get(torrent_url, timeout=HDOLIMPO_TIMEOUT)
+    response.raise_for_status()
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Otros componentes (p. ej. bookmark-button) también usan store(<id>),
+    # así que se identifica el botón por el nombre del componente.
+    button = None
+    for candidate in soup.find_all('button', attrs={'wire:snapshot': True}):
+        memo = json.loads(candidate['wire:snapshot']).get('memo', {})
+        if memo.get('name') == 'thank-button':
+            button = candidate
+            break
+
+    if button is None:
+        log.error("No se encontró el botón Agradecer en la página.")
+        return False
+
+    config = re.search(
+        r'window\.livewireScriptConfig\s*=\s*(\{.*?\});', response.text
+    )
+    call = re.fullmatch(r'\s*(\w+)\((.*)\)\s*', button.get('wire:click', ''))
+    if not config or not call:
+        log.error(
+            "No se pudo leer la configuración de Livewire "
+            "o la acción del botón Agradecer."
+        )
+        return False
+
+    livewire = json.loads(config.group(1))
+    payload = {
+        '_token': livewire['csrf'],
+        'components': [{
+            'snapshot': button['wire:snapshot'],
+            'updates': {},
+            'calls': [{
+                'path': '',
+                'method': call.group(1),
+                'params': json.loads(f"[{call.group(2)}]"),
+            }],
+        }],
+    }
+
+    response = session.post(
+        f"{HDOLIMPO_BASE_URL}{livewire['uri']}",
+        json=payload,
+        headers={'X-Livewire': 'true', 'Referer': torrent_url},
+        timeout=HDOLIMPO_TIMEOUT,
+    )
+    if response.status_code != 200:
+        log.error(
+            f"Livewire respondió {response.status_code} al agradecer: "
+            f"{response.text[:300]}"
+        )
+        return False
+
+    # El resultado llega como un toast de Livewire:
+    #   success → {'message': 'Your thank was successfully applied!'}
+    #   error   → {'message': 'You have already thanked!'} (u otro motivo)
+    effects = response.json()['components'][0].get('effects', {})
+    for event in effects.get('dispatches', []):
+        message = event.get('params', {}).get('message', '')
+        if event.get('name') == 'success':
+            log.info(f"¡Agradecido correctamente! ({message})")
+            return True
+        if event.get('name') == 'error':
+            if 'already' in message.lower():
+                log.info("Ya habías agradecido este torrent. Sin acción.")
+                return True
+            log.error(f"HD-Olimpo rechazó el agradecimiento: {message}")
+            return False
+
+    log.warning(
+        "Respuesta de Livewire sin confirmación de éxito ni error; "
+        "no se sabe si el agradecimiento se aplicó."
+    )
+    return False
 
 
 def hdolimpo_thanks(
@@ -225,13 +377,7 @@ def hdolimpo_thanks(
     search_query: str,
     instance_name: str = 'straperr',
 ) -> bool:
-    """
-    Inicia sesión en hd-olimpo.club, busca el torrent y pulsa Agradecer.
-
-    Hace falta un navegador real (no requests + BeautifulSoup) porque el login
-    de hd-olimpo.club está protegido por comprobaciones anti-bot (honeypot +
-    fingerprint de navegador) que un cliente HTTP puro no supera.
-    """
+    """Inicia sesión en hd-olimpo.club, busca el torrent y pulsa Agradecer."""
     log = setup_logger(instance_name)
 
     if not username or not password:
@@ -242,111 +388,22 @@ def hdolimpo_thanks(
         )
         return False
 
-    driver = None
     try:
-        driver = build_chrome_driver()
-        driver.set_page_load_timeout(30)
+        with requests.Session() as session:
+            session.headers['User-Agent'] = HDOLIMPO_USER_AGENT
 
-        # ── 1. Login ─────────────────────────────────────────────────────────
-        driver.get(f"{HDOLIMPO_BASE_URL}/login")
-        time.sleep(2)
-
-        try:
-            username_field = driver.find_element(By.NAME, "username")
-            password_field = driver.find_element(By.NAME, "password")
-            username_field.send_keys(username)
-            password_field.send_keys(password)
-            password_field.submit()
-        except Exception as e:
-            log.error(f"Error rellenando el formulario de login: {e}")
-            return False
-
-        time.sleep(3)
-
-        if "Iniciar sesión" in driver.page_source:
-            log.error(
-                "Login fallido en HD-Olimpo "
-                "(credenciales incorrectas o bloqueo anti-bot)."
-            )
-            return False
-
-        log.info("Login exitoso en HD-Olimpo.")
-
-        # ── 2. Búsqueda del torrent ──────────────────────────────────────────
-        driver.get(f"{HDOLIMPO_BASE_URL}/torrents")
-        time.sleep(2)
-
-        try:
-            search_field = driver.find_element(By.ID, "name")
-            search_field.send_keys(search_query)
-            log.info(f"Buscando título: {search_query!r}")
-            time.sleep(2)
-        except Exception as e:
-            log.error(f"Error buscando el título: {e}")
-            return False
-
-        # La tabla de resultados se re-renderiza vía JS (búsqueda en vivo)
-        # tras cada tecleo, por lo que los elementos pueden quedar stale
-        # mientras los leemos; reintentamos releyendo la tabla desde cero.
-        result_url = None
-        max_attempts = 3
-        for attempt in range(1, max_attempts + 1):
-            try:
-                result_links = driver.find_elements(
-                    By.CSS_SELECTOR, "a.torrent-search--list__name"
-                )
-
-                for link in result_links:
-                    if link.text == search_query:
-                        result_url = link.get_attribute("href")
-                        log.info(f"Torrent encontrado: {result_url}")
-                        break
-                break
-            except StaleElementReferenceException:
-                if attempt == max_attempts:
-                    log.error(
-                        "Error obteniendo el resultado de búsqueda: "
-                        "la tabla de resultados no se estabilizó "
-                        f"tras {max_attempts} intentos."
-                    )
-                    return False
-                time.sleep(1)
-            except Exception as e:
-                log.error(f"Error obteniendo el resultado de búsqueda: {e}")
+            if not hdolimpo_login(session, username, password, log):
                 return False
 
-        if not result_url:
-            log.warning(f"Sin coincidencia exacta para {search_query!r}.")
-            return False
+            torrent_url = hdolimpo_find_torrent(session, search_query, log)
+            if not torrent_url:
+                return False
 
-        # ── 3. Página del torrent → clic en Agradecer ────────────────────────
-        driver.get(result_url)
-        time.sleep(2)
-
-        try:
-            thanks_button = driver.find_element(
-                By.XPATH,
-                "//button[contains(@class, 'form__button') "
-                "and contains(normalize-space(.), 'Agradecer')]")
-
-            if thanks_button.get_attribute("disabled") == "true":
-                log.info("Ya habías agradecido este torrent. Sin acción.")
-            else:
-                thanks_button.click()
-                log.info("¡Agradecido correctamente!")
-
-            return True
-
-        except Exception as e:
-            log.error(f"Error al interactuar con el botón Agradecer: {e}")
-            return False
+            return hdolimpo_click_thanks(session, torrent_url, log)
 
     except Exception as e:
         log.error(f"Error inesperado en hdolimpo_thanks: {e}")
         return False
-    finally:
-        if driver is not None:
-            driver.quit()
 
 
 # ── Utilidades ───────────────────────────────────────────────────────────────

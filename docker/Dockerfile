@@ -8,18 +8,12 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100
 
-# Chromium local para el login de HD-Olimpo (sin contenedor Selenium externo)
-ENV CHROME_BIN=/usr/bin/chromium-browser \
-    CHROMEDRIVER_PATH=/usr/bin/chromedriver
-
 # Update the package index and upgrade installed packages
 RUN apk update && apk upgrade
 
 # Install the required system packages
 RUN apk add --no-cache \
-    curl \
-    chromium \
-    chromium-chromedriver
+    curl
 
 # Create a non-privileged user to run the application
 RUN adduser -D -s /bin/sh python

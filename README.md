@@ -116,14 +116,6 @@ cd <repository-name>
 
 ### Local Development
 
-> [!NOTE]
-> The `Grab` event logs into HD-Olimpo using a local headless Chromium
-> (via Selenium), which is installed in the Docker image but not assumed to
-> be on your host. Running `main.py` directly on the host works fine for the
-> `Test`, `Download`, and `ManualInteractionRequired` events, but `Grab` will
-> fail unless Chromium + a matching chromedriver are also installed locally.
-> Docker (below) is the supported way to run the full app.
-
 1. Install the dependencies:
 
 ```bash
@@ -248,11 +240,10 @@ Also, you need to set the environment variables for the Docker service
 
 - **DOCKER_NETWORK**: Existing Docker network the deployed container joins.
 - **DOCKER_HEALTHCHECK_URL**: Healthcheck URL for the service application (`/status`).
-- **DOCKER_MEMORY_LIMIT**: Memory limit for the Docker service. The container
-  runs a headless Chromium for the HD-Olimpo login, so this needs real
-  headroom — `docker/compose.yml` uses `700M` for local dev as a reference point.
+- **DOCKER_MEMORY_LIMIT**: Memory limit for the Docker service
+  (`docker/compose.yml` uses `256M` for local dev as a reference point).
 - **DOCKER_MEMORY_RESERVATION**: Memory reservation for the Docker service
-  (`300M` locally).
+  (`128M` locally).
 
 More details about these variables can be found in the [VARIABLES.md](docs/VARIABLES.md) file.
 
