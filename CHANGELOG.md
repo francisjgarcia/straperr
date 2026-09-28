@@ -1,13 +1,18 @@
 # Changelog
 
+## [v1.22.10](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.10) (2026-09-28)
+
+
+### ⚡ Performance improvements
+
+* perf(hdolimpo): replace Selenium/Chromium with plain HTTP requests (#75) ([1a7e45a](https://github.com/francisjgarcia/straperr/commit/1a7e45a)) — Francis J. García
+
+
+
 ## [v1.22.9](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.9) (2026-09-21)
-
-
 ### 🐛 Bug fixes
 
 * fix(hdolimpo): update selectors for HD-Olimpo markup changes (#74) ([570002d](https://github.com/francisjgarcia/straperr/commit/570002d)) — Francis J. García
-
-
 
 ## [v1.22.8](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.8) (2026-09-19)
 ### 🐛 Bug fixes
