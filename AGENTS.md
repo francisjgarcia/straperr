@@ -22,8 +22,7 @@ internal network.
 
 ## Commands
 
-Local dev runs entirely through Docker (Chromium/chromedriver are not
-expected to be present on the host):
+Local dev runs entirely through Docker:
 
 ```bash
 cd docker
@@ -73,40 +72,28 @@ docker compose -f docker/compose.yml build straperr
 
 ## Architecture notes that aren't obvious from one file
 
-**Why Selenium + local Chromium, not `requests`.** hd-olimpo.club's login
-form is protected by an anti-bot check that returns a "Captcha error" message
-that has nothing to do with an actual solvable captcha — it's a
-browser-fingerprint check. Confirmed by: the site's entire JS bundle
-(`app.js`, ~550KB) has zero references to "captcha" (so nothing client-side
-computes or transforms the `_captcha` hidden field), and adding artificial
-delay before submit didn't change the outcome either. A plain HTTP client
-cannot pass this; only a real (or real-enough headless) browser can. This is
-why `hdolimpo_thanks()` in `main.py` drives actual Chromium via Selenium
-instead of `requests` + BeautifulSoup — a pure-HTTP rewrite was tried and
-reliably failed for this reason alone, not because of a parsing bug.
+**HD-Olimpo is driven over plain HTTP (`requests` + BeautifulSoup), no
+browser.** hd-olimpo.club runs UNIT3D. Its login form is protected by UNIT3D's
+HiddenCaptcha, which is validated entirely server-side: an encrypted `_captcha`
+token (bound to session, IP and User-Agent), a CSS-hidden honeypot `_username`
+that must be *present and empty*, and a randomly-named field whose value must
+equal the token's timestamp. `hdolimpo_login()` passes it by GETting `/login`
+and re-POSTing *every* form input verbatim within the same `requests.Session`
+(same cookie + User-Agent). The project used Selenium + headless Chromium for
+a while on the belief that this was a browser-fingerprint check; it isn't — a
+pure-HTTP login was verified working. If a "Captcha error" ever comes back,
+first check that no form field is being dropped before reaching for a browser.
 
-**Why Chromium is installed in the *same* container, not a separate one.**
-The project used to depend on a second `selenium/standalone-chrome` container
-(`straperr-selenium`, connected to via `webdriver.Remote(...)`). That's gone
-— `docker/Dockerfile` now installs Alpine's `chromium`
-+ `chromium-chromedriver` packages directly, and `build_chrome_driver()` in
-`main.py` launches a local headless instance per call
-(`CHROME_BIN`/`CHROMEDRIVER_PATH` env vars, defaulted to Alpine's install
-paths). Consequence: the container needs meaningfully more memory than a
-plain API service — `docker/compose.yml` reserves 300M/limits 700M. The
-production-side equivalent (`DOCKER_MEMORY_LIMIT` / `DOCKER_MEMORY_RESERVATION`
-GitHub Actions repo variables) lives outside this repo (see below) and needs
-the same headroom.
-
-**Chrome subprocess cleanup relies on gunicorn being PID 1.** Every
-`hdolimpo_thanks()` call spawns a full Chromium process tree and tears it
-down with `driver.quit()`, but subprocesses that get orphaned during
-teardown (crashpad handler, renderer, GPU, zygote) reparent to PID 1. Verified
-empirically that gunicorn's arbiter reaps them fine on its own (wildcard
-`waitpid(-1, ...)` in its `SIGCHLD` handler) — no zombies accumulate. If PID 1
-ever changes to something that doesn't reap arbitrary children (a plain shell,
-for instance), zombie Chrome processes will pile up on every Grab event; add
-`init: true` in compose (Docker's built-in `tini`) if that happens.
+**"Agradecer" is a Livewire 3 call, not a form.** The thanks button is the
+`thank-button` Livewire component (`wire:click="store(<torrent id>)"`).
+`hdolimpo_click_thanks()` replays what `livewire.js` does: POST JSON to the
+update URI from `window.livewireScriptConfig` (currently `/livewire/update`,
+with the CSRF token from the same object) carrying the component's
+`wire:snapshot` and the call. The result comes back as a dispatched toast
+event: `success` ("Your thank was successfully applied!") or `error` ("You
+have already thanked!", or another reason). The button is picked by
+`memo.name == "thank-button"` in its snapshot, not by `wire:click` —
+`bookmark-button` on the same page also calls `store(<id>)`.
 
 **`instanceName` means two different things depending on event type.** For
 `Grab`/`Test`/`Download`, it's just a free-text label used as the logger
@@ -117,11 +104,15 @@ name (Sonarr/Radarr send whatever they're configured with, e.g.
 — `get_arr_instance()` raises if it doesn't match. This isn't a bug, just an
 overload worth knowing before "fixing" one path in terms of the other.
 
-**HD-Olimpo page selectors are hardcoded and fragile.** The XPath/CSS
-selectors in `hdolimpo_thanks()` (`@placeholder='Título'`, button text
-`'Agradecer'`, `#torrent-list-table`) are coupled to hd-olimpo.club's current
-markup. If thanking silently stops working, check those selectors against
-the live site before assuming a logic bug.
+**HD-Olimpo page selectors are hardcoded and fragile.** The selectors in
+the `hdolimpo_*` helpers (`form[action$="/login"]`,
+`a.torrent-search--list__name` on `/torrents?name=...`, the `thank-button`
+Livewire component, `window.livewireScriptConfig`) are coupled to
+hd-olimpo.club's current markup. Search results are matched by *exact*
+(whitespace-normalized) name, so a release title that differs from the
+site's name (e.g. the site adds "(Edición 2026)") logs "Sin coincidencia
+exacta" and nothing is thanked. If thanking silently stops working, check
+those selectors against the live site before assuming a logic bug.
 
 **Deployment logic lives in a separate repo.** `.github/workflows/cicd.yml`
 and `deploy.yml` are thin wrappers around reusable workflows in

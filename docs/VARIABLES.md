@@ -29,14 +29,10 @@ This file contains the necessary configurations for the integration and deployme
   - **Example**: `http://localhost:5000/status`
 
 - **`DOCKER_MEMORY_LIMIT`**:
-  - **Description**: The memory limit for the Docker container. The container
-    runs a headless Chromium (Selenium) for the HD-Olimpo login on top of the
-    Flask app, so this needs meaningfully more headroom than a plain API
-    service.
-  - **Example**: `700M`
+  - **Description**: The memory limit for the Docker container. It's a plain
+    Flask/gunicorn app (~80M in use after a Grab event).
+  - **Example**: `256M`
 
 - **`DOCKER_MEMORY_RESERVATION`**:
   - **Description**: The memory reservation for the Docker container.
-  - **Example**: `300M`
-
-
+  - **Example**: `128M`
