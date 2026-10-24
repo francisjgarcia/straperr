@@ -1,14 +1,19 @@
 # Changelog
 
-## [v1.22.11](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.11) (2026-10-09)
+## [v1.22.12](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.12) (2026-10-24)
 
 
 ### 🐛 Bug fixes
 
+* fix(docker): bump python in /docker (#78) ([19fc66e](https://github.com/francisjgarcia/straperr/commit/19fc66e)) — dependabot[bot]
+
+
+
+## [v1.22.11](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.11) (2026-10-09)
+### 🐛 Bug fixes
+
 * fix(deps): bump python-dotenv from 1.2.3 to 1.2.4 in /src (#77) ([78fb818](https://github.com/francisjgarcia/straperr/commit/78fb818)) — dependabot[bot]
 * fix(docker): bump python in /docker (#76) ([7c3b278](https://github.com/francisjgarcia/straperr/commit/7c3b278)) — dependabot[bot]
-
-
 
 ## [v1.22.10](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.10) (2026-09-28)
 ### ⚡ Performance improvements
