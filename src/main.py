@@ -413,7 +413,10 @@ def clean_release_title(title: str) -> str:
     def replace(m: re.Match) -> str:
         return 'Eng' if m.group(0).lower() == 'english' else ''
 
-    return re.sub(pattern, replace, title, flags=re.IGNORECASE).strip()
+    title = re.sub(pattern, replace, title, flags=re.IGNORECASE).strip()
+    # Los indexers envían a veces el nombre del fichero; en HD-Olimpo el
+    # torrent se llama igual pero sin extensión.
+    return re.sub(r'\.(mkv|mp4|avi|m2ts|ts)$', '', title, flags=re.IGNORECASE)
 
 
 # ── Webhook event handlers ───────────────────────────────────────────────────
