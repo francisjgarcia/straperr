@@ -111,7 +111,10 @@ Livewire component, `window.livewireScriptConfig`) are coupled to
 hd-olimpo.club's current markup. Search results are matched by *exact*
 (whitespace-normalized) name, so a release title that differs from the
 site's name (e.g. the site adds "(Edición 2026)") logs "Sin coincidencia
-exacta" and nothing is thanked. If thanking silently stops working, check
+exacta" and nothing is thanked. Indexers often send the file name as the
+release title (`...[HDO].mkv`) while the site's torrent name has no
+extension, so `clean_release_title()` strips a trailing video extension
+before searching. If thanking silently stops working, check
 those selectors against the live site before assuming a logic bug.
 
 **Deployment logic lives in a separate repo.** `.github/workflows/cicd.yml`
