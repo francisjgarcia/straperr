@@ -1,13 +1,18 @@
 # Changelog
 
-## [v1.22.12](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.12) (2026-10-24)
+## [v1.22.13](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.13) (2026-11-02)
 
 
 ### 🐛 Bug fixes
 
+* fix(hdolimpo): strip file extension from release title before searching (#79) ([f7d9a04](https://github.com/francisjgarcia/straperr/commit/f7d9a04)) — Francis J. García
+
+
+
+## [v1.22.12](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.12) (2026-10-24)
+### 🐛 Bug fixes
+
 * fix(docker): bump python in /docker (#78) ([19fc66e](https://github.com/francisjgarcia/straperr/commit/19fc66e)) — dependabot[bot]
-
-
 
 ## [v1.22.11](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.11) (2026-10-09)
 ### 🐛 Bug fixes
