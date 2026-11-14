@@ -1,13 +1,18 @@
 # Changelog
 
-## [v1.22.14](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.14) (2026-11-14)
+## [v1.22.15](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.15) (2026-11-14)
 
 
 ### 🐛 Bug fixes
 
+* fix(deps): bump gunicorn from 26.2.0 to 27.0.0 in /src (#81) ([888eea0](https://github.com/francisjgarcia/straperr/commit/888eea0)) — dependabot[bot]
+
+
+
+## [v1.22.14](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.14) (2026-11-14)
+### 🐛 Bug fixes
+
 * fix(docker): bump python in /docker (#80) ([d9358d2](https://github.com/francisjgarcia/straperr/commit/d9358d2)) — dependabot[bot]
-
-
 
 ## [v1.22.13](https://github.com/francisjgarcia/straperr/releases/tag/v1.22.13) (2026-11-02)
 ### 🐛 Bug fixes
